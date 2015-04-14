@@ -17,7 +17,6 @@ package be.cytomine.client.collections;
  */
 
 import be.cytomine.client.models.Role;
-import be.cytomine.client.models.Software;
 import org.json.simple.JSONObject;
 
 /**
@@ -28,7 +27,7 @@ import org.json.simple.JSONObject;
 public class RoleCollection extends Collection {
 
     public RoleCollection(int offset, int max) {
-        super(max,offset);
+        super(max, offset);
     }
 
     public String toURL() {
@@ -42,7 +41,7 @@ public class RoleCollection extends Collection {
     public Role get(int i) {
         Role role = new Role();
         Object item = list.get(i);
-        role.setAttr((JSONObject)item);
+        role.setAttr((JSONObject) item);
         return role;
     }
 }

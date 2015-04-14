@@ -32,7 +32,7 @@ public class CropExample {
 
     public static void indexAnnotation(Cytomine cytomine) throws Exception {
 
-        cytomine.indexToRetrieval(141221746l,101903411l,"http://beta.cytomine.be/api/userannotation/141221746/crop.jpg");
+        cytomine.indexToRetrieval(141221746l, 101903411l, "http://beta.cytomine.be/api/userannotation/141221746/crop.jpg");
 
     }
 
@@ -53,7 +53,7 @@ public class CropExample {
             String line = br.readLine();
             while (line != null) {
                 String id = line.split(",")[0];
-                if(!id.equals("id")) {
+                if (!id.equals("id")) {
                     //otherwise, first line
                     ids.add(Long.parseLong(id));
                 }
@@ -70,21 +70,21 @@ public class CropExample {
         System.out.println("There are " + ids.size() + " annotations");
         int testNumber = 0;
 
-        for(int i=0;i<ids.size();i++) {
+        for (int i = 0; i < ids.size(); i++) {
             System.out.println(i + "/" + ids.size() + " ====> TO IGNORE " + toIgnore.size());
             Long id = ids.get(i);
-            String outputFile = outPutDir+""+id+".png";
+            String outputFile = outPutDir + "" + id + ".png";
             System.out.println(outputFile);
             File file = new File(outputFile);
-            if(!file.exists()) {
+            if (!file.exists()) {
                 try {
                     System.out.println("Try downloading...");
                     cytomine.downloadPictureWithRedirect("http://beta.cytomine.be/api/annotation/" + id + "/crop." + format + "?maxSize=256", outputFile, format);
                     testNumber = 0;
-                } catch(Exception e) {
+                } catch (Exception e) {
                     testNumber++;
                     //Thread.sleep(10000);
-                    if(testNumber<1) {
+                    if (testNumber < 1) {
                         i--;
                     } else {
                         testNumber = 0;

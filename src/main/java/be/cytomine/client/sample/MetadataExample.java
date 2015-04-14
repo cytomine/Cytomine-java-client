@@ -14,6 +14,7 @@ package be.cytomine.client.sample;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.PropertyCollection;
@@ -25,7 +26,7 @@ public class MetadataExample {
     private static final Logger log = Logger.getLogger(MetadataExample.class);
 
     public static void testUploadFile(Cytomine cytomine) throws Exception {
-        AttachedFile attachedFile = cytomine.uploadAttachedFile("/home/lrollus/Images/test01.jpg","be.cytomine.project.Project",21919089l);
+        AttachedFile attachedFile = cytomine.uploadAttachedFile("/home/lrollus/Images/test01.jpg", "be.cytomine.project.Project", 21919089l);
         System.out.println(attachedFile);
     }
 
@@ -34,18 +35,18 @@ public class MetadataExample {
             log.info("Description :");
             Project project = cytomine.getProject(57l);
 
-            cytomine.addDescription(project.getId(),project.getStr("class"),"Add description for prject");
+            cytomine.addDescription(project.getId(), project.getStr("class"), "Add description for prject");
 
-            Description description = cytomine.getDescription(project.getId(),project.getStr("class"));
+            Description description = cytomine.getDescription(project.getId(), project.getStr("class"));
 
-            System.out.println("DESCRIPTION="+description.get("data"));
+            System.out.println("DESCRIPTION=" + description.get("data"));
 
             cytomine.editDescription(project.getId(), project.getStr("class"), "Add description for project");
 
-            description = cytomine.getDescription(project.getId(),project.getStr("class"));
-            System.out.println("DESCRIPTION="+description.get("data"));
+            description = cytomine.getDescription(project.getId(), project.getStr("class"));
+            System.out.println("DESCRIPTION=" + description.get("data"));
 
-            cytomine.deleteDescription(project.getId(),project.getStr("class"));
+            cytomine.deleteDescription(project.getId(), project.getStr("class"));
 
         } catch (CytomineException e) {
             log.error(e);
@@ -58,11 +59,11 @@ public class MetadataExample {
         try {
             //PROPERTY WITH ANNOTATION
             log.info("get annotation = 17774487 :");
-            Annotation ua= cytomine.getAnnotation(17774487l);
+            Annotation ua = cytomine.getAnnotation(17774487l);
             log.info("UserAnnotation => " + ua.getAttr());
 
             log.info("get properties for annotation = 17774487 :");
-            PropertyCollection annotationProperties = cytomine.getDomainProperties("annotation",17774487l);
+            PropertyCollection annotationProperties = cytomine.getDomainProperties("annotation", 17774487l);
             log.info("properties for annotation = 17774487 => " + annotationProperties.getList());
 
             log.info("get property = 17775320 for annotation = 17774487 :");
@@ -74,11 +75,11 @@ public class MetadataExample {
             log.info("property for annotation = 17774487 with key = Description => " + annotationProperties.getList());
 
             log.info("Create property for annotation :");
-            annotationProperty =cytomine.addDomainProperties ("annotation", 17774487l, "TestNewKeyClientJava", "TestNewValueClientJava");
+            annotationProperty = cytomine.addDomainProperties("annotation", 17774487l, "TestNewKeyClientJava", "TestNewValueClientJava");
             log.info("property for annotation created => " + annotationProperty.getAttr());
 
             log.info("Edit property for annotation :");
-            annotationProperty = cytomine.editDomainProperty ("annotation", annotationProperty.getId(), 17774487l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
+            annotationProperty = cytomine.editDomainProperty("annotation", annotationProperty.getId(), 17774487l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
             log.info("property for annotation edited => " + annotationProperty.getAttr());
 
             log.info("Delete property for annotation :");
@@ -99,7 +100,7 @@ public class MetadataExample {
             log.info("project => " + project.getAttr());
 
             log.info("get properties for project = 16623 :");
-            PropertyCollection projectProperties = cytomine.getDomainProperties("project",16623l);
+            PropertyCollection projectProperties = cytomine.getDomainProperties("project", 16623l);
             log.info("properties for project = 16623 => " + projectProperties.getList());
 
             log.info("get property = 17775218 for project = 16623 :");
@@ -111,11 +112,11 @@ public class MetadataExample {
             log.info("property for project = 16623 with key = Ok => " + projectProperties.getList());
 
             log.info("Create property for project :");
-            projectProperty = cytomine.addDomainProperties ("project", 16623l, "TestNewKeyClientJava", "TestNewValueClientJava");
+            projectProperty = cytomine.addDomainProperties("project", 16623l, "TestNewKeyClientJava", "TestNewValueClientJava");
             log.info("property for project created => " + projectProperty.getAttr());
 
             log.info("Edit property for project :");
-            projectProperty = cytomine.editDomainProperty ("project", projectProperty.getId(), 16623l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
+            projectProperty = cytomine.editDomainProperty("project", projectProperty.getId(), 16623l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
             log.info("property for project edited => " + projectProperty.getAttr());
 
             log.info("Delete property for project :");
@@ -129,7 +130,7 @@ public class MetadataExample {
             log.info("ImageInstance => " + ii.getAttr());
 
             log.info("get properties for imageinstance = 786011 :");
-            PropertyCollection imageInstanceProperties = cytomine.getDomainProperties("imageinstance",786011l);
+            PropertyCollection imageInstanceProperties = cytomine.getDomainProperties("imageinstance", 786011l);
             log.info("properties for imageinstance = 786011 => " + imageInstanceProperties.getList());
 
             log.info("get property = 17775242 for imageinstance = 786011 :");
@@ -141,11 +142,11 @@ public class MetadataExample {
             log.info("property for imageinstance = 786011 with key = Label => " + imageInstanceProperties.getList());
 
             log.info("Create property for imageinstance :");
-            imageInstanceProperty =cytomine.addDomainProperties ("imageinstance", 786011l, "TestNewKeyClientJava", "TestNewValueClientJava");
+            imageInstanceProperty = cytomine.addDomainProperties("imageinstance", 786011l, "TestNewKeyClientJava", "TestNewValueClientJava");
             log.info("property for imageinstance created => " + imageInstanceProperty.getAttr());
 
             log.info("Edit property for imageinstance :");
-            imageInstanceProperty = cytomine.editDomainProperty ("imageinstance", imageInstanceProperty.getId(), 786011l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
+            imageInstanceProperty = cytomine.editDomainProperty("imageinstance", imageInstanceProperty.getId(), 786011l, "TestNewKeyClientJava2", "TestNewValueClientJava2");
             log.info("property for imageinstance edited => " + imageInstanceProperty.getAttr());
 
             log.info("Delete property for imageinstance :");

@@ -46,7 +46,7 @@ public abstract class Collection {
     }
 
     public String getPaginatorURLParams() {
-        return "&max="+ this.max + "&offset="+this.offset;
+        return "&max=" + this.max + "&offset=" + this.offset;
     }
 
     public abstract String toURL();
@@ -71,7 +71,7 @@ public abstract class Collection {
     }
 
     public void add(Object o) {
-        list.add(((Model)o).getAttr());
+        list.add(((Model) o).getAttr());
     }
 
     boolean isFilterBy(String name) {
@@ -81,7 +81,8 @@ public abstract class Collection {
     public String getFilter(String name) {
         return map.get(name);
     }
-    public Map<String,String> getFilters() {
+
+    public Map<String, String> getFilters() {
         return map;
     }
 
@@ -99,10 +100,10 @@ public abstract class Collection {
             return "/api/" + getDomainName() + ".json";
         else {
             String base = "/api/" + getDomainName() + ".json?";
-            for (Map.Entry<String,String> param : params.entrySet()) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
                 base = base + param.getKey() + "=" + param.getValue() + "&";
             }
-            base = base.substring(0,base.length()-1);
+            base = base.substring(0, base.length() - 1);
             return base;
         }
     }

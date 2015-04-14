@@ -30,8 +30,8 @@ public class Description extends Model {
     }
 
     public String toURL() {
-        Long domainIdent = (Long)get("domainIdent");
-        String domainClassName =  getStr("domainClassName");
+        Long domainIdent = (Long) get("domainIdent");
+        String domainClassName = getStr("domainClassName");
 
         return getJSONResourceURL(domainIdent, domainClassName);
     }
@@ -41,10 +41,10 @@ public class Description extends Model {
             return "/api/domain/" + domainClassName + "/" + domainIdent + "/description.json";
         } else {
             String base = "/api/domain/" + domainClassName + "/" + domainIdent + "/description.json?";
-            for (Map.Entry<String,String> param : params.entrySet()) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
                 base = base + param.getKey() + "=" + param.getValue() + "&";
             }
-            base = base.substring(0,base.length()-1);
+            base = base.substring(0, base.length() - 1);
             return base;
         }
     }

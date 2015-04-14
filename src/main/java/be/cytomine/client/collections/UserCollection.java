@@ -26,15 +26,15 @@ import org.json.simple.JSONObject;
  */
 public class UserCollection extends Collection {
 
-    public UserCollection(int offset,int max) {
-        super(max,offset);
+    public UserCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
         if (isFilterBy("project") && isFilterBy("admin")) {
-            return "/api/project/"+getFilter("project")+"/admin.json";
-        } else if(isFilterBy("project")){
-            return "/api/project/"+getFilter("project")+"/user.json";
+            return "/api/project/" + getFilter("project") + "/admin.json";
+        } else if (isFilterBy("project")) {
+            return "/api/project/" + getFilter("project") + "/user.json";
         } else {
             return getJSONResourceURL();
         }
@@ -47,7 +47,7 @@ public class UserCollection extends Collection {
     public User get(int i) {
         User user = new User();
         Object item = list.get(i);
-        user.setAttr((JSONObject)item);
+        user.setAttr((JSONObject) item);
         return user;
     }
 }

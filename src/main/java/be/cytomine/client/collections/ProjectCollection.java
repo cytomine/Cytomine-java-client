@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
  */
 public class ProjectCollection extends Collection {
 
-    public ProjectCollection(int offset,int max) {
-        super(max,offset);
+    public ProjectCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -40,12 +40,14 @@ public class ProjectCollection extends Collection {
         }
     }
 
-    public String getDomainName() { return "project";}
+    public String getDomainName() {
+        return "project";
+    }
 
     public Project get(int i) {
         Project project = new Project();
         Object item = list.get(i);
-        project.setAttr((JSONObject)item);
+        project.setAttr((JSONObject) item);
         return project;
     }
 }
