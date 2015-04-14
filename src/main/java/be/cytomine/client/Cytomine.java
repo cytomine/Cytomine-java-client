@@ -78,6 +78,9 @@ public class Cytomine {
     public enum Filter { ALL, PROJECT, ANNOTATION, IMAGE, ABSTRACTIMAGE } //TODO=> RENAME IMAGE TO IMAGEINSTANCE
     public enum Operator { OR, AND }
 
+    public Cytomine(String host, String publicKey, String privateKey) {
+        this(host, publicKey, privateKey, "./", false);
+    }
 
     public Cytomine(String host, String publicKey, String privateKey, String workingPath) {
         this(host, publicKey, privateKey, workingPath, false);
