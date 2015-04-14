@@ -26,16 +26,14 @@ public class Execute {
 
     public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
-
+        PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
 
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2], "./");
         ping(cytomine);
-        PropertyConfigurator.configure("log4j.properties");
-        log.debug(new File("log4j.properties").getAbsolutePath());
     }
 
     public static void ping(Cytomine cytomine) throws Exception {
-        log.debug("Hello " + cytomine.getCurrentUser().get("username"));
+        log.info("Hello " + cytomine.getCurrentUser().get("username"));
     }
 }
