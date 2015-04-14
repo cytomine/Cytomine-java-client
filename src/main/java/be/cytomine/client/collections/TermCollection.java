@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
  */
 public class TermCollection extends Collection {
 
-    public TermCollection(int offset,int max) {
-        super(max,offset);
+    public TermCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -45,7 +45,7 @@ public class TermCollection extends Collection {
     public Term get(int i) {
         Term term = new Term();
         Object item = list.get(i);
-        term.setAttr((JSONObject)item);
+        term.setAttr((JSONObject) item);
         return term;
     }
 }

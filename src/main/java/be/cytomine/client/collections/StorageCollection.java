@@ -25,20 +25,22 @@ import org.json.simple.JSONObject;
  */
 public class StorageCollection extends Collection {
 
-    public StorageCollection(int offset,int max) {
-        super(max,offset);
+    public StorageCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
         return getJSONResourceURL();
     }
 
-    public String getDomainName() { return "storage";}
+    public String getDomainName() {
+        return "storage";
+    }
 
     public Storage get(int i) {
         Storage storage = new Storage();
         Object item = list.get(i);
-        storage.setAttr((JSONObject)item);
+        storage.setAttr((JSONObject) item);
         return storage;
     }
 }

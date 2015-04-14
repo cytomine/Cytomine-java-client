@@ -25,8 +25,8 @@ package be.cytomine.client.collections;
  */
 public class SearchCollection extends Collection {
 
-    public SearchCollection(int offset,int max) {
-        super(max,offset);
+    public SearchCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -41,8 +41,8 @@ public class SearchCollection extends Collection {
         String url = "/api/" + getDomainName() + ".json?" + keywords + "=" + getFilter(keywords) + "&"
                 + operator + "=" + getFilter(operator) + "&"
                 + filter + "=" + getFilter(filter);
-        if(isFilterBy("projects")) {
-            url = url + "&projects="+ getFilter("projects") ;
+        if (isFilterBy("projects")) {
+            url = url + "&projects=" + getFilter("projects");
         }
         return url;
 

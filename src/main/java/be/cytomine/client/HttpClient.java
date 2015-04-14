@@ -34,30 +34,31 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
-import org.apache.http.entity.mime.MultipartEntity;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * HTTP Client abstraction
@@ -86,21 +87,24 @@ public class HttpClient {
 
 
     public HttpClient(String publicKey, String privateKey, String host) {
-        this.publicKey = publicKey; this.privateKey = privateKey; this.host = host;
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.host = host;
     }
 
     public HttpClient(String publicKey, String privateKey, String host, List<Cookie> cookies) {
-        this.publicKey = publicKey; this.privateKey = privateKey; this.host = host; this.cookies = cookies;
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.host = host;
+        this.cookies = cookies;
     }
 
     public void printCookies() {
         System.out.println("############# PRINT COOKIE #############");
         List<Cookie> cookies = client.getCookieStore().getCookies();
         System.out.println(cookies);
-        if(cookies != null)
-        {
-            for(Cookie cookie : cookies)
-            {
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
                 String cookieString = cookie.getName() + "=" + cookie.getValue() + "; domain=" + cookie.getDomain();
                 System.out.println(cookieString);
             }
@@ -114,8 +118,8 @@ public class HttpClient {
 
 
     public void putCookies() {
-        if(cookies!=null) {
-            for(int i=0;i<cookies.size();i++) {
+        if (cookies != null) {
+            for (int i = 0; i < cookies.size(); i++) {
                 client.getCookieStore().addCookie(cookies.get(i));
             }
         }
@@ -124,7 +128,7 @@ public class HttpClient {
 
     public void addHeader(String name, String value) {
         Header[] headers;
-        if (headersArray!=null)
+        if (headersArray != null)
             headers = new Header[headersArray.length + 1];
         else
             headers = new Header[1];
@@ -192,7 +196,7 @@ public class HttpClient {
         //write data
         BasicHttpEntity entity = new BasicHttpEntity();
         entity.setContent(new ByteArrayInputStream(data.getBytes()));
-        entity.setContentLength((long)data.getBytes().length);
+        entity.setContentLength((long) data.getBytes().length);
         httpPost.setEntity(entity);
         response = client.execute(targetHost, httpPost, localcontext);
         return response.getStatusLine().getStatusCode();
@@ -250,7 +254,7 @@ public class HttpClient {
         //write data
         BasicHttpEntity entity = new BasicHttpEntity();
         entity.setContent(new ByteArrayInputStream(data.getBytes()));
-        entity.setContentLength((long)data.getBytes().length);
+        entity.setContentLength((long) data.getBytes().length);
         httpPost.setEntity(entity);
         response = client.execute(targetHost, httpPost, localcontext);
         return response.getStatusLine().getStatusCode();
@@ -265,7 +269,7 @@ public class HttpClient {
         //write data
         BasicHttpEntity entity = new BasicHttpEntity();
         entity.setContent(new ByteArrayInputStream(data.getBytes()));
-        entity.setContentLength((long)data.getBytes().length);
+        entity.setContentLength((long) data.getBytes().length);
         httpPut.setEntity(entity);
         response = client.execute(targetHost, httpPut, localcontext);
         return response.getStatusLine().getStatusCode();
@@ -281,12 +285,12 @@ public class HttpClient {
         reqEntity.setContentType("binary/octet-stream");
         reqEntity.setChunked(false);
         BufferedHttpEntity myEntity = null;
-                   try {
-                       myEntity = new BufferedHttpEntity(reqEntity);
-                   } catch (IOException e) {
-                       // TODO Auto-generated catch block
-                       e.printStackTrace();
-                   }
+        try {
+            myEntity = new BufferedHttpEntity(reqEntity);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         httpPost.setEntity(myEntity);
         response = client.execute(targetHost, httpPost, localcontext);
@@ -311,7 +315,6 @@ public class HttpClient {
     }
 
 
-
     public int put(byte[] data) throws Exception {
         log.debug("Put " + URL.getPath());
         HttpPut httpPut = new HttpPut(URL.getPath());
@@ -323,12 +326,12 @@ public class HttpClient {
         reqEntity.setChunked(false);
 
         BufferedHttpEntity myEntity = null;
-                   try {
-                       myEntity = new BufferedHttpEntity(reqEntity);
-                   } catch (IOException e) {
-                       // TODO Auto-generated catch block
-                       e.printStackTrace();
-                   }
+        try {
+            myEntity = new BufferedHttpEntity(reqEntity);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         httpPut.setEntity(myEntity);
         response = client.execute(targetHost, httpPut, localcontext);
@@ -352,7 +355,7 @@ public class HttpClient {
     public BufferedImage readBufferedImageFromURL(String url) throws Exception {
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(),URL.getPort());
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
         log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -385,7 +388,6 @@ public class HttpClient {
         return img;
 
     }
-
 
 
     static public BufferedImage readBufferedImageFromURLWithoutKey(String url, String loginHTTP, String passHTTP) throws MalformedURLException, IOException {
@@ -428,47 +430,47 @@ public class HttpClient {
     }
 
 
-    public static BufferedImage readBufferedImageFromRETRIEVAL(String url,String publicKey, String privateKey, String host) throws MalformedURLException, IOException, Exception {
-        log.debug("readBufferedImageFromURL:"+url);
+    public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws MalformedURLException, IOException, Exception {
+        log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
         HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
-        log.debug("targetHost:"+targetHost);
+        log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
-        log.debug("client:"+client);
+        log.debug("client:" + client);
         // Add AuthCache to the execution context
         BasicHttpContext localcontext = new BasicHttpContext();
-        log.debug("localcontext:"+localcontext);
+        log.debug("localcontext:" + localcontext);
         Header[] headers = authorizeFromRETRIEVAL("GET", URL.toString(), "", "", publicKey, privateKey, host);
-        log.debug("headers:"+headers.length);
+        log.debug("headers:" + headers.length);
 
         BufferedImage img = null;
         HttpGet httpGet = new HttpGet(URL.toString());
         httpGet.setHeaders(headers);
         HttpResponse response = client.execute(targetHost, httpGet, localcontext);
         int code = response.getStatusLine().getStatusCode();
-        log.info("url="+url + " is " + code + "(OK="+HttpURLConnection.HTTP_OK +",MOVED="+HttpURLConnection.HTTP_MOVED_TEMP+")");
+        log.info("url=" + url + " is " + code + "(OK=" + HttpURLConnection.HTTP_OK + ",MOVED=" + HttpURLConnection.HTTP_MOVED_TEMP + ")");
 
         boolean isOK = (code == HttpURLConnection.HTTP_OK);
         boolean isFound = (code == HttpURLConnection.HTTP_MOVED_TEMP);
         boolean isErrorServer = (code == HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-        if(!isOK && !isFound & !isErrorServer) {
-            throw new IOException(url + " cannot be read: "+code);
+        if (!isOK && !isFound & !isErrorServer) {
+            throw new IOException(url + " cannot be read: " + code);
         }
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            System.out.println("img="+entity.getContent());
+            System.out.println("img=" + entity.getContent());
             img = ImageIO.read(entity.getContent());
-            System.out.println("img="+img);
+            System.out.println("img=" + img);
         }
         return img;
 
     }
 
-    public static  Header[] authorizeFromRETRIEVAL(String action, String urlFullStr, String contentType, String accept, String publicKey, String privateKey, String host) throws Exception {
-        log.debug("authorize: action="+action+", url="+urlFullStr +", contentType=" + contentType + ",accept=" + accept);
+    public static Header[] authorizeFromRETRIEVAL(String action, String urlFullStr, String contentType, String accept, String publicKey, String privateKey, String host) throws Exception {
+        log.debug("authorize: action=" + action + ", url=" + urlFullStr + ", contentType=" + contentType + ",accept=" + accept);
         String url = urlFullStr.replace(host, "");
-        log.debug("authorize: url short="+url);
+        log.debug("authorize: url short=" + url);
         Header[] headers = new Header[3];
         //conn = httplib.HTTPConnection(self._host)
         headers[0] = new BasicHeader("accept", accept);
@@ -481,21 +483,21 @@ public class HttpClient {
         mac.init(privateKeySign);
         byte[] rawHmac = mac.doFinal(new String(messageToSign.getBytes(), "UTF-8").getBytes());
         //byte[] signatureBytes = Base64.encodeToByte(rawHmac,false);
-        byte[] signatureBytes = org.apache.commons.codec.binary.Base64.encodeBase64(rawHmac,false);
+        byte[] signatureBytes = org.apache.commons.codec.binary.Base64.encodeBase64(rawHmac, false);
         String authorization = "CYTOMINE " + publicKey + ":" + new String(signatureBytes);
-        headers[2]= new BasicHeader("authorization", authorization);
+        headers[2] = new BasicHeader("authorization", authorization);
         return headers;
-}
+    }
 
 
-    public void authorize(String action, String url, String contentType, String accept)  throws Exception {
+    public void authorize(String action, String url, String contentType, String accept) throws Exception {
         url = url.replace(host, "");
         url = url.replace("http://" + host, "");
         url = url.replace("https://" + host, "");
 
-        TreeMap<String,String> headers = new TreeMap<String, String>();
-        headers.put("accept",accept);
-        headers.put("date",getActualDateStr());
+        TreeMap<String, String> headers = new TreeMap<String, String>();
+        headers.put("accept", accept);
+        headers.put("date", getActualDateStr());
 
         log.debug("AUTHORIZE: " + action + "\\n\\n" + contentType + "\\n" + headers.get("date") + "\n");
 
@@ -503,9 +505,9 @@ public class HttpClient {
 
         String messageToSign = canonicalHeaders + url;
 
-        log.debug("publicKey="+publicKey);
-        log.debug("privateKey="+privateKey);
-        log.debug("messageToSign="+messageToSign);
+        log.debug("publicKey=" + publicKey);
+        log.debug("privateKey=" + privateKey);
+        log.debug("messageToSign=" + messageToSign);
 
 
         SecretKeySpec privateKeySign = new SecretKeySpec(privateKey.getBytes(), "HmacSHA1");
@@ -521,37 +523,37 @@ public class HttpClient {
 
         String authorization = "CYTOMINE " + publicKey + ":" + signature;
 
-        log.debug("signature="+signature);
-        log.debug("authorization="+authorization);
+        log.debug("signature=" + signature);
+        log.debug("authorization=" + authorization);
 
-        headers.put("authorization",authorization);
+        headers.put("authorization", authorization);
 
-        for(String key : headers.keySet()) {
+        for (String key : headers.keySet()) {
             addHeader(key, headers.get(key));
         }
     }
 
-    public static String getActualDateStr()  throws Exception {
+    public static String getActualDateStr() throws Exception {
         Date today = Calendar.getInstance().getTime();
         return new SimpleDateFormat("%E, %d %M %Y %H:%M:%S +0000").format(today);
     }
 
 
-    public String getResponseData()  throws Exception {
+    public String getResponseData() throws Exception {
         HttpEntity entityResponse = response.getEntity();
         return IOUtils.toString(entityResponse.getContent());
     }
 
-    public int getResponseCode() throws Exception  {
+    public int getResponseCode() throws Exception {
         return response.getStatusLine().getStatusCode();
     }
 
-    public void disconnect()  throws Exception{
+    public void disconnect() throws Exception {
         log.debug("Disconnect");
         try {
             client.getConnectionManager().shutdown();
         } catch (Exception e) {
-             log.error(e);
+            log.error(e);
         }
     }
 }

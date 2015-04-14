@@ -28,8 +28,8 @@ import org.json.simple.JSONObject;
  */
 public class PropertyCollection extends Collection {
 
-    public PropertyCollection(int offset,int max) {
-        super(max,offset);
+    public PropertyCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -53,7 +53,7 @@ public class PropertyCollection extends Collection {
             return getJSONResourceURLWithFilter("imageinstance");
         } else if (isFilterBy("domainClassName")) {
             return getJSONResourceURLWithFilter(getFilter("domainClassName"));
-        }else {
+        } else {
             return getJSONResourceURL();
         }
     }
@@ -65,15 +65,15 @@ public class PropertyCollection extends Collection {
     public Property get(int i) {
         Property property = new Property();
         Object item = list.get(i);
-        property.setAttr((JSONObject)item);
+        property.setAttr((JSONObject) item);
         return property;
     }
 
 
     public String getJSONResourceURLWithFilter(String filter1Name) {
         String domainFix = filter1Name;
-        if(filter1Name.contains(".")) {
-            domainFix = "domain/"+filter1Name;
+        if (filter1Name.contains(".")) {
+            domainFix = "domain/" + filter1Name;
         }
         return "/api/" + domainFix + "/" + getFilter(filter1Name) + "/" + getDomainName() + ".json";
     }

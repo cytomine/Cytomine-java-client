@@ -31,7 +31,7 @@ public class UploadedFile extends Model {
 
 
     public String getAbsolutePath() {
-        return this.get("path") + File.separator +  this.get("filename");
+        return this.get("path") + File.separator + this.get("filename");
     }
 
 }

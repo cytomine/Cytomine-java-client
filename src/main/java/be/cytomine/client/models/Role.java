@@ -25,14 +25,15 @@ public class Role extends Model {
 
     public String toURL() {
 
-        if(isFilterBy("user") && isFilterBy("role")){
+        if (isFilterBy("user") && isFilterBy("role")) {
             return "/api/user/" + getFilter("user") + "/role/" + getFilter("role") + ".json";
-        } else if(isFilterBy("user")){
+        } else if (isFilterBy("user")) {
             return "/api/user/" + getFilter("user") + "/role.json";
-         }else  {
+        } else {
             return "/api/user/baduser/role.json";
         }
     }
+
     public String getDomainName() {
         return "role";
     }

@@ -14,6 +14,7 @@ package be.cytomine.client.sample;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.AbstractImage;
@@ -28,16 +29,16 @@ public class ImageExample {
 
     private static final Logger log = Logger.getLogger(ImageExample.class);
 
-    public static void changeImageName(Cytomine cytomine, Long idImageInstance, String newName) throws Exception{
+    public static void changeImageName(Cytomine cytomine, Long idImageInstance, String newName) throws Exception {
 
         System.out.println("Look for image instance " + idImageInstance);
         ImageInstance ii = cytomine.getImageInstance(idImageInstance);
 
         System.out.println("Look for abstract image " + ii.getLong("baseImage"));
-        AbstractImage ai = cytomine.editAbstractImage(ii.getLong("baseImage"),newName);
+        AbstractImage ai = cytomine.editAbstractImage(ii.getLong("baseImage"), newName);
 
         System.out.println("Edit name");
-        cytomine.editAbstractImage(ai.getId(),newName);
+        cytomine.editAbstractImage(ai.getId(), newName);
 
         System.out.println("New name is " + cytomine.getAbstractImage(ai.getId()).getStr("originalFilename"));
 
@@ -48,10 +49,10 @@ public class ImageExample {
 
         ImageGroup imageGroup = cytomine.addImageGroup(20475571l);
 
-        ImageSequence imageSequence1 = cytomine.addImageSequence(imageGroup.getId(),84251653l,0,0,0,0);
-        ImageSequence imageSequence2 = cytomine.addImageSequence(imageGroup.getId(),84215226l,0,0,0,1);
-        ImageSequence imageSequence3 = cytomine.addImageSequence(imageGroup.getId(),84225416l,0,0,0,2);
-        ImageSequence imageSequence4 = cytomine.addImageSequence(imageGroup.getId(),84262543l,0,0,0,3);
+        ImageSequence imageSequence1 = cytomine.addImageSequence(imageGroup.getId(), 84251653l, 0, 0, 0, 0);
+        ImageSequence imageSequence2 = cytomine.addImageSequence(imageGroup.getId(), 84215226l, 0, 0, 0, 1);
+        ImageSequence imageSequence3 = cytomine.addImageSequence(imageGroup.getId(), 84225416l, 0, 0, 0, 2);
+        ImageSequence imageSequence4 = cytomine.addImageSequence(imageGroup.getId(), 84262543l, 0, 0, 0, 3);
     }
 
     public static void testUpload(Cytomine cytomine) throws Exception {
@@ -69,7 +70,7 @@ public class ImageExample {
             System.out.println(Cytomine.UploadStatus.DEPLOYED);
 
             // String file="/home/lrollus/Cytomine/dotslide/Images/Image_63/Image63.tif";
-            String file="/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
+            String file = "/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
 
 //             //AUTOINTERSECT.png
             Long idProject = 92279388l;//21919089l;   // and storage 17763541
@@ -104,7 +105,7 @@ public class ImageExample {
 
             System.out.println("Connection on " + cytomine.host);
 
-            int i=0;
+            int i = 0;
 
 //             Map<String,String> properties = new HashMap<String,String>();
 //             properties.put("patient_id","PATIENT"+i);
@@ -112,10 +113,10 @@ public class ImageExample {
 //             properties.put("image_type","IMAGETYPE"+i);
 //             properties.put("version","VERSION"+i);
 
-            JSONArray json = cytomine.uploadImage(file,idProject,idStorage,cytomineHost,null,true);
+            JSONArray json = cytomine.uploadImage(file, idProject, idStorage, cytomineHost, null, true);
             System.out.println(json.get(0));
 //             System.out.println(((JSONObject)json.get(0)).get("uploadFile"));
-            System.out.println(((JSONObject)json.get(0)).get("images"));
+            System.out.println(((JSONObject) json.get(0)).get("images"));
 //
 //             String uploadedFilename = (String)((JSONObject)((JSONObject)json.get(0)).get("uploadFile")).get("filename");
 //             Long idImage = 0l;

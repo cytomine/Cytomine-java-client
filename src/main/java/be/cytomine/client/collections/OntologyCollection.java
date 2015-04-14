@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
  */
 public class OntologyCollection extends Collection {
 
-    public OntologyCollection(int offset,int max) {
-        super(max,offset);
+    public OntologyCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -45,7 +45,7 @@ public class OntologyCollection extends Collection {
     public Ontology get(int i) {
         Ontology ontology = new Ontology();
         Object item = list.get(i);
-        ontology.setAttr((JSONObject)item);
+        ontology.setAttr((JSONObject) item);
         return ontology;
     }
 }

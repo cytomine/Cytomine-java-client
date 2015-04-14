@@ -25,10 +25,10 @@ public class AbstractImage extends Model {
 
     public String toURL() {
         Long id = getLong("id");
-        if (id!=null) {
+        if (id != null) {
             return getJSONResourceURL(id);
         } else if (isFilterBy("uploadedFile")) {
-            return "/api/uploadedfile/"+getFilter("uploadedFile")+"/image.json";
+            return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
         } else {
             return getJSONResourceURL();
         }

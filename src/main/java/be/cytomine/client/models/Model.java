@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public abstract class Model {
     /**
-     *  Attribute for the current model
+     * Attribute for the current model
      */
     JSONObject attr = new JSONObject();
 
@@ -59,7 +59,8 @@ public abstract class Model {
 
     /**
      * Add value for attribute 'name'
-     * @param name attribute name
+     *
+     * @param name  attribute name
      * @param value value for this attribute
      */
     public void set(String name, Object value) {
@@ -68,6 +69,7 @@ public abstract class Model {
 
     /**
      * Get value for attribute 'name'
+     *
      * @param name attribute name
      * @return value value for this attribute
      */
@@ -81,29 +83,28 @@ public abstract class Model {
 
     public String getStr(String name) {
         //return (String) get(name);
-        if(get(name)==null) return null;
+        if (get(name) == null) return null;
         else return get(name) + "";
     }
 
     public Integer getInt(String name) {
         String str = getStr(name);
-        if(str==null) return null;
+        if (str == null) return null;
         else return Integer.parseInt(str);
     }
 
     public Long getLong(String name) {
         String str = getStr(name);
-        if(str==null) return null;
+        if (str == null) return null;
         else return Long.parseLong(str);
     }
 
     public Double getDbl(String name) {
-        if(get(name).getClass().getName().equals("java.lang.Long")) {
-            return ((Long)get(name)).doubleValue();
+        if (get(name).getClass().getName().equals("java.lang.Long")) {
+            return ((Long) get(name)).doubleValue();
         } else {
             return (Double) get(name);
         }
-
 
 
     }
@@ -111,17 +112,19 @@ public abstract class Model {
     public Boolean getBool(String name) {
         return (Boolean) get(name);
     }
+
     public List getList(String name) {
         return (List) get(name);
     }
 
     /**
      * Build model REST url
+     *
      * @return
      */
     public String toURL() {
-        Long id = (Long)get("id");
-        if (id!=null) {
+        Long id = (Long) get("id");
+        if (id != null) {
             return getJSONResourceURL(id);
         } else {
             return getJSONResourceURL();
@@ -130,6 +133,7 @@ public abstract class Model {
 
     /**
      * Direct method to accessto the id
+     *
      * @return Model id
      */
     public Long getId() {
@@ -138,6 +142,7 @@ public abstract class Model {
 
     /**
      * Generate JSON from Model
+     *
      * @return JSON
      */
     public String toJSON() {
@@ -146,6 +151,7 @@ public abstract class Model {
 
     /**
      * Get Model URL for the collection
+     *
      * @return URL
      */
     public String getJSONResourceURL() {
@@ -153,42 +159,43 @@ public abstract class Model {
             return "/api/" + getDomainName() + ".json";
         } else {
             String base = "/api/" + getDomainName() + ".json?";
-            for (Map.Entry<String,String> param : params.entrySet()) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
                 base = base + param.getKey() + "=" + param.getValue() + "&";
             }
-            base = base.substring(0,base.length()-1);
+            base = base.substring(0, base.length() - 1);
             return base;
         }
     }
 
     /**
      * Get Model URL for the model id
+     *
      * @param id Model id
      * @return URL
      */
     public String getJSONResourceURL(Long id) {
-         return getJSONResourceURL(id+"");
+        return getJSONResourceURL(id + "");
     }
 
     public String getJSONResourceURL(String id) {
         if (params.isEmpty()) {
-            return "/api/" + getDomainName() + "/"+ id + ".json";
+            return "/api/" + getDomainName() + "/" + id + ".json";
         } else {
-            String base = "/api/" + getDomainName() + "/"+ id + ".json?";
-            for (Map.Entry<String,String> param : params.entrySet()) {
+            String base = "/api/" + getDomainName() + "/" + id + ".json?";
+            for (Map.Entry<String, String> param : params.entrySet()) {
                 base = base + param.getKey() + "=" + param.getValue() + "&";
             }
-            base = base.substring(0,base.length()-1);
+            base = base.substring(0, base.length() - 1);
             return base;
         }
     }
 
     /**
      * Get the name of the domain for the domain
+     *
      * @return Domain name
      */
     public abstract String getDomainName();
-
 
 
     boolean isFilterBy(String name) {

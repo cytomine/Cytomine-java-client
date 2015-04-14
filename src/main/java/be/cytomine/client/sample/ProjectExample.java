@@ -14,6 +14,7 @@ package be.cytomine.client.sample;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.ProjectCollection;
@@ -30,21 +31,21 @@ public class ProjectExample {
         try {
             log.info("Get project list...");
             ProjectCollection projects = cytomine.getProjects();
-            log.info("projects="+projects.getList());
+            log.info("projects=" + projects.getList());
 
-            for(int i=0;i<projects.size();i++) {
-                log.info("projects="+projects.get(i));
+            for (int i = 0; i < projects.size(); i++) {
+                log.info("projects=" + projects.get(i));
             }
 
             log.info("############################################");
             cytomine.setMax(5);
             projects = cytomine.getProjects();
-            for(int i=0;i<projects.size();i++) {
-                log.info("projects="+projects.get(i));
+            for (int i = 0; i < projects.size(); i++) {
+                log.info("projects=" + projects.get(i));
             }
             cytomine.nextPage(projects);
-            for(int i=0;i<projects.size();i++) {
-                log.info("projects="+projects.get(i));
+            for (int i = 0; i < projects.size(); i++) {
+                log.info("projects=" + projects.get(i));
             }
             log.info("############################################");
 
@@ -53,12 +54,12 @@ public class ProjectExample {
 
             do {
 
-                for(int i=0;i<projects.size();i++) {
-                    log.info("projects="+projects.get(i));
+                for (int i = 0; i < projects.size(); i++) {
+                    log.info("projects=" + projects.get(i));
                 }
 
 
-            } while(cytomine.nextPage(projects));
+            } while (cytomine.nextPage(projects));
 
 
         } catch (CytomineException e) {

@@ -15,11 +15,11 @@ package be.cytomine.client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.io.File;
 public class Execute {
 
     private static final Logger log = Logger.getLogger(Execute.class);

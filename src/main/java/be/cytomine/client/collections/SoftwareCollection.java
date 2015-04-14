@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
  */
 public class SoftwareCollection extends Collection {
 
-    public SoftwareCollection(int offset,int max) {
-        super(max,offset);
+    public SoftwareCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -45,7 +45,7 @@ public class SoftwareCollection extends Collection {
     public Software get(int i) {
         Software software = new Software();
         Object item = list.get(i);
-        software.setAttr((JSONObject)item);
+        software.setAttr((JSONObject) item);
         return software;
     }
 }

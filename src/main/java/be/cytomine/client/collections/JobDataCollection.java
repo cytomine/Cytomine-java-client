@@ -26,8 +26,8 @@ import org.json.simple.JSONObject;
  */
 public class JobDataCollection extends Collection {
 
-    public JobDataCollection(int offset,int max) {
-        super(max,offset);
+    public JobDataCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
@@ -45,7 +45,7 @@ public class JobDataCollection extends Collection {
     public JobData get(int i) {
         JobData jobdata = new JobData();
         Object item = list.get(i);
-        jobdata.setAttr((JSONObject)item);
+        jobdata.setAttr((JSONObject) item);
         return jobdata;
     }
 }

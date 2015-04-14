@@ -29,15 +29,15 @@ import java.util.Map;
 public class AnnotationCollection extends Collection {
 
     public AnnotationCollection(int offset, int max) {
-        super(max,offset);
+        super(max, offset);
     }
 
     public String toURL() {
         String start = "/api/annotation.json?";
 
-        Map<String,String> filters = getFilters();
-        for(Map.Entry<String,String> filter : filters.entrySet()) {
-           start = start + "&"+filter.getKey() +"="+filter.getValue();
+        Map<String, String> filters = getFilters();
+        for (Map.Entry<String, String> filter : filters.entrySet()) {
+            start = start + "&" + filter.getKey() + "=" + filter.getValue();
         }
 
         return start;
@@ -50,7 +50,7 @@ public class AnnotationCollection extends Collection {
     public Annotation get(int i) {
         Annotation annotation = new Annotation();
         Object item = list.get(i);
-        annotation.setAttr((JSONObject)item);
+        annotation.setAttr((JSONObject) item);
         return annotation;
     }
 

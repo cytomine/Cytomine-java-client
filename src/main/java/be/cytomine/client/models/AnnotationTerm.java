@@ -36,7 +36,7 @@ public class AnnotationTerm extends Model {
     }
 
     public String toURL() {
-        return "/api/annotation/" + getStr("userannotation") + "/term/" + getStr("term") + ".json?annotationIdent="+getStr("userannotation");
+        return "/api/annotation/" + getStr("userannotation") + "/term/" + getStr("term") + ".json?annotationIdent=" + getStr("userannotation");
     }
 
 }

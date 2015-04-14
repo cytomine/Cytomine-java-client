@@ -17,7 +17,6 @@ package be.cytomine.client.collections;
  */
 
 import be.cytomine.client.models.ImageInstance;
-import be.cytomine.client.models.Software;
 import org.json.simple.JSONObject;
 
 /**
@@ -28,7 +27,7 @@ import org.json.simple.JSONObject;
 public class ImageInstanceCollection extends Collection {
 
     public ImageInstanceCollection(int offset, int max) {
-        super(max,offset);
+        super(max, offset);
     }
 
     public String toURL() {
@@ -46,7 +45,7 @@ public class ImageInstanceCollection extends Collection {
     public ImageInstance get(int i) {
         ImageInstance image = new ImageInstance();
         Object item = list.get(i);
-        image.setAttr((JSONObject)item);
+        image.setAttr((JSONObject) item);
         return image;
     }
 }

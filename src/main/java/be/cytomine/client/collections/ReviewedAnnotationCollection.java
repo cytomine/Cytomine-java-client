@@ -26,13 +26,13 @@ import org.json.simple.JSONObject;
  */
 public class ReviewedAnnotationCollection extends Collection {
 
-    public ReviewedAnnotationCollection(int offset,int max) {
-        super(max,offset);
+    public ReviewedAnnotationCollection(int offset, int max) {
+        super(max, offset);
     }
 
     public String toURL() {
         if (isFilterBy("term") && isFilterBy("imageinstance")) {
-            return "/api/annotation?reviewed=true&term="+getFilter("term") + "&image="+ getFilter("imageinstance") + "&showGIS=true&showMeta=true&showTerm=true";
+            return "/api/annotation?reviewed=true&term=" + getFilter("term") + "&image=" + getFilter("imageinstance") + "&showGIS=true&showMeta=true&showTerm=true";
         } else {
             return getJSONResourceURL();
         }
@@ -45,7 +45,7 @@ public class ReviewedAnnotationCollection extends Collection {
     public ReviewedAnnotation get(int i) {
         ReviewedAnnotation annotation = new ReviewedAnnotation();
         Object item = list.get(i);
-        annotation.setAttr((JSONObject)item);
+        annotation.setAttr((JSONObject) item);
         return annotation;
     }
 

@@ -17,7 +17,6 @@ package be.cytomine.client;
  */
 
 import org.apache.log4j.Logger;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.Iterator;
@@ -47,11 +46,11 @@ public class CytomineException extends Exception {
         getMessage(json);
     }
 
-    public int getHttpCode(){
+    public int getHttpCode() {
         return this.httpCode;
     }
 
-    public String getMsg(){
+    public String getMsg() {
         return this.message;
     }
 

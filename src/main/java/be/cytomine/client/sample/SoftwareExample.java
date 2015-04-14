@@ -14,6 +14,7 @@ package be.cytomine.client.sample;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.JobParameter;
@@ -25,9 +26,9 @@ public class SoftwareExample {
 
     private static final Logger log = Logger.getLogger(SoftwareExample.class);
 
-    public static void addSoftwareTestArea(Cytomine cytomine) throws Exception{
+    public static void addSoftwareTestArea(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("ComputeAnnotationStat", "computeAnnotationStatService", "DownloadFiles","groovy -cp algo/computeAnnotationStats/Cytomine-Java-Client.jar:algo/computeAnnotationStats/jts-1.13.jar algo/computeAnnotationStats/computeAnnotationStats.groovy");
+            Software software = cytomine.addSoftware("ComputeAnnotationStat", "computeAnnotationStatService", "DownloadFiles", "groovy -cp algo/computeAnnotationStats/Cytomine-Java-Client.jar:algo/computeAnnotationStats/jts-1.13.jar algo/computeAnnotationStats/computeAnnotationStats.groovy");
 
             /**
              * 0: type (=> cytomine) or standalone if execute with ide/java -jar  => STRING
@@ -66,17 +67,16 @@ public class SoftwareExample {
     }
 
 
-
     public static void testAddJobTemplate(Cytomine cytomine) throws Exception {
-        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAnnotationStat",57l,900532l);
-        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(),900556l, "20202");
-        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(),900562l, "456");
+        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAnnotationStat", 57l, 900532l);
+        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556l, "20202");
+        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562l, "456");
     }
 
 
-    public static void addSoftwareTest(Cytomine cytomine) throws Exception{
+    public static void addSoftwareTest(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("SoftwareTest", "retrievalSuggestedTermJobService", "ValidateAnnotation","");
+            Software software = cytomine.addSoftware("SoftwareTest", "retrievalSuggestedTermJobService", "ValidateAnnotation", "");
 
             /**
              * 0: type (=> cytomine) or standalone if execute with ide/java -jar  => STRING
@@ -116,9 +116,9 @@ public class SoftwareExample {
         cytomine.addSoftwareProject(485324l, 75985l);
     }
 
-    public static void addSoftwareRetrieval(Cytomine cytomine) throws Exception{
+    public static void addSoftwareRetrieval(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("Retrieval-Suggest-Term", "retrievalSuggestedTermJobService", "ValidateAnnotation","");
+            Software software = cytomine.addSoftware("Retrieval-Suggest-Term", "retrievalSuggestedTermJobService", "ValidateAnnotation", "");
 
             /**
              * 0: type (=> cytomine) or standalone if execute with ide/java -jar  => STRING
@@ -154,9 +154,9 @@ public class SoftwareExample {
         }
     }
 
-    public static void addSoftwareRetrievalEvolution(Cytomine cytomine) throws Exception{
+    public static void addSoftwareRetrievalEvolution(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("Retrieval-Evolution", "retrievalEvolutionJobService", "ValidateEvolution","");
+            Software software = cytomine.addSoftware("Retrieval-Evolution", "retrievalEvolutionJobService", "ValidateEvolution", "");
 
             /**
              * 0: type (=> cytomine) or standalone if execute with ide/java -jar  => STRING
@@ -196,7 +196,7 @@ public class SoftwareExample {
 
     public static void addSoftwareComputeArea(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("ComputeTermArea", "computeTermAreaJobService", "DownloadFiles","");
+            Software software = cytomine.addSoftware("ComputeTermArea", "computeTermAreaJobService", "DownloadFiles", "");
             cytomine.addSoftwareParameter("cytomineHost", "String", software.getId(), "$cytomineHost$", true, 100);
             cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
             cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);

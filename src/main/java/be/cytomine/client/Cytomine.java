@@ -19,11 +19,12 @@ package be.cytomine.client;
 import be.cytomine.client.collections.*;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
-import java.lang.StringBuffer;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,10 +35,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URLEncoder;
 import java.util.*;
-
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 
 public class Cytomine {
 
@@ -75,8 +72,9 @@ public class Cytomine {
     }
 
 
-    public enum Filter { ALL, PROJECT, ANNOTATION, IMAGE, ABSTRACTIMAGE } //TODO=> RENAME IMAGE TO IMAGEINSTANCE
-    public enum Operator { OR, AND }
+    public enum Filter {ALL, PROJECT, ANNOTATION, IMAGE, ABSTRACTIMAGE} //TODO=> RENAME IMAGE TO IMAGEINSTANCE
+
+    public enum Operator {OR, AND}
 
     public Cytomine(String host, String publicKey, String privateKey) {
         this(host, publicKey, privateKey, "./", false);
@@ -112,6 +110,7 @@ public class Cytomine {
 
     /**
      * Go to the next page of a collection
+     *
      * @param collection Collection
      * @return False if end of collection (previous was last page)
      * @throws Exception
@@ -198,7 +197,7 @@ public class Cytomine {
     public String doGet(String suburl) throws Exception {
         HttpClient client = null;
         if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host,cookies);
+            client = new HttpClient(publicKey, privateKey, host, cookies);
             client.authorize("GET", suburl, "", "application/json,*/*");
             client.connect(host + suburl);
         } else {
@@ -236,12 +235,11 @@ public class Cytomine {
         HttpClient client = null;
 
         String url = collection.toURL();
-        if(!url.contains("?")) {
+        if (!url.contains("?")) {
             url = url + "?";
         }
         url = url + collection.getPaginatorURLParams();
         log.info("fetchCollection=" + url);
-
 
 
         if (!isBasicAuth) {
@@ -261,19 +259,19 @@ public class Cytomine {
         log.info(code);
         Object obj = JSONValue.parse(response);
 
-        if(obj instanceof JSONObject) {
-            JSONObject json = (JSONObject)obj;
+        if (obj instanceof JSONObject) {
+            JSONObject json = (JSONObject) obj;
             analyzeCode(code, json);
-            collection.setList((JSONArray)json.get("collection"));
+            collection.setList((JSONArray) json.get("collection"));
         } else {
-            collection.setList((JSONArray)obj);
+            collection.setList((JSONArray) obj);
         }
 
         return collection;
     }
 
     public void downloadPicture(String url, String dest) throws Exception {
-        downloadPicture(url,dest,"jpg");
+        downloadPicture(url, dest, "jpg");
     }
 
     public void downloadPicture(String url, String dest, String format) throws Exception {
@@ -304,7 +302,7 @@ public class Cytomine {
             throw new CytomineException(0, e.toString());
         }
     }
-     
+
 
     public void downloadFile(String url, String dest) throws Exception {
 
@@ -394,7 +392,6 @@ public class Cytomine {
     }
 
 
-
     private void deleteModel(Model model) throws Exception {
         HttpClient client = null;
         if (!isBasicAuth) {
@@ -411,7 +408,6 @@ public class Cytomine {
         JSONObject json = createJSONResponse(code, response);
         analyzeCode(code, json);
     }
-
 
 
     private String doPut(String url, String content) throws Exception {
@@ -437,7 +433,7 @@ public class Cytomine {
         HttpClient client = null;
         MultipartEntity entity = new MultipartEntity();
 
-        entity.addPart("files[]",new ByteArrayBody(data,new Date().getTime()+"file"));
+        entity.addPart("files[]", new ByteArrayBody(data, new Date().getTime() + "file"));
 
         if (!isBasicAuth) {
             client = new HttpClient(publicKey, privateKey, host);
@@ -449,11 +445,11 @@ public class Cytomine {
         }
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response="+response);
+        System.out.println("response=" + response);
         client.disconnect();
         JSONObject json = createJSONResponse(code, response);
 //        analyzeCode(code, json);
-        System.out.println("response="+json);
+        System.out.println("response=" + json);
     }
 
     public Project getProject(Long id) throws Exception {
@@ -463,18 +459,18 @@ public class Cytomine {
     }
 
     public ProjectCollection getProjects() throws Exception {
-        ProjectCollection projects = new ProjectCollection(offset,max);
+        ProjectCollection projects = new ProjectCollection(offset, max);
         return fetchCollection(projects);
     }
 
     public ProjectCollection getProjectsByOntology(Long idOntology) throws Exception {
-        ProjectCollection projects = new ProjectCollection(offset,max);
+        ProjectCollection projects = new ProjectCollection(offset, max);
         projects.addFilter("ontology", idOntology + "");
         return fetchCollection(projects);
     }
 
     public ProjectCollection getProjectsByUser(Long idUser) throws Exception {
-        ProjectCollection projects = new ProjectCollection(offset,max);
+        ProjectCollection projects = new ProjectCollection(offset, max);
         projects.addFilter("user", idUser + "");
         return fetchCollection(projects);
     }
@@ -507,12 +503,12 @@ public class Cytomine {
     }
 
     public OntologyCollection getOntologies() throws Exception {
-        OntologyCollection ontologys = new OntologyCollection(offset,max);
+        OntologyCollection ontologys = new OntologyCollection(offset, max);
         return fetchCollection(ontologys);
     }
 
     public OntologyCollection getOntologiesByProject(Long idProject) throws Exception {
-        OntologyCollection ontologys = new OntologyCollection(offset,max);
+        OntologyCollection ontologys = new OntologyCollection(offset, max);
         ontologys.addFilter("project", idProject + "");
         return fetchCollection(ontologys);
     }
@@ -540,7 +536,7 @@ public class Cytomine {
         abstractImage.set("id", id);
         return fetchModel(abstractImage);
     }
-	
+
     public ImageInstance getImageInstance(Long id) throws Exception {
         ImageInstance image = new ImageInstance();
         image.set("id", id);
@@ -548,8 +544,8 @@ public class Cytomine {
     }
 
     public ImageInstanceCollection getImageInstances(Long idProject) throws Exception {
-        ImageInstanceCollection image = new ImageInstanceCollection(offset,max);
-        image.addFilter("project", idProject+"");
+        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
+        image.addFilter("project", idProject + "");
         return fetchCollection(image);
     }
 
@@ -560,58 +556,58 @@ public class Cytomine {
     }
 
     public AnnotationCollection getAnnotations() throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByProject(Long idProject) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("project", idProject + "");
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByTermAndProject(Long idTerm, Long idProject) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("term", idTerm + "");
         annotations.addFilter("project", idProject + "");
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByTerm(Long idTerm) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("term", idTerm + "");
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByUser(Long idUser) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("user", idUser + "");
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByOntology(Long idOntology) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("ontology", idOntology + "");
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByImage(Long idOntology) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("ontology", idOntology + "");
         return fetchCollection(annotations);
     }
 
-    public AnnotationCollection getAnnotations(Map<String,String> filters) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+    public AnnotationCollection getAnnotations(Map<String, String> filters) throws Exception {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         //http://beta.cytomine.be/api/annotation.json?user=14794107&image=14391346&term=8171841
-        for(Map.Entry<String,String> entry : filters.entrySet()) {
-            annotations.addFilter(entry.getKey(),entry.getValue());
+        for (Map.Entry<String, String> entry : filters.entrySet()) {
+            annotations.addFilter(entry.getKey(), entry.getValue());
         }
         return fetchCollection(annotations);
     }
 
     public AnnotationCollection getAnnotationsByTermAndImage(Long idTerm, Long idImage) throws Exception {
-        AnnotationCollection annotations = new AnnotationCollection(offset,max);
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
         annotations.addFilter("term", idTerm + "");
         annotations.addFilter("imageinstance", idImage + "");
         return fetchCollection(annotations);
@@ -641,7 +637,6 @@ public class Cytomine {
     }
 
 
-
     public void deleteAnnotation(Long idAnnotation) throws Exception {
         Annotation annotation = new Annotation();
         annotation.set("id", idAnnotation);
@@ -650,8 +645,8 @@ public class Cytomine {
 
 
     public void simplifyAnnotation(Long idAnnotation, Long minPoint, Long maxPoint) throws Exception {
-        String url = "/api/annotation/"+idAnnotation+"/simplify.json?minPoint="+minPoint+"&maxPoint="+maxPoint;
-        doPut(url,"");
+        String url = "/api/annotation/" + idAnnotation + "/simplify.json?minPoint=" + minPoint + "&maxPoint=" + maxPoint;
+        doPut(url, "");
     }
 
     public Term getTerm(Long id) throws Exception {
@@ -661,18 +656,18 @@ public class Cytomine {
     }
 
     public TermCollection getTerms() throws Exception {
-        TermCollection terms = new TermCollection(offset,max);
+        TermCollection terms = new TermCollection(offset, max);
         return fetchCollection(terms);
     }
 
     public TermCollection getTermsByOntology(Long idOntology) throws Exception {
-        TermCollection terms = new TermCollection(offset,max);
+        TermCollection terms = new TermCollection(offset, max);
         terms.addFilter("ontology", idOntology + "");
         return fetchCollection(terms);
     }
 
     public TermCollection getTermsByAnnotation(Long idAnnotation) throws Exception {
-        TermCollection terms = new TermCollection(offset,max);
+        TermCollection terms = new TermCollection(offset, max);
         terms.addFilter("annotation", idAnnotation + "");
         return fetchCollection(terms);
     }
@@ -718,20 +713,18 @@ public class Cytomine {
      * Deletes all existing terms assigned by the calling user
      * from an annotation and sets a unique term.
      * <p>
-     *     This is basically the client implementation of the web-service endpoint
-     *     <code>/api/annotation/:idAnnotation/term/:idTerm/clearBefore.json</code>.
+     * This is basically the client implementation of the web-service endpoint
+     * <code>/api/annotation/:idAnnotation/term/:idTerm/clearBefore.json</code>.
      * </p>
-     *
-     * @author Philipp Kainz
-     * @since 2015-01-06
      *
      * @param idAnnotation
      * @param idTerm
-     *
      * @return the AnnotationTerm instance
      * @throws Exception if the term cannot be set
+     * @author Philipp Kainz
+     * @since 2015-01-06
      */
-    public AnnotationTerm setAnnotationTerm(Long idAnnotation, Long idTerm) throws Exception{
+    public AnnotationTerm setAnnotationTerm(Long idAnnotation, Long idTerm) throws Exception {
         AnnotationTerm annotationTerm = new AnnotationTerm();
         annotationTerm.set("userannotation", idAnnotation);
         annotationTerm.set("annotationIdent", idAnnotation);
@@ -800,7 +793,7 @@ public class Cytomine {
     }
 
     public void addUserFromLDAP(String username) throws Exception {
-        doPost("/api/ldap/user.json?username="+username,"");
+        doPost("/api/ldap/user.json?username=" + username, "");
     }
 
     public User getUser(Long id) throws Exception {
@@ -821,36 +814,37 @@ public class Cytomine {
         return fetchModel(user);
     }
 
-    public void addACL(String domainClassName, Long domainIdent, Long idUser,String auth) throws Exception {
-        doPost("/api/domain/"+domainClassName+"/"+domainIdent + "/user/" + idUser +".json?auth="+auth ,"");
+    public void addACL(String domainClassName, Long domainIdent, Long idUser, String auth) throws Exception {
+        doPost("/api/domain/" + domainClassName + "/" + domainIdent + "/user/" + idUser + ".json?auth=" + auth, "");
     }
 
     public void addUserProject(Long idUser, Long idProject) throws Exception {
-        addUserProject(idUser,idProject,false);
+        addUserProject(idUser, idProject, false);
     }
 
     public void addUserProject(Long idUser, Long idProject, boolean admin) throws Exception {
-        doPost("/api/project/"+idProject+"/user/"+idUser + (admin? "/admin":"") +".json" ,"");
+        doPost("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin" : "") + ".json", "");
     }
 
     public void deleteUserProject(Long idUser, Long idProject) throws Exception {
-        deleteUserProject(idUser,idProject,false);
+        deleteUserProject(idUser, idProject, false);
     }
 
     public void deleteUserProject(Long idUser, Long idProject, boolean admin) throws Exception {
-        doDelete("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin"  : "") +".json");
+        doDelete("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin" : "") + ".json");
     }
 
 
-    public UserCollection getProjectUsers(Long idProject) throws Exception  {
-        UserCollection users = new UserCollection(offset,max);
-        users.addFilter("project",idProject+"");
+    public UserCollection getProjectUsers(Long idProject) throws Exception {
+        UserCollection users = new UserCollection(offset, max);
+        users.addFilter("project", idProject + "");
         return fetchCollection(users);
     }
-    public UserCollection getProjectAdmins(Long idProject) throws Exception  {
-        UserCollection users = new UserCollection(offset,max);
-        users.addFilter("project",idProject+"");
-        users.addFilter("admin","true");
+
+    public UserCollection getProjectAdmins(Long idProject) throws Exception {
+        UserCollection users = new UserCollection(offset, max);
+        users.addFilter("project", idProject + "");
+        users.addFilter("admin", "true");
         return fetchCollection(users);
     }
 
@@ -858,7 +852,7 @@ public class Cytomine {
     public void doUserPosition(Long idImage, Long x, Long y, Long zoom) throws Exception {
         //image, coord.x, coord.y, coord.zoom
         String data = "{image : " + idImage + ", lat : " + x + ", lon : " + y + ", zoom : " + zoom + "}";
-        doPost("/api/imageinstance/"+idImage+"/position.json",data);
+        doPost("/api/imageinstance/" + idImage + "/position.json", data);
     }
 
     public void doUserPosition(
@@ -874,11 +868,11 @@ public class Cytomine {
             Long topRightY) throws Exception {
         //image, coord.x, coord.y, coord.zoom
         String data = "{image : " + idImage + ", zoom : " + zoom
-                + ", bottomLeftX : " + bottomLeftX + ", bottomLeftY : "  + bottomLeftY
+                + ", bottomLeftX : " + bottomLeftX + ", bottomLeftY : " + bottomLeftY
                 + ", bottomRightX : " + bottomRightX + ", bottomRightY : " + bottomRightY
                 + ", topLeftX : " + topLeftX + ", topLeftY : " + topLeftY
                 + ", topRightX : " + topRightX + ", topRightY : " + topRightY + "}";
-        doPost("/api/imageinstance/"+idImage+"/position.json",data);
+        doPost("/api/imageinstance/" + idImage + "/position.json", data);
     }
 
     public User getUser(String publicKey) throws Exception {
@@ -888,7 +882,7 @@ public class Cytomine {
     }
 
     public UserCollection getUsers() throws Exception {
-        UserCollection users = new UserCollection(offset,max);
+        UserCollection users = new UserCollection(offset, max);
 
         return fetchCollection(users);
     }
@@ -901,13 +895,14 @@ public class Cytomine {
 
     public User getKeys(Long id) throws Exception {
         User user = new User();
-        user.addFilter("id", id+"");
+        user.addFilter("id", id + "");
         user.addFilter("keys", "keys");
         return fetchModel(user);
     }
+
     public User getKeysByUsername(String username) throws Exception {
         User user = new User();
-        user.addFilter("id", username+"");
+        user.addFilter("id", username + "");
         user.addFilter("keys", "keys");
         return fetchModel(user);
     }
@@ -999,7 +994,7 @@ public class Cytomine {
     }
 
     public SoftwareCollection getSoftwareByProject(Long idProject) throws Exception {
-        SoftwareCollection softwares = new SoftwareCollection(offset,max);
+        SoftwareCollection softwares = new SoftwareCollection(offset, max);
         softwares.addFilter("project", idProject + "");
         return fetchCollection(softwares);
     }
@@ -1011,12 +1006,12 @@ public class Cytomine {
     }
 
     public JobDataCollection getJobDatas() throws Exception {
-        JobDataCollection jobDatas = new JobDataCollection(offset,max);
+        JobDataCollection jobDatas = new JobDataCollection(offset, max);
         return fetchCollection(jobDatas);
     }
 
     public JobDataCollection getJobDataByJob(Long idJob) throws Exception {
-        JobDataCollection jobDatas = new JobDataCollection(offset,max);
+        JobDataCollection jobDatas = new JobDataCollection(offset, max);
         jobDatas.addFilter("job", idJob + "");
         return fetchCollection(jobDatas);
     }
@@ -1044,11 +1039,11 @@ public class Cytomine {
     }
 
     public void uploadJobData(Long idJobData, byte[] data) throws Exception {
-        uploadFile("/api/jobdata/"+idJobData+"/upload", data);
+        uploadFile("/api/jobdata/" + idJobData + "/upload", data);
     }
 
     public void downloadJobData(Long idJobData, String file) throws Exception {
-        downloadFile("/api/jobdata/"+idJobData+"download", file);
+        downloadFile("/api/jobdata/" + idJobData + "download", file);
     }
 
     public void downloadAnnotation(Annotation annotation, String path) throws Exception {
@@ -1058,14 +1053,14 @@ public class Cytomine {
 
 
     public ReviewedAnnotationCollection getReviewedAnnotationsByTermAndImage(Long idTerm, Long idImage) throws Exception {
-        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset,max);
+        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
         reviewed.addFilter("term", idTerm + "");
         reviewed.addFilter("imageinstance", idImage + "");
         return fetchCollection(reviewed);
     }
 
     public ReviewedAnnotationCollection getReviewedAnnotationsByProject(Long idProject) throws Exception {
-        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset,max);
+        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
         reviewed.addFilter("project", idProject + "");
         return fetchCollection(reviewed);
     }
@@ -1073,14 +1068,14 @@ public class Cytomine {
     //PROPERTY
     public Property getDomainProperty(Long id, Long domainIdent, String domain) throws Exception {
         Property property = new Property();
-        property.set("id",id);
-        property.set("domainIdent",domainIdent);
-        property.set("domain",domain);
+        property.set("id", id);
+        property.set("domainIdent", domainIdent);
+        property.set("domain", domain);
         return fetchModel(property);
     }
 
     public PropertyCollection getDomainProperties(String domain, Long domainIdent) throws Exception {
-        PropertyCollection properties = new PropertyCollection(offset,max);
+        PropertyCollection properties = new PropertyCollection(offset, max);
         properties.addFilter(domain, domainIdent + "");
         properties.addFilter("domainClassName", domain + "");
         properties.addFilter("domainIdent", domainIdent + "");
@@ -1088,7 +1083,7 @@ public class Cytomine {
     }
 
     public PropertyCollection getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws Exception {
-        PropertyCollection properties = new PropertyCollection(offset,max);
+        PropertyCollection properties = new PropertyCollection(offset, max);
         properties.addFilter(domain, domainIdent + "");
         properties.addFilter("domainClassName", domain + "");
         properties.addFilter("domainIdent", domainIdent + "");
@@ -1096,18 +1091,18 @@ public class Cytomine {
         return fetchCollection(properties);
     }
 
-    public Property addDomainProperties (String domain, Long domainIdent, String key, String value) throws Exception {
+    public Property addDomainProperties(String domain, Long domainIdent, String key, String value) throws Exception {
         Property property = new Property();
-        property.set("domain",domain);
+        property.set("domain", domain);
         property.set("domainIdent", domainIdent);
         property.set("key", key);
         property.set("value", value);
         return saveModel(property);
     }
 
-    public Property editDomainProperty (String domain, Long id, Long domainIdent, String key, String value) throws Exception {
+    public Property editDomainProperty(String domain, Long id, Long domainIdent, String key, String value) throws Exception {
         Property property = getDomainProperty(id, domainIdent, domain);
-        property.set("domain",domain);
+        property.set("domain", domain);
         property.set("domainIdent", domainIdent);
         property.set("key", key);
         property.set("value", value);
@@ -1116,8 +1111,8 @@ public class Cytomine {
 
     public void deleteDomainProperty(String domain, Long id, Long domainIdent) throws Exception {
         Property property = getDomainProperty(id, domainIdent, domain);
-        property.set("id",id);
-        property.set("domain",domain);
+        property.set("id", id);
+        property.set("domain", domain);
         property.set("domainIdent", domainIdent);
         deleteModel(property);
     }
@@ -1125,7 +1120,7 @@ public class Cytomine {
     //For ImageInstance ==> idDomain = id of Project
     //and Annotation ==> idDomain = id of Project or Image
     public PropertyCollection getKeysForDomain(String domain, String nameIdDomain, Long idDomain) throws Exception {
-        PropertyCollection properties = new PropertyCollection(offset,max);
+        PropertyCollection properties = new PropertyCollection(offset, max);
         properties.addFilter(domain, "");
         properties.addFilter("idDomain", idDomain + "");
         properties.addFilter("nameIdDomain", nameIdDomain);
@@ -1135,54 +1130,58 @@ public class Cytomine {
     //SEARCH
 
     public SearchCollection getSearch(String keywords, Operator operator, Filter filter) throws Exception {
-        return getSearch(keywords,operator,filter,null);
+        return getSearch(keywords, operator, filter, null);
     }
 
     public SearchCollection getSearch(String keywords, Operator operator, Filter filter, List<Long> idProjects) throws Exception {
-        SearchCollection search = new SearchCollection(offset,max);
-        if (operator == null) { operator = Operator.OR;}
-        if (filter == null) { filter = Filter.ALL; }
+        SearchCollection search = new SearchCollection(offset, max);
+        if (operator == null) {
+            operator = Operator.OR;
+        }
+        if (filter == null) {
+            filter = Filter.ALL;
+        }
         search.addFilter("keywords", URLEncoder.encode(keywords, charEncoding));
-        search.addFilter("operator", URLEncoder.encode(operator+"",charEncoding));
-        search.addFilter("filter", URLEncoder.encode(filter+"", charEncoding));
-        if(idProjects!=null) {
+        search.addFilter("operator", URLEncoder.encode(operator + "", charEncoding));
+        search.addFilter("filter", URLEncoder.encode(filter + "", charEncoding));
+        if (idProjects != null) {
             ArrayList<String> list = new ArrayList<String>();
-            for(int i=0;i<idProjects.size();i++) {
-                list.add(idProjects.get(i)+"");
+            for (int i = 0; i < idProjects.size(); i++) {
+                list.add(idProjects.get(i) + "");
             }
-            search.addFilter("projects",Cytomine.join(list, ", "));
+            search.addFilter("projects", Cytomine.join(list, ", "));
         }
 
         return fetchCollection(search);
     }
 
     //:to do move this method into Utils package
-	public static String join(ArrayList s, String delimiter) {
+    public static String join(ArrayList s, String delimiter) {
         if (s.size() == 0) return "";
-	    StringBuffer buffer = new StringBuffer();
-	    Iterator iterator = s.iterator();
-	    while (iterator.hasNext()) {
-	        buffer.append(iterator.next());
-	        if (iterator.hasNext()) {
-	            buffer.append(delimiter);
-	        }
-	    }
-	    return buffer.toString();
-	}
+        StringBuffer buffer = new StringBuffer();
+        Iterator iterator = s.iterator();
+        while (iterator.hasNext()) {
+            buffer.append(iterator.next());
+            if (iterator.hasNext()) {
+                buffer.append(delimiter);
+            }
+        }
+        return buffer.toString();
+    }
 
     public Storage getStorage(Long id) throws Exception {
         Storage storage = new Storage();
-        storage.set("id",id);
+        storage.set("id", id);
         return fetchModel(storage);
     }
 
     public StorageCollection getStorages() throws Exception {
-        StorageCollection storages = new StorageCollection(offset,max);
+        StorageCollection storages = new StorageCollection(offset, max);
         return fetchCollection(storages);
     }
 
-    public String resetPassword(Long idUser,String newPassword) throws Exception {
-        return doPut("/api/user/"+idUser+"/password.json?password="+newPassword,"");
+    public String resetPassword(Long idUser, String newPassword) throws Exception {
+        return doPut("/api/user/" + idUser + "/password.json?password=" + newPassword, "");
     }
 
 
@@ -1192,210 +1191,207 @@ public class Cytomine {
         return updateModel(image);
     }
 
-    public ImageGroup addImageGroup (Long idProject) throws Exception {
+    public ImageGroup addImageGroup(Long idProject) throws Exception {
         ImageGroup imageGroup = new ImageGroup();
-        imageGroup.set("project",idProject+"");
+        imageGroup.set("project", idProject + "");
         return saveModel(imageGroup);
     }
 
-    public ImageSequence addImageSequence (Long idImageGroup,Long idImage, Integer zStack, Integer slice, Integer time, Integer channel) throws Exception {
+    public ImageSequence addImageSequence(Long idImageGroup, Long idImage, Integer zStack, Integer slice, Integer time, Integer channel) throws Exception {
         ImageSequence imageSequence = new ImageSequence();
-        imageSequence.set("imageGroup",idImageGroup+"");
-        imageSequence.set("image",idImage+"");
+        imageSequence.set("imageGroup", idImageGroup + "");
+        imageSequence.set("image", idImage + "");
 
-        imageSequence.set("zStack",zStack+"");
-        imageSequence.set("slice",slice+"");
-        imageSequence.set("time",time+"");
-        imageSequence.set("channel",channel+"");
+        imageSequence.set("zStack", zStack + "");
+        imageSequence.set("slice", slice + "");
+        imageSequence.set("time", time + "");
+        imageSequence.set("channel", channel + "");
 
         return saveModel(imageSequence);
     }
 
 
-
-
     public Description getDescription(Long domainIdent, String domainClassName) throws Exception {
         Description description = new Description();
-        description.set("domainIdent",domainIdent);
-        description.set("domainClassName",domainClassName);
+        description.set("domainIdent", domainIdent);
+        description.set("domainClassName", domainClassName);
         return fetchModel(description);
     }
 
 
-    public Description addDescription (Long domainIdent, String domainClassName, String text) throws Exception {
+    public Description addDescription(Long domainIdent, String domainClassName, String text) throws Exception {
         Description description = new Description();
-        description.set("domainIdent",domainIdent);
+        description.set("domainIdent", domainIdent);
         description.set("domainClassName", domainClassName);
-        description.set("data",text);
+        description.set("data", text);
         return saveModel(description);
     }
 
-    public Description editDescription (Long domainIdent, String domainClassName, String text) throws Exception {
+    public Description editDescription(Long domainIdent, String domainClassName, String text) throws Exception {
         Description description = getDescription(domainIdent, domainClassName);
-        description.set("domainIdent",domainIdent);
+        description.set("domainIdent", domainIdent);
         description.set("domainClassName", domainClassName);
-        description.set("data",text);
+        description.set("data", text);
         return updateModel(description);
     }
 
     public void deleteDescription(Long domainIdent, String domainClassName) throws Exception {
         Description description = getDescription(domainIdent, domainClassName);
-        description.set("domainIdent",domainIdent);
+        description.set("domainIdent", domainIdent);
         description.set("domainClassName", domainClassName);
         deleteModel(description);
     }
 
 
     public RoleCollection getRoles() throws Exception {
-        RoleCollection role = new RoleCollection(offset,max);
+        RoleCollection role = new RoleCollection(offset, max);
         return fetchCollection(role);
 
     }
 
-    public Map<String,Long> getRoleMap() throws Exception {
-        Map<String,Long> map = new TreeMap<String,Long>();
+    public Map<String, Long> getRoleMap() throws Exception {
+        Map<String, Long> map = new TreeMap<String, Long>();
         RoleCollection roles = getRoles();
-        for(int i=0;i<roles.size();i++) {
-            map.put(roles.get(i).getStr("authority"),roles.get(i).getLong("id"));
+        for (int i = 0; i < roles.size(); i++) {
+            map.put(roles.get(i).getStr("authority"), roles.get(i).getLong("id"));
         }
         return map;
     }
 
     public Role addRole(Long idUser, Long idRole) throws Exception {
         Role role = new Role();
-        role.set("user", idUser+"");
-        role.set("role", idRole+"");
-        role.addFilter("user",idUser+"");
+        role.set("user", idUser + "");
+        role.set("role", idRole + "");
+        role.addFilter("user", idUser + "");
         return saveModel(role);
     }
 
 
     public void deleteRole(Long idUser, Long idRole) throws Exception {
         Role role = new Role();
-        role.set("user", idUser+"");
-        role.set("role", idRole+"");
-        role.addFilter("user",idUser+"");
-        role.addFilter("role",idRole+"");
+        role.set("user", idUser + "");
+        role.set("role", idRole + "");
+        role.addFilter("user", idUser + "");
+        role.addFilter("role", idRole + "");
         deleteModel(role);
     }
 
-    public JobTemplate addJobTemplate(String name, Long iProject,Long idSoftware)throws Exception {
+    public JobTemplate addJobTemplate(String name, Long iProject, Long idSoftware) throws Exception {
         JobTemplate job = new JobTemplate();
-        job.set("name", name+"");
-        job.set("project", iProject+"");
-        job.set("software",idSoftware+"");
+        job.set("name", name + "");
+        job.set("project", iProject + "");
+        job.set("software", idSoftware + "");
         return saveModel(job);
     }
 
-    public JobParameter addJobParameter(Long job, Long softwareParameter,String value)throws Exception {
+    public JobParameter addJobParameter(Long job, Long softwareParameter, String value) throws Exception {
         JobParameter jobParam = new JobParameter();
-        jobParam.set("job", job+"");
-        jobParam.set("softwareParameter", softwareParameter+"");
-        jobParam.set("value",value+"");
+        jobParam.set("job", job + "");
+        jobParam.set("softwareParameter", softwareParameter + "");
+        jobParam.set("value", value + "");
         return saveModel(jobParam);
     }
 
 
     public AbstractImage addNewImage(Long idUploadedFile) throws Exception {
         AbstractImage image = new AbstractImage();
-        image.addFilter("uploadedFile",idUploadedFile+"");
+        image.addFilter("uploadedFile", idUploadedFile + "");
         return saveModel(image);
     }
 
 
-
-
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size,String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long idParent) throws Exception {
-        return addUploadedFile(originalFilename,realFilename,path, size,ext, contentType, mimeType,idProjects, idStorages, idUser, -1l,idParent);
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long idParent) throws Exception {
+        return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, mimeType, idProjects, idStorages, idUser, -1l, idParent);
     }
 
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size,String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws Exception {
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws Exception {
         UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("originalFilename",originalFilename);
-        uploadedFile.set("filename",realFilename);
+        uploadedFile.set("originalFilename", originalFilename);
+        uploadedFile.set("filename", realFilename);
 
-        uploadedFile.set("path",path);
-        uploadedFile.set("size",size);
+        uploadedFile.set("path", path);
+        uploadedFile.set("size", size);
 
-        uploadedFile.set("ext",ext);
-        uploadedFile.set("contentType",contentType);
-        uploadedFile.set("mimeType",mimeType);
-        uploadedFile.set("path",path);
+        uploadedFile.set("ext", ext);
+        uploadedFile.set("contentType", contentType);
+        uploadedFile.set("mimeType", mimeType);
+        uploadedFile.set("path", path);
 
-        uploadedFile.set("projects",idProjects);
-        uploadedFile.set("storages",idStorages);
+        uploadedFile.set("projects", idProjects);
+        uploadedFile.set("storages", idStorages);
 
-        uploadedFile.set("user",idUser);
+        uploadedFile.set("user", idUser);
 
-        uploadedFile.set("parent",idParent);
+        uploadedFile.set("parent", idParent);
 
 
-        if(status!=-1l) {
-            uploadedFile.set("status",status);
+        if (status != -1l) {
+            uploadedFile.set("status", status);
         }
 
         return saveModel(uploadedFile);
     }
 
-    public UploadedFile editUploadedFile (Long id, int status, boolean converted, Long idParent) throws Exception {
+    public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws Exception {
         UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status",status);
-        uploadedFile.set("converted",converted);
-        uploadedFile.set("parent",idParent);
+        uploadedFile.set("status", status);
+        uploadedFile.set("converted", converted);
+        uploadedFile.set("parent", idParent);
         return updateModel(uploadedFile);
     }
 
-    public UploadedFile editUploadedFile (Long id, int status, boolean converted) throws Exception {
+    public UploadedFile editUploadedFile(Long id, int status, boolean converted) throws Exception {
         UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status",status);
-        uploadedFile.set("converted",converted);
+        uploadedFile.set("status", status);
+        uploadedFile.set("converted", converted);
         return updateModel(uploadedFile);
     }
 
-    public UploadedFile editUploadedFile (Long id, int status) throws Exception {
+    public UploadedFile editUploadedFile(Long id, int status) throws Exception {
         UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status",status);
+        uploadedFile.set("status", status);
         return updateModel(uploadedFile);
     }
 
     /**
      * Get the uploaded file
+     *
      * @param id Uploaded file id
      */
     public UploadedFile getUploadedFile(Long id) throws Exception {
         UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("id",id);
+        uploadedFile.set("id", id);
         return fetchModel(uploadedFile);
     }
 
     public String clearAbstractImageProperties(Long idImage) throws Exception {
-        return doPost("/api/abstractimage/"+idImage+"/properties/clear.json","");
+        return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
     }
+
     public String populateAbstractImageProperties(Long idImage) throws Exception {
-        return doPost("/api/abstractimage/"+idImage+"/properties/populate.json","");
+        return doPost("/api/abstractimage/" + idImage + "/properties/populate.json", "");
     }
+
     public String extractUsefulAbstractImageProperties(Long idImage) throws Exception {
-        return doPost("/api/abstractimage/"+idImage+"/properties/extract.json","");
+        return doPost("/api/abstractimage/" + idImage + "/properties/extract.json", "");
     }
 
-    public String getSimplified(String wkt,Long min, Long max) throws Exception {
+    public String getSimplified(String wkt, Long min, Long max) throws Exception {
         Annotation annotation = new Annotation();
-       annotation.set("wkt", wkt);
-        return doPost("/api/simplify.json?minPoint="+min+"&maxPoint="+max,annotation.toJSON());
+        annotation.set("wkt", wkt);
+        return doPost("/api/simplify.json?minPoint=" + min + "&maxPoint=" + max, annotation.toJSON());
     }
-
 
 
     public void uploadImage(String file, String cytomineHost) throws Exception {
-        uploadImage(file,null,null,cytomineHost);
+        uploadImage(file, null, null, cytomineHost);
     }
 
 
-
     public AttachedFile uploadAttachedFile(String file, String domainClassName, Long domainIdent) throws Exception {
-        String url = "/api/attachedfile.json?domainClassName="+domainClassName+"&domainIdent="+domainIdent;
-        JSONObject json = uploadFile(url,file);
-        AttachedFile attachedFile = new  AttachedFile();
+        String url = "/api/attachedfile.json?domainClassName=" + domainClassName + "&domainIdent=" + domainIdent;
+        JSONObject json = uploadFile(url, file);
+        AttachedFile attachedFile = new AttachedFile();
         attachedFile.setAttr(json);
         return attachedFile;
     }
@@ -1404,7 +1400,7 @@ public class Cytomine {
     public JSONObject uploadFile(String url, String file) throws Exception {
         HttpClient client = null;
         MultipartEntity entity = new MultipartEntity();
-        entity.addPart("files[]",new FileBody(new File(file))) ;
+        entity.addPart("files[]", new FileBody(new File(file)));
 
         client = new HttpClient(publicKey, privateKey, host);
         client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
@@ -1412,50 +1408,52 @@ public class Cytomine {
 
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response="+response);
+        System.out.println("response=" + response);
         client.disconnect();
         JSONObject json = createJSONResponse(code, response);
-        System.out.println("response="+json);
+        System.out.println("response=" + json);
         return json;
     }
 
     /**
      * Upload and create an abstract image on the plateform (use async upload)
-     * @param file The image file path
-     * @param idProject If not null, add the image in this project
-     * @param idStorage The storage where the image will be copied
+     *
+     * @param file         The image file path
+     * @param idProject    If not null, add the image in this project
+     * @param idStorage    The storage where the image will be copied
      * @param cytomineHost The URL of the Core
      * @return A response with the status, the uploadedFile and the AbstractImage list
      * @throws Exception Error during upload
      */
-    public JSONArray uploadImage(String file,Long idProject,Long idStorage, String cytomineHost) throws Exception {
-        return uploadImage(file,idProject,idStorage,cytomineHost,null,false);
+    public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost) throws Exception {
+        return uploadImage(file, idProject, idStorage, cytomineHost, null, false);
     }
 
     /**
      * Upload and create an abstract image on the plateform (use async or sync upload depending on synchrone parameter)
-     * @param file The image file path
-     * @param idProject If not null, add the image in this project
-     * @param idStorage The storage where the image will be copied
+     *
+     * @param file         The image file path
+     * @param idProject    If not null, add the image in this project
+     * @param idStorage    The storage where the image will be copied
      * @param cytomineHost The URL of the Core
-     * @param properties These key-value will be add to the AbstractImage as Property domain instance
-     * @param synchrone If true, the response will be send from server when the image will be converted, transfered, created,...(May take a long time)
-     *                  Otherwise the server response directly after getting the image and the parameters
+     * @param properties   These key-value will be add to the AbstractImage as Property domain instance
+     * @param synchrone    If true, the response will be send from server when the image will be converted, transfered, created,...(May take a long time)
+     *                     Otherwise the server response directly after getting the image and the parameters
      * @return A response with the status, the uploadedFile and the AbstractImage list (only if synchrone!=true)
      * @throws Exception Error during upload
      */
-    public JSONArray uploadImage(String file,Long idProject,Long idStorage, String cytomineHost, Map<String,String> properties, boolean synchrone) throws Exception {
+    public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost, Map<String, String> properties, boolean synchrone) throws Exception {
         HttpClient client = null;
         //String url = "/api/uploadedfile";
 
         String projectParam = "";
-        if(idProject!=null && idProject!=0l) {
-            projectParam = "&idProject="+idProject;
+        if (idProject != null && idProject != 0l) {
+            projectParam = "&idProject=" + idProject;
         }
 
-        String url = "/upload?idStorage="+idStorage+"&cytomine="+cytomineHost+projectParam;
+        String url = "/upload?idStorage=" + idStorage + "&cytomine=" + cytomineHost + projectParam;
 
-        if(properties!=null && properties.size()>0) {
+        if (properties != null && properties.size() > 0) {
 
             List<String> keys = new ArrayList<String>();
             List<String> values = new ArrayList<String>();
@@ -1463,23 +1461,23 @@ public class Cytomine {
                 keys.add(entry.getKey());
                 values.add(entry.getValue());
             }
-            url=url+"&keys="+ StringUtils.join(keys,",")+"&values="+StringUtils.join(values,",");
+            url = url + "&keys=" + StringUtils.join(keys, ",") + "&values=" + StringUtils.join(values, ",");
         }
 
-        if(synchrone) {
-            url=url+"&sync="+true;
+        if (synchrone) {
+            url = url + "&sync=" + true;
         }
 
 
         MultipartEntity entity = new MultipartEntity();
 
-        if(idProject!=null && idStorage!=null) {
-            entity.addPart("idProject",new StringBody(idProject+""));
-            entity.addPart("idStorage",new StringBody(idStorage+""));
+        if (idProject != null && idStorage != null) {
+            entity.addPart("idProject", new StringBody(idProject + ""));
+            entity.addPart("idStorage", new StringBody(idStorage + ""));
         }
 
 
-        entity.addPart("files[]",new FileBody(new File(file))) ;
+        entity.addPart("files[]", new FileBody(new File(file)));
 
         if (!isBasicAuth) {
             client = new HttpClient(publicKey, privateKey, host);
@@ -1491,17 +1489,17 @@ public class Cytomine {
         }
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response="+response);
+        System.out.println("response=" + response);
         client.disconnect();
         JSONArray json = createJSONArrayResponse(code, response);
 //        analyzeCode(code, json);
-        System.out.println("response="+json);
+        System.out.println("response=" + json);
         return json;
     }
 
-    public void indexToRetrieval(Long id, Long container, String url) throws Exception{
+    public void indexToRetrieval(Long id, Long container, String url) throws Exception {
         String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
-        doPost("/retrieval-web/api/resource.json",data);
+        doPost("/retrieval-web/api/resource.json", data);
     }
 
 
