@@ -1,5 +1,4 @@
-# JavaClient
-Cytomine Java client
+# Cytomine Java client
 
 ## Presentation
 Cytomine-java-client is an opensource Cytomine client. 
