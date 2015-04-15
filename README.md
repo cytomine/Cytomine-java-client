@@ -12,6 +12,7 @@ Requirements:
 * Maven 2+ (only if you need to build a new Jar)
 
 Binaries: https://github.com/cytomine/cytomine-java-client/releases
+
 Source code: https://github.com/cytomine/cytomine-java-client
 
 Full documentation: http://confluence.cytomine.be/display/DEVDOC/Part+5%3A+Cytomine+Java+Client
