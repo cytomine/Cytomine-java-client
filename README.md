@@ -1,7 +1,7 @@
 # JavaClient
 Cytomine Java client
 
-# Presentation
+## Presentation
 Cytomine-java-client is an opensource Cytomine client. 
 It is a JAR file that you can import in your JVM application (Java, Groovy, …).
 You will be able to manage data in a Cytomine instance according to your credentials: manage users, add annotations, upload images,...
@@ -17,7 +17,7 @@ Source code: https://github.com/cytomine/cytomine-java-client
 
 Full documentation: http://confluence.cytomine.be/display/DEVDOC/Part+5%3A+Cytomine+Java+Client
 
-# How to use the Java-client
+## How to use the Java-client
 The java client is available with 2 jars:
 * cytomine-java-client-*-jar-with-dependencies: A jar with all classes (client and dependencies).
 * cytomine-java-client-*.jar: The jar only contains client classes without dependencies classes. A maven pom.xml is provided.
