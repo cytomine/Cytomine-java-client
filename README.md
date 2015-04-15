@@ -25,8 +25,10 @@ The java client is available with 2 jars:
 You need 3 paramters:
 * CYTOMINE_URL: The full URL of the Cytomine core (“http://...cytomine.be”).
 * PUBLIC_KEY: Your cytomine public key.
-* PRIVATE_KEY: Your cytomine private key.
+* PRIVATE_KEY: Your cytomine private key. 
 
+You first need to init the connection object:    
+    
     Cytomine cytomine = new Cytomine(CYTOMINE_URL, PUBLIC_KEY, PRIVATE_KEY);
 
 Here is a sample code that should print “Hello ” with your Cytomine username and print the list of projects available.
