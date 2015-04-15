@@ -184,11 +184,9 @@ public class Cytomine {
             client.connect(host + suburl, login, pass);
         }
         int code = client.post("j_username=lrollus&j_email=&j_password=lR%242011&remember_me=on");
-        client.printCookies();
         String response = client.getResponseData();
 
         client.disconnect();
-        cookies = client.getCookies();
     }
 
     List<Cookie> cookies;
@@ -197,7 +195,7 @@ public class Cytomine {
     public String doGet(String suburl) throws Exception {
         HttpClient client = null;
         if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host, cookies);
+            client = new HttpClient(publicKey, privateKey, host);
             client.authorize("GET", suburl, "", "application/json,*/*");
             client.connect(host + suburl);
         } else {

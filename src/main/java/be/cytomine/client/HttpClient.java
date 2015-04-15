@@ -30,7 +30,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
@@ -80,8 +79,6 @@ public class HttpClient {
     String privateKey;
     String host;
 
-    List<Cookie> cookies;
-
     public HttpClient() {
     }
 
@@ -91,40 +88,6 @@ public class HttpClient {
         this.privateKey = privateKey;
         this.host = host;
     }
-
-    public HttpClient(String publicKey, String privateKey, String host, List<Cookie> cookies) {
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
-        this.host = host;
-        this.cookies = cookies;
-    }
-
-    public void printCookies() {
-        System.out.println("############# PRINT COOKIE #############");
-        List<Cookie> cookies = client.getCookieStore().getCookies();
-        System.out.println(cookies);
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                String cookieString = cookie.getName() + "=" + cookie.getValue() + "; domain=" + cookie.getDomain();
-                System.out.println(cookieString);
-            }
-        }
-    }
-
-    public List<Cookie> getCookies() {
-        List<Cookie> cookies = client.getCookieStore().getCookies();
-        return cookies;
-    }
-
-
-    public void putCookies() {
-        if (cookies != null) {
-            for (int i = 0; i < cookies.size(); i++) {
-                client.getCookieStore().addCookie(cookies.get(i));
-            }
-        }
-    }
-
 
     public void addHeader(String name, String value) {
         Header[] headers;
@@ -146,7 +109,6 @@ public class HttpClient {
         URL = new URL(url);
         targetHost = new HttpHost(URL.getHost(), URL.getPort());
         client = new DefaultHttpClient();
-        putCookies();
         // Create AuthCache instance
         AuthCache authCache = new BasicAuthCache();
         // Generate BASIC scheme object and add it to the local
@@ -168,7 +130,6 @@ public class HttpClient {
         URL = new URL(url);
         targetHost = new HttpHost(URL.getHost(), URL.getPort());
         client = new DefaultHttpClient();
-        putCookies();
         localcontext = new BasicHttpContext();
 
     }
@@ -179,29 +140,6 @@ public class HttpClient {
         response = client.execute(targetHost, httpGet, localcontext);
         return response.getStatusLine().getStatusCode();
     }
-
-    public int postCookie(String data) throws Exception {
-        HttpPost httpPost = new HttpPost(URL.toString());
-        System.out.println("change user agent");
-        HttpContext HTTP_CONTEXT = new BasicHttpContext();
-        client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13");
-
-        HTTP_CONTEXT.setAttribute(CoreProtocolPNames.USER_AGENT, "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13");
-        httpPost.setHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.10 (maverick) Firefox/3.6.13");
-
-        if (isAuthByPrivateKey) httpPost.setHeaders(headersArray);
-//        httpPost.addHeader("Content-Type","application/json")
-//        httpPost.addHeader("host",this.host)
-        log.debug("Post send :" + data.replace("\n", ""));
-        //write data
-        BasicHttpEntity entity = new BasicHttpEntity();
-        entity.setContent(new ByteArrayInputStream(data.getBytes()));
-        entity.setContentLength((long) data.getBytes().length);
-        httpPost.setEntity(entity);
-        response = client.execute(targetHost, httpPost, localcontext);
-        return response.getStatusLine().getStatusCode();
-    }
-
 
     public int get(String url, String dest) throws Exception {
         log.debug("get:" + url);
