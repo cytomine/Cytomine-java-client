@@ -172,25 +172,6 @@ public class Cytomine {
         }
     }
 
-    public void retrieveAuthCookie() throws Exception {
-        HttpClient client = null;
-        String suburl = "/j_spring_security_check";
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", suburl, "", "application/json,*/*");
-            client.connect(host + suburl);
-        } else {
-            client = new HttpClient();
-            client.connect(host + suburl, login, pass);
-        }
-        int code = client.post("j_username=lrollus&j_email=&j_password=lR%242011&remember_me=on");
-        String response = client.getResponseData();
-
-        client.disconnect();
-    }
-
-    List<Cookie> cookies;
-
 
     public String doGet(String suburl) throws Exception {
         HttpClient client = null;
@@ -1498,6 +1479,12 @@ public class Cytomine {
     public void indexToRetrieval(Long id, Long container, String url) throws Exception {
         String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
         doPost("/retrieval-web/api/resource.json", data);
+    }
+
+
+    public AmqpQueueCollection getAmqpQueue() throws Exception {
+        AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
+        return fetchCollection(queues);
     }
 
 
