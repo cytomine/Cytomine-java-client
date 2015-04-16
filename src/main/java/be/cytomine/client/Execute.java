@@ -31,6 +31,7 @@ public class Execute {
 
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2], "./");
         ping(cytomine);
+        cytomine.getAmqpQueue();
     }
 
     public static void ping(Cytomine cytomine) throws Exception {
