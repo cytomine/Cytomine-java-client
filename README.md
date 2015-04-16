@@ -14,7 +14,7 @@ Binaries: https://github.com/cytomine/cytomine-java-client/releases
 
 Source code: https://github.com/cytomine/cytomine-java-client
 
-Full documentation: http://confluence.cytomine.be/display/DEVDOC/Part+5%3A+Cytomine+Java+Client
+Full documentation (see DOC.pdf if not available): http://confluence.cytomine.be/display/DEVDOC/Part+5%3A+Cytomine+Java+Client
 
 ## How to use the Java-client
 The java client is available with 2 jars:
