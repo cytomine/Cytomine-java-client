@@ -282,6 +282,33 @@ public class Cytomine {
         }
     }
 
+    public void downloadAbstractImage(long ID, int maxSize, String dest) throws Exception{
+    	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+    	downloadPicture(url,dest,"png");
+    }
+    
+    public BufferedImage downloadPictureAsBufferedImage(String url, String format) throws Exception {
+         HttpClient client = null;
+         try {
+             if (!isBasicAuth) {
+                 client = new HttpClient(publicKey, privateKey, host);
+                 BufferedImage img = client.readBufferedImageFromURL(url);
+                 return img;
+             } else {
+                 client = new HttpClient(publicKey, privateKey, host);
+                 BufferedImage img = client.readBufferedImageFromURLWithoutKey(url, login, pass);
+                 return img;
+             }
+ 
+         } catch (Exception e) {
+             throw new CytomineException(0, e.toString());
+         }
+     }
+    
+     public BufferedImage downloadAbstractImageAsBufferedImage(long ID, int maxSize) throws Exception{
+     	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+     	return downloadPictureWithoutSave(url,"png");
+     }
 
     public void downloadFile(String url, String dest) throws Exception {
 
@@ -570,9 +597,9 @@ public class Cytomine {
         return fetchCollection(annotations);
     }
 
-    public AnnotationCollection getAnnotationsByImage(Long idOntology) throws Exception {
+    public AnnotationCollection getAnnotationsByImage(Long idImage) throws Exception {
         AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("ontology", idOntology + "");
+        annotations.addFilter("image", idImage + "");
         return fetchCollection(annotations);
     }
 
