@@ -19,6 +19,7 @@ package be.cytomine.client;
 import be.cytomine.client.collections.*;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -31,6 +32,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URLEncoder;
@@ -220,7 +222,6 @@ public class Cytomine {
         url = url + collection.getPaginatorURLParams();
         log.info("fetchCollection=" + url);
 
-
         if (!isBasicAuth) {
             client = new HttpClient(publicKey, privateKey, host);
             client.authorize("GET", url, "", "application/json,*/*");
@@ -283,7 +284,7 @@ public class Cytomine {
     }
 
     public void downloadAbstractImage(long ID, int maxSize, String dest) throws Exception{
-    	String url = host+"api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+    	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
     	downloadPicture(url,dest,"png");
     }
     
@@ -306,7 +307,7 @@ public class Cytomine {
      }
     
      public BufferedImage downloadAbstractImageAsBufferedImage(long ID, int maxSize) throws Exception{
-     	String url = host+"api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+     	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
      	return downloadPictureAsBufferedImage(url,"png");
      }
 
@@ -555,6 +556,15 @@ public class Cytomine {
         return fetchCollection(image);
     }
 
+
+	public ImageInstanceCollection getImageInstancesByOffsetWithMax(Long idProject, int offset, int max) throws Exception {
+        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
+        image.addFilter("project", idProject + "");
+        image.addFilter("offset", offset + "");
+        image.addFilter("max", max + "");
+        return fetchCollection(image);
+	}
+    
     public Annotation getAnnotation(Long id) throws Exception {
         Annotation annotation = new Annotation();
         annotation.set("id", id);
