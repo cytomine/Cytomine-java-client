@@ -307,7 +307,7 @@ public class Cytomine {
     
      public BufferedImage downloadAbstractImageAsBufferedImage(long ID, int maxSize) throws Exception{
      	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
-     	return downloadPictureWithoutSave(url,"png");
+     	return downloadPictureAsBufferedImage(url,"png");
      }
 
     public void downloadFile(String url, String dest) throws Exception {
