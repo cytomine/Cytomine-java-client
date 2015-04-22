@@ -283,7 +283,7 @@ public class Cytomine {
     }
 
     public void downloadAbstractImage(long ID, int maxSize, String dest) throws Exception{
-    	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+    	String url = host+"api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
     	downloadPicture(url,dest,"png");
     }
     
@@ -306,7 +306,7 @@ public class Cytomine {
      }
     
      public BufferedImage downloadAbstractImageAsBufferedImage(long ID, int maxSize) throws Exception{
-     	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+     	String url = host+"api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
      	return downloadPictureAsBufferedImage(url,"png");
      }
 
@@ -627,6 +627,15 @@ public class Cytomine {
         return saveModel(annotation);
     }
 
+    public Annotation addAnnotationWithTerms(String locationWKT, Long image, List<Long> terms) throws Exception {
+        Annotation annotation = new Annotation();
+        annotation.set("location", locationWKT);
+        annotation.set("image", image);
+        annotation.set("name", "");
+        annotation.set("term", terms);
+        return saveModel(annotation);
+    }
+    
     public Annotation addAnnotation(String locationWKT, Long image, Long project) throws Exception {
         Annotation annotation = new Annotation();
         annotation.set("location", locationWKT);
