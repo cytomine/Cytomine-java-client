@@ -142,7 +142,7 @@
     <properties>
         <sonar.sources>src</sonar.sources>
         <sonar.language>java</sonar.language>
-        <sonar.exclusions>src/be/cytomine/client/sample/*.java</sonar.exclusions>
+        <sonar.exclusions>src/main/java/be/cytomine/client/sample/*.java</sonar.exclusions>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 
         <sonar.surefire.reportsPath>build/test/results</sonar.surefire.reportsPath>
