@@ -21,7 +21,6 @@ import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -42,15 +41,28 @@ public class Cytomine {
 
     private static final Logger log = Logger.getLogger(Cytomine.class);
 
-    public String host;
-    public String login;
-    public String pass;
-    public String workingPath;
-    public String basePath;
-    public String publicKey;
-    public String privateKey;
-    public boolean isBasicAuth;
-    public String charEncoding = "UTF-8";
+    private String host;
+    private String login;
+    private String pass;
+    private String publicKey;
+    private String privateKey;
+    private String charEncoding = "UTF-8";
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getCharEncoding() {
+        return charEncoding;
+    }
+
+    public void setCharEncoding(String charEncoding) {
+        this.charEncoding = charEncoding;
+    }
 
     public static class JobStatus {
         public static int NOTLAUNCH = 0;
@@ -78,21 +90,11 @@ public class Cytomine {
 
     public enum Operator {OR, AND}
 
+
     public Cytomine(String host, String publicKey, String privateKey) {
-        this(host, publicKey, privateKey, "./", false);
-    }
-
-    public Cytomine(String host, String publicKey, String privateKey, String workingPath) {
-        this(host, publicKey, privateKey, workingPath, false);
-    }
-
-    public Cytomine(String host, String publicKey, String privateKey, String workingPath, boolean isBasicAuth) {
-        this.host = host;
-        this.workingPath = workingPath;
+        this.setHost(host);
         this.publicKey = publicKey;
         this.privateKey = privateKey;
-        this.basePath = "/api/";
-        this.isBasicAuth = isBasicAuth;
         this.login = publicKey;
         this.pass = privateKey;
     }
@@ -128,7 +130,7 @@ public class Cytomine {
 
     boolean testConnexion() throws Exception {
         HttpClient client = new HttpClient();
-        client.connect(host + "/server/ping", login, pass);
+        client.connect(getHost() + "/server/ping", login, pass);
         int code = 0;
         try {
             code = client.get();
@@ -189,14 +191,9 @@ public class Cytomine {
 
     public String doGet(String suburl) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("GET", suburl, "", "application/json,*/*");
-            client.connect(host + suburl);
-        } else {
-            client = new HttpClient();
-            client.connect(host + suburl, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("GET", suburl, "", "application/json,*/*");
+        client.connect(getHost() + suburl);
         int code = client.get();
         String response = client.getResponseData();
         client.disconnect();
@@ -207,14 +204,9 @@ public class Cytomine {
 
     private <T extends Model> T fetchModel(T model) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("GET", model.toURL(), "", "application/json,*/*");
-            client.connect(host + model.toURL());
-        } else {
-            client = new HttpClient();
-            client.connect(host + model.toURL(), login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("GET", model.toURL(), "", "application/json,*/*");
+        client.connect(getHost() + model.toURL());
         int code = client.get();
         String response = client.getResponseData();
         client.disconnect();
@@ -234,15 +226,9 @@ public class Cytomine {
         url = url + collection.getPaginatorURLParams();
         log.info("fetchCollection=" + url);
 
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("GET", url, "", "application/json,*/*");
-            client.connect(host + url);
-        } else {
-            client = new HttpClient();
-            client.connect(host + url, login, pass);
-        }
-
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("GET", url, "", "application/json,*/*");
+        client.connect(getHost() + url);
 
         int code = client.get();
         String response = client.getResponseData();
@@ -269,15 +255,9 @@ public class Cytomine {
     public void downloadPicture(String url, String dest, String format) throws Exception {
         HttpClient client = null;
         try {
-            if (!isBasicAuth) {
-                client = new HttpClient(publicKey, privateKey, host);
-                BufferedImage img = client.readBufferedImageFromURL(url);
-                ImageIO.write(img, format, new File(dest));
-            } else {
-                client = new HttpClient(publicKey, privateKey, host);
-                BufferedImage img = client.readBufferedImageFromURLWithoutKey(url, login, pass);
-                ImageIO.write(img, format, new File(dest));
-            }
+            client = new HttpClient(publicKey, privateKey, getHost());
+            BufferedImage img = client.readBufferedImageFromURL(url);
+            ImageIO.write(img, format, new File(dest));
 
         } catch (Exception e) {
             throw new CytomineException(0, e.toString());
@@ -287,8 +267,8 @@ public class Cytomine {
     public void downloadPictureWithRedirect(String url, String dest, String format) throws Exception {
         HttpClient client = null;
         try {
-            client = new HttpClient(publicKey, privateKey, host);
-            BufferedImage img = client.readBufferedImageFromRETRIEVAL(url, login, pass, host);
+            client = new HttpClient(publicKey, privateKey, getHost());
+            BufferedImage img = client.readBufferedImageFromRETRIEVAL(url, login, pass, getHost());
             ImageIO.write(img, format, new File(dest));
         } catch (Exception e) {
             throw new CytomineException(0, e.toString());
@@ -296,22 +276,16 @@ public class Cytomine {
     }
 
     public void downloadAbstractImage(long ID, int maxSize, String dest) throws Exception{
-    	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+    	String url = getHost() +"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
     	downloadPicture(url,dest,"png");
     }
     
     public BufferedImage downloadPictureAsBufferedImage(String url, String format) throws Exception {
          HttpClient client = null;
          try {
-             if (!isBasicAuth) {
-                 client = new HttpClient(publicKey, privateKey, host);
-                 BufferedImage img = client.readBufferedImageFromURL(url);
-                 return img;
-             } else {
-                 client = new HttpClient(publicKey, privateKey, host);
-                 BufferedImage img = client.readBufferedImageFromURLWithoutKey(url, login, pass);
-                 return img;
-             }
+             client = new HttpClient(publicKey, privateKey, getHost());
+             BufferedImage img = client.readBufferedImageFromURL(url);
+             return img;
  
          } catch (Exception e) {
              throw new CytomineException(0, e.toString());
@@ -319,15 +293,15 @@ public class Cytomine {
      }
     
      public BufferedImage downloadAbstractImageAsBufferedImage(long ID, int maxSize) throws Exception{
-     	String url = host+"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
+     	String url = getHost() +"/api/abstractimage/"+ID+"/thumb.png?maxSize="+maxSize;
      	return downloadPictureAsBufferedImage(url,"png");
      }
 
     public void downloadFile(String url, String dest) throws Exception {
 
         try {
-            HttpClient client = new HttpClient(publicKey, privateKey, host);
-            int code = client.get(host + url, dest);
+            HttpClient client = new HttpClient(publicKey, privateKey, getHost());
+            int code = client.get(getHost() + url, dest);
             analyzeCode(code, (JSONObject) JSONValue.parse("{}"));
         } catch (Exception e) {
             throw new CytomineException(0, e.toString());
@@ -336,14 +310,9 @@ public class Cytomine {
 
     private String doPost(String suburl, String data) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", suburl, "", "application/json,*/*");
-            client.connect(host + suburl);
-        } else {
-            client = new HttpClient();
-            client.connect(host + suburl, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("POST", suburl, "", "application/json,*/*");
+        client.connect(getHost() + suburl);
         int code = client.post(data);
         String response = client.getResponseData();
         client.disconnect();
@@ -354,14 +323,9 @@ public class Cytomine {
 
     private String doDelete(String suburl) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("DELETE", suburl, "", "application/json,*/*");
-            client.connect(host + suburl);
-        } else {
-            client = new HttpClient();
-            client.connect(host + suburl, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("DELETE", suburl, "", "application/json,*/*");
+        client.connect(getHost() + suburl);
         int code = client.delete();
         String response = client.getResponseData();
         client.disconnect();
@@ -373,14 +337,9 @@ public class Cytomine {
 
     private <T extends Model> T saveModel(T model) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", model.toURL(), "", "application/json,*/*");
-            client.connect(host + model.toURL());
-        } else {
-            client = new HttpClient();
-            client.connect(host + model.toURL(), login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("POST", model.toURL(), "", "application/json,*/*");
+        client.connect(getHost() + model.toURL());
         int code = client.post(model.toJSON());
         String response = client.getResponseData();
         client.disconnect();
@@ -392,15 +351,11 @@ public class Cytomine {
 
     public <T extends Model> T updateModel(T model) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            String prefixUrl = model.toURL().split("\\?")[0];
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("PUT", prefixUrl, "", "application/json,*/*");
-            client.connect(host + model.toURL());
-        } else {
-            client = new HttpClient();
-            client.connect(host + model.toURL(), login, pass);
-        }
+
+        String prefixUrl = model.toURL().split("\\?")[0];
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("PUT", prefixUrl, "", "application/json,*/*");
+        client.connect(getHost() + model.toURL());
         int code = client.put(model.toJSON());
         String response = client.getResponseData();
         client.disconnect();
@@ -413,14 +368,9 @@ public class Cytomine {
 
     private void deleteModel(Model model) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("DELETE", model.toURL(), "", "application/json,*/*");
-            client.connect(host + model.toURL());
-        } else {
-            client = new HttpClient();
-            client.connect(host + model.toURL(), login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("DELETE", model.toURL(), "", "application/json,*/*");
+        client.connect(getHost() + model.toURL());
         int code = client.delete();
         String response = client.getResponseData();
         client.disconnect();
@@ -431,15 +381,10 @@ public class Cytomine {
 
     private String doPut(String url, String content) throws Exception {
         HttpClient client = null;
-        if (!isBasicAuth) {
-            String prefixUrl = url.split("\\?")[0];
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("PUT", url, "", "application/json,*/*");
-            client.connect(host + url);
-        } else {
-            client = new HttpClient();
-            client.connect(host + url, login, pass);
-        }
+        String prefixUrl = url.split("\\?")[0];
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("PUT", url, "", "application/json,*/*");
+        client.connect(getHost() + url);
         int code = client.put(content);
         String response = client.getResponseData();
         client.disconnect();
@@ -454,14 +399,9 @@ public class Cytomine {
 
         entity.addPart("files[]", new ByteArrayBody(data, new Date().getTime() + "file"));
 
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
-            client.connect(host + url);
-        } else {
-            client = new HttpClient();
-            client.connect(host + url, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
+        client.connect(getHost() + url);
         int code = client.post(entity);
         String response = client.getResponseData();
         log.debug("response=" + response);
@@ -773,14 +713,9 @@ public class Cytomine {
                 + idTerm + "/clearBefore.json";
 
         HttpClient client = null;
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", clearBeforeURL, "", "application/json,*/*");
-            client.connect(host + clearBeforeURL);
-        } else {
-            client = new HttpClient();
-            client.connect(host + clearBeforeURL, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("POST", clearBeforeURL, "", "application/json,*/*");
+        client.connect(getHost() + clearBeforeURL);
         int code = client.post(model.toJSON());
         String response = client.getResponseData();
         client.disconnect();
@@ -1176,9 +1111,9 @@ public class Cytomine {
         if (filter == null) {
             filter = Filter.ALL;
         }
-        search.addFilter("keywords", URLEncoder.encode(keywords, charEncoding));
-        search.addFilter("operator", URLEncoder.encode(operator + "", charEncoding));
-        search.addFilter("filter", URLEncoder.encode(filter + "", charEncoding));
+        search.addFilter("keywords", URLEncoder.encode(keywords, getCharEncoding()));
+        search.addFilter("operator", URLEncoder.encode(operator + "", getCharEncoding()));
+        search.addFilter("filter", URLEncoder.encode(filter + "", getCharEncoding()));
         if (idProjects != null) {
             ArrayList<String> list = new ArrayList<String>();
             for (int i = 0; i < idProjects.size(); i++) {
@@ -1437,9 +1372,9 @@ public class Cytomine {
         MultipartEntity entity = new MultipartEntity();
         entity.addPart("files[]", new FileBody(new File(file)));
 
-        client = new HttpClient(publicKey, privateKey, host);
+        client = new HttpClient(publicKey, privateKey, getHost());
         client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
-        client.connect(host + url);
+        client.connect(getHost() + url);
 
         int code = client.post(entity);
         String response = client.getResponseData();
@@ -1513,14 +1448,9 @@ public class Cytomine {
 
         entity.addPart("files[]", new FileBody(new File(file)));
 
-        if (!isBasicAuth) {
-            client = new HttpClient(publicKey, privateKey, host);
-            client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
-            client.connect(host + url);
-        } else {
-            client = new HttpClient();
-            client.connect(host + url, login, pass);
-        }
+        client = new HttpClient(publicKey, privateKey, getHost());
+        client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
+        client.connect(getHost() + url);
         int code = client.post(entity);
         String response = client.getResponseData();
         log.debug("response=" + response);

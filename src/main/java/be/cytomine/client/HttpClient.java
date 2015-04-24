@@ -346,47 +346,6 @@ public class HttpClient {
     }
 
 
-    static public BufferedImage readBufferedImageFromURLWithoutKey(String url, String loginHTTP, String passHTTP) throws MalformedURLException, IOException {
-
-        URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
-        DefaultHttpClient client = new DefaultHttpClient();
-        // Create AuthCache instance
-        AuthCache authCache = new BasicAuthCache();
-        // Generate BASIC scheme object and add it to the local
-        // auth cache
-        BasicScheme basicAuth = new BasicScheme();
-        authCache.put(targetHost, basicAuth);
-
-        // Add AuthCache to the execution context
-        BasicHttpContext localcontext = new BasicHttpContext();
-        localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
-        // Set credentials
-        UsernamePasswordCredentials creds = new UsernamePasswordCredentials(loginHTTP, passHTTP);
-        client.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
-
-        BufferedImage img = null;
-        HttpGet httpGet = new HttpGet(URL.getPath());
-        HttpResponse response = client.execute(targetHost, httpGet, localcontext);
-        int code = response.getStatusLine().getStatusCode();
-        log.info("url=" + url + " is " + code + "(OK=" + HttpURLConnection.HTTP_OK + ",MOVED=" + HttpURLConnection.HTTP_MOVED_TEMP + ")");
-
-        boolean isOK = (code == HttpURLConnection.HTTP_OK);
-        boolean isFound = (code == HttpURLConnection.HTTP_MOVED_TEMP);
-        boolean isErrorServer = (code == HttpURLConnection.HTTP_INTERNAL_ERROR);
-
-        if (!isOK && !isFound & !isErrorServer) {
-            throw new IOException(url + " cannot be read: " + code);
-        }
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            img = ImageIO.read(entity.getContent());
-            entity.getContent().close();
-        }
-        return img;
-
-    }
-
 
     public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws MalformedURLException, IOException, Exception {
         log.debug("readBufferedImageFromURL:" + url);

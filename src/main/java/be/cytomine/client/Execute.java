@@ -29,7 +29,7 @@ public class Execute {
         PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
 
-        Cytomine cytomine = new Cytomine(args[0], args[1], args[2], "./");
+        Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
         ping(cytomine);
         cytomine.getAmqpQueue();
     }

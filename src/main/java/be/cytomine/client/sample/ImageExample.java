@@ -62,7 +62,7 @@ public class ImageExample {
             Long idProject = 92279388L;//21919089L;   // and storage 17763541
             Long idStorage = 17763541L;
             String cytomineHost = "http://beta.cytomine.be";//"http://localhost:8080";
-            System.out.println("Connection on " + cytomine.host);
+            System.out.println("Connection on " + cytomine.getHost());
             int i = 0;
             JSONArray json = cytomine.uploadImage(file, idProject, idStorage, cytomineHost, null, true);
             System.out.println(json.get(0));
