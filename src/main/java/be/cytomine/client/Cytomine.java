@@ -464,11 +464,9 @@ public class Cytomine {
         }
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response=" + response);
+        log.debug("response=" + response);
         client.disconnect();
         JSONObject json = createJSONResponse(code, response);
-//        analyzeCode(code, json);
-        System.out.println("response=" + json);
     }
 
     public Project getProject(Long id) throws Exception {
@@ -1445,10 +1443,9 @@ public class Cytomine {
 
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response=" + response);
+        log.debug("response=" + response);
         client.disconnect();
         JSONObject json = createJSONResponse(code, response);
-        System.out.println("response=" + json);
         return json;
     }
 
@@ -1526,11 +1523,9 @@ public class Cytomine {
         }
         int code = client.post(entity);
         String response = client.getResponseData();
-        System.out.println("response=" + response);
+        log.debug("response=" + response);
         client.disconnect();
         JSONArray json = createJSONArrayResponse(code, response);
-//        analyzeCode(code, json);
-        System.out.println("response=" + json);
         return json;
     }
 

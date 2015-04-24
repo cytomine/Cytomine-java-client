@@ -35,9 +35,6 @@ public class Property extends Model {
         Long id = (Long) get("id");
         Long domainIdent = (Long) get("domainIdent");
         String domain = (String) get("domain");
-        System.out.println("id=" + id);
-        System.out.println("domainIdent=" + domainIdent);
-        System.out.println("domain=" + domain);
 
         if (id != null && domainIdent != null && domain != null) {
             return getJSONResourceURL(id, domainIdent, domain);
@@ -78,7 +75,6 @@ public class Property extends Model {
             for (Map.Entry<String, String> param : params.entrySet()) {
                 base = base + param.getKey() + "=" + param.getValue() + "&";
             }
-            System.out.println("base=" + base);
             base = base.substring(0, base.length() - 1);
             return base;
         }

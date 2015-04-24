@@ -417,9 +417,8 @@ public class HttpClient {
         }
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            System.out.println("img=" + entity.getContent());
+            log.debug("img=" + entity.getContent());
             img = ImageIO.read(entity.getContent());
-            System.out.println("img=" + img);
         }
         return img;
 
