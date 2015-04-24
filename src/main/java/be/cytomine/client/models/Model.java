@@ -82,7 +82,6 @@ public abstract class Model {
     }
 
     public String getStr(String name) {
-        //return (String) get(name);
         if (get(name) == null) {
             return null;
         }

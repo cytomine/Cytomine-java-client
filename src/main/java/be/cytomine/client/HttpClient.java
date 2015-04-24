@@ -196,8 +196,6 @@ public class HttpClient {
         if (isAuthByPrivateKey) {
             httpPost.setHeaders(headersArray);
         }
-//        httpPost.addHeader("Content-Type","application/json")
-//        httpPost.addHeader("host",this.host)
         log.debug("Post send :" + data.replace("\n", ""));
         //write data
         BasicHttpEntity entity = new BasicHttpEntity();
@@ -248,12 +246,6 @@ public class HttpClient {
         response = client.execute(targetHost, httpPost, localcontext);
         return response.getStatusLine().getStatusCode();
     }
-
-
-//
-//    MultipartEntity entity = new MultipartEntity();
-//    entity.addPart("file", new FileBody(file));
-//    post.setEntity(entity);
 
     public int post(MultipartEntity entity) throws IOException {
         log.debug("POST " + URL.toString());
@@ -341,7 +333,6 @@ public class HttpClient {
         HttpEntity entity = response.getEntity();
         if (entity != null) {
             img = ImageIO.read(entity.getContent());
-            //img = ImageIO.read(new ByteArrayInputStream(entity.getContent().bytes));
         }
         return img;
 
@@ -390,7 +381,6 @@ public class HttpClient {
         String url = urlFullStr.replace(host, "");
         log.debug("authorize: url short=" + url);
         Header[] headers = new Header[3];
-        //conn = httplib.HTTPConnection(self._host)
         headers[0] = new BasicHeader("accept", accept);
         headers[1] = new BasicHeader("date", getActualDateStr());
 

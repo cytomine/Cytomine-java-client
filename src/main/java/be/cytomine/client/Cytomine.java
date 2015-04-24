@@ -54,24 +54,24 @@ public class Cytomine {
     private int offset = 0;
 
     public static class JobStatus {
-        public static int NOTLAUNCH = 0;
-        public static int INQUEUE = 1;
-        public static int RUNNING = 2;
-        public static int SUCCESS = 3;
-        public static int FAILED = 4;
-        public static int INDETERMINATE = 5;
-        public static int WAIT = 6;
+        public static final int NOTLAUNCH = 0;
+        public static final int INQUEUE = 1;
+        public static final int RUNNING = 2;
+        public static final int SUCCESS = 3;
+        public static final int FAILED = 4;
+        public static final int INDETERMINATE = 5;
+        public static final int WAIT = 6;
     }
 
 
     public static class UploadStatus {
-        public static int UPLOADED = 0;
-        public static int CONVERTED = 1;
-        public static int DEPLOYED = 2;
-        public static int ERROR_FORMAT = 3;
-        public static int ERROR_CONVERT = 4;
-        public static int UNCOMPRESSED = 5;
-        public static int TO_DEPLOY = 6;
+        public static final int UPLOADED = 0;
+        public static final int CONVERTED = 1;
+        public static final int DEPLOYED = 2;
+        public static final int ERROR_FORMAT = 3;
+        public static final int ERROR_CONVERT = 4;
+        public static final int UNCOMPRESSED = 5;
+        public static final int TO_DEPLOY = 6;
     }
 
 
@@ -141,20 +141,15 @@ public class Cytomine {
 
         if (code == 200 || code == 201 || code == 304) {
             return;
-        }
-        if (code == 400) {
+        } else if (code == 400) {
             throw new CytomineException(code, json);
-        }
-        if (code == 401) {
+        } else if (code == 401) {
             throw new CytomineException(code, json);
-        }
-        if (code == 404) {
+        } else if (code == 404) {
             throw new CytomineException(code, json);
-        }
-        if (code == 500) {
+        } else if (code == 500) {
             throw new CytomineException(code, json);
-        }
-        if (code == 302) {
+        } else if (code == 302) {
             throw new CytomineException(code, json);
         }
     }
