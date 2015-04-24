@@ -91,10 +91,12 @@ public class HttpClient {
 
     public void addHeader(String name, String value) {
         Header[] headers;
-        if (headersArray != null)
+        if (headersArray != null) {
             headers = new Header[headersArray.length + 1];
-        else
+        }
+        else {
             headers = new Header[1];
+        }
 
         for (int i = 0; i < headers.length - 1; i++) {
             headers[i] = headersArray[i];
@@ -166,7 +168,9 @@ public class HttpClient {
         boolean isFound = (code == HttpURLConnection.HTTP_MOVED_TEMP);
         boolean isErrorServer = (code == HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-        if (!isOK && !isFound & !isErrorServer) throw new IOException(url + " cannot be read: " + code);
+        if (!isOK && !isFound & !isErrorServer) {
+            throw new IOException(url + " cannot be read: " + code);
+        }
         HttpEntity entity = response.getEntity();
         if (entity != null) {
             entity.writeTo(new FileOutputStream(dest));
@@ -177,7 +181,9 @@ public class HttpClient {
     public int delete() throws Exception {
         log.debug("Delete " + URL.getPath());
         HttpDelete httpDelete = new HttpDelete(URL.toString());
-        if (isAuthByPrivateKey) httpDelete.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpDelete.setHeaders(headersArray);
+        }
         response = client.execute(targetHost, httpDelete, localcontext);
         return response.getStatusLine().getStatusCode();
     }
@@ -185,7 +191,9 @@ public class HttpClient {
     public int post(String data) throws Exception {
         log.debug("Post " + URL.getPath());
         HttpPost httpPost = new HttpPost(URL.toString());
-        if (isAuthByPrivateKey) httpPost.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpPost.setHeaders(headersArray);
+        }
 //        httpPost.addHeader("Content-Type","application/json")
 //        httpPost.addHeader("host",this.host)
         log.debug("Post send :" + data.replace("\n", ""));
@@ -202,7 +210,9 @@ public class HttpClient {
     public int put(String data) throws Exception {
         log.debug("Put " + URL.getPath());
         HttpPut httpPut = new HttpPut(URL.toString());
-        if (isAuthByPrivateKey) httpPut.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpPut.setHeaders(headersArray);
+        }
         log.debug("Put send :" + data.replace("\n", ""));
         //write data
         BasicHttpEntity entity = new BasicHttpEntity();
@@ -216,7 +226,9 @@ public class HttpClient {
     public int post(byte[] data) throws Exception {
         log.debug("POST " + URL.toString());
         HttpPost httpPost = new HttpPost(URL.toString());
-        if (isAuthByPrivateKey) httpPost.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpPost.setHeaders(headersArray);
+        }
         log.debug("Post send :" + data.length);
 
         InputStreamEntity reqEntity = new InputStreamEntity(new ByteArrayInputStream(data), data.length);
@@ -244,7 +256,9 @@ public class HttpClient {
     public int post(MultipartEntity entity) throws Exception {
         log.debug("POST " + URL.toString());
         HttpPost httpPost = new HttpPost(URL.toString());
-        if (isAuthByPrivateKey) httpPost.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpPost.setHeaders(headersArray);
+        }
         log.debug("Post send :" + entity);
         httpPost.setEntity(entity);
         response = client.execute(targetHost, httpPost, localcontext);
@@ -256,7 +270,9 @@ public class HttpClient {
     public int put(byte[] data) throws Exception {
         log.debug("Put " + URL.getPath());
         HttpPut httpPut = new HttpPut(URL.getPath());
-        if (isAuthByPrivateKey) httpPut.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpPut.setHeaders(headersArray);
+        }
         log.debug("Put send :" + data.length);
 
         InputStreamEntity reqEntity = new InputStreamEntity(new ByteArrayInputStream(data), data.length);
@@ -279,7 +295,9 @@ public class HttpClient {
     public int download(String dest) throws Exception {
         log.debug("Download " + URL.getPath());
         HttpGet httpGet = new HttpGet(URL.getPath());
-        if (isAuthByPrivateKey) httpGet.setHeaders(headersArray);
+        if (isAuthByPrivateKey) {
+            httpGet.setHeaders(headersArray);
+        }
         response = client.execute(targetHost, httpGet, localcontext);
         HttpEntity entity = response.getEntity();
         if (entity != null) {
@@ -357,7 +375,9 @@ public class HttpClient {
         boolean isFound = (code == HttpURLConnection.HTTP_MOVED_TEMP);
         boolean isErrorServer = (code == HttpURLConnection.HTTP_INTERNAL_ERROR);
 
-        if (!isOK && !isFound & !isErrorServer) throw new IOException(url + " cannot be read: " + code);
+        if (!isOK && !isFound & !isErrorServer) {
+            throw new IOException(url + " cannot be read: " + code);
+        }
         HttpEntity entity = response.getEntity();
         if (entity != null) {
             img = ImageIO.read(entity.getContent());

@@ -83,20 +83,32 @@ public abstract class Model {
 
     public String getStr(String name) {
         //return (String) get(name);
-        if (get(name) == null) return null;
-        else return get(name) + "";
+        if (get(name) == null) {
+            return null;
+        }
+        else {
+            return get(name) + "";
+        }
     }
 
     public Integer getInt(String name) {
         String str = getStr(name);
-        if (str == null) return null;
-        else return Integer.parseInt(str);
+        if (str == null) {
+            return null;
+        }
+        else {
+            return Integer.parseInt(str);
+        }
     }
 
     public Long getLong(String name) {
         String str = getStr(name);
-        if (str == null) return null;
-        else return Long.parseLong(str);
+        if (str == null) {
+            return null;
+        }
+        else {
+            return Long.parseLong(str);
+        }
     }
 
     public Double getDbl(String name) {

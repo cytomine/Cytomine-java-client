@@ -42,9 +42,7 @@ public class AnnotationExample {
             Long user = 26999622l;
             Long project = 14389966l;
 
-            //http://beta.cytomine.be/api/annotation.json?&project=14389966&term=8965510&users=26999622&
             Map<String, String> filters = new HashMap<String, String>();
-//            filters.put("user","26999622");
             filters.put("project", project + "");
             filters.put("term", term + "");
             filters.put("showWKT", "true");
@@ -102,11 +100,6 @@ public class AnnotationExample {
             cytomine.simplifyAnnotation(22170559l, 200l, 400l);
             a = cytomine.getAnnotation(22170559l);
             System.out.println("======> " + a.getStr("location").split(",").length);
-
-////            cytomine.uploadJobData(52l,new String("123").getBytes());
-//
-//            JobData data = cytomine.addJobData("Report",9463160l,"reportFROMCLIENT.txt");
-//            cytomine.uploadJobData(data.getId(),"12345".getBytes());
 
         } catch (CytomineException e) {
             log.error(e);

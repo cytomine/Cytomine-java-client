@@ -142,12 +142,24 @@ public class Cytomine {
 
     private void analyzeCode(int code, JSONObject json) throws Exception {
 
-        if (code == 200 || code == 201 || code == 304) return;
-        if (code == 400) throw new CytomineException(code, json);
-        if (code == 401) throw new CytomineException(code, json);
-        if (code == 404) throw new CytomineException(code, json);
-        if (code == 500) throw new CytomineException(code, json);
-        if (code == 302) throw new CytomineException(code, json);
+        if (code == 200 || code == 201 || code == 304) {
+            return;
+        }
+        if (code == 400) {
+            throw new CytomineException(code, json);
+        }
+        if (code == 401) {
+            throw new CytomineException(code, json);
+        }
+        if (code == 404) {
+            throw new CytomineException(code, json);
+        }
+        if (code == 500) {
+            throw new CytomineException(code, json);
+        }
+        if (code == 302) {
+            throw new CytomineException(code, json);
+        }
     }
 
     private JSONObject createJSONResponse(int code, String response) throws Exception {

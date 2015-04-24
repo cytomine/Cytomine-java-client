@@ -39,7 +39,7 @@ public class CropExample {
     public static void downloadAllAnnotations(Cytomine cytomine) throws Exception {
         //1. check if image == null
 
-        // cytomine.getProject(57l);
+        // cytomine.getProject(57L);
 /**
  * COPY (SELECT a.id, st_area(a.location) FROM user_annotation a order by st_area(a.location) DESC) TO '/tmp/dump.csv' WITH CSV HEADER
  */
@@ -63,7 +63,6 @@ public class CropExample {
         } finally {
             br.close();
         }
-        //Collections.shuffle(ids);
 
         List<Long> toIgnore = new ArrayList<Long>();
 

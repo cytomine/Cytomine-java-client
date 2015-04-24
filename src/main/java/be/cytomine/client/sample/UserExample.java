@@ -30,9 +30,9 @@ public class UserExample {
         //ROLE_USER, ROLE_GHEST, ROLE_ADMIN
         Map<String, Long> roles = cytomine.getRoleMap();
         System.out.println(roles);
-        User user = cytomine.getUser(8579749l);
-        cytomine.addRole(8579749l, roles.get("ROLE_USER"));
-        cytomine.deleteRole(8579749l, roles.get("ROLE_USER"));
+        User user = cytomine.getUser(8579749L);
+        cytomine.addRole(8579749L, roles.get("ROLE_USER"));
+        cytomine.deleteRole(8579749L, roles.get("ROLE_USER"));
     }
 
 }

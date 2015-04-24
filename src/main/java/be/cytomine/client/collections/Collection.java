@@ -96,8 +96,9 @@ public abstract class Collection {
     }
 
     public String getJSONResourceURL() {
-        if (params.isEmpty())
+        if (params.isEmpty()) {
             return "/api/" + getDomainName() + ".json";
+        }
         else {
             String base = "/api/" + getDomainName() + ".json?";
             for (Map.Entry<String, String> param : params.entrySet()) {

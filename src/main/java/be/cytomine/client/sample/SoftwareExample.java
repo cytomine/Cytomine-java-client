@@ -46,20 +46,6 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("execType", "String", software.getId(), "cytomine", false, 100);
             cytomine.addSoftwareParameter("annotation", "Number", software.getId(), "", true, 200);
             cytomine.addSoftwareParameter("term", "Number", software.getId(), "", true, 300);
-//               cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
-//               cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
-//               cytomine.addSoftwareParameter("N", "Number", software.getId(), "500", false, 400);
-//               cytomine.addSoftwareParameter("T", "Number", software.getId(), "5", false, 500);
-//               cytomine.addSoftwareParameter("workingDir", "String", software.getId(), "algo/retrievalSuggest/suggest/", true, 600);
-//               cytomine.addSoftwareParameter("cytomineHost", "String", software.getId(), "$cytomineHost$", true, 700);
-//               cytomine.addSoftwareParameter("forceDownloadCrop", "Boolean", software.getId(), "false", false, 800);
-//               cytomine.addSoftwareParameter("storeName", "String", software.getId(), "KYOTOSINGLEFILE", false, 900);
-//               cytomine.addSoftwareParameter("indexProject", "ListDomain", software.getId(), "$currentProject$", true, 1000, "/api/ontology/$currentOntology$/project.json", "name", "name");
-//               cytomine.addSoftwareParameter("searchProject", "Domain", software.getId(), "$currentProject$", true, 1100, "/api/ontology/$currentOntology$/project.json", "name", "name");
-//
-//               cytomine.addSoftwareProject(software.getId(), 67l);
-//               cytomine.addSoftwareProject(software.getId(), 716498l);
-//               cytomine.addSoftwareProject(software.getId(), 75985l);
 
         } catch (CytomineException e) {
             log.error(e);
@@ -68,9 +54,9 @@ public class SoftwareExample {
 
 
     public static void testAddJobTemplate(Cytomine cytomine) throws Exception {
-        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAnnotationStat", 57l, 900532l);
-        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556l, "20202");
-        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562l, "456");
+        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAnnotationStat", 57L, 900532L);
+        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556L, "20202");
+        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562L, "456");
     }
 
 
@@ -92,20 +78,20 @@ public class SoftwareExample {
              * 10: search project (only one)
              */
             cytomine.addSoftwareParameter("execType", "String", software.getId(), "cytomine", false, 100);
-//               cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
-//               cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
-//               cytomine.addSoftwareParameter("N", "Number", software.getId(), "500", false, 400);
-//               cytomine.addSoftwareParameter("T", "Number", software.getId(), "5", false, 500);
-//               cytomine.addSoftwareParameter("workingDir", "String", software.getId(), "algo/retrievalSuggest/suggest/", true, 600);
-//               cytomine.addSoftwareParameter("cytomineHost", "String", software.getId(), "$cytomineHost$", true, 700);
-//               cytomine.addSoftwareParameter("forceDownloadCrop", "Boolean", software.getId(), "false", false, 800);
-//               cytomine.addSoftwareParameter("storeName", "String", software.getId(), "KYOTOSINGLEFILE", false, 900);
-//               cytomine.addSoftwareParameter("indexProject", "ListDomain", software.getId(), "$currentProject$", true, 1000, "/api/ontology/$currentOntology$/project.json", "name", "name");
-//               cytomine.addSoftwareParameter("searchProject", "Domain", software.getId(), "$currentProject$", true, 1100, "/api/ontology/$currentOntology$/project.json", "name", "name");
-//
-//               cytomine.addSoftwareProject(software.getId(), 67l);
-//               cytomine.addSoftwareProject(software.getId(), 716498l);
-//               cytomine.addSoftwareProject(software.getId(), 75985l);
+               cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
+               cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
+               cytomine.addSoftwareParameter("N", "Number", software.getId(), "500", false, 400);
+               cytomine.addSoftwareParameter("T", "Number", software.getId(), "5", false, 500);
+               cytomine.addSoftwareParameter("workingDir", "String", software.getId(), "algo/retrievalSuggest/suggest/", true, 600);
+               cytomine.addSoftwareParameter("cytomineHost", "String", software.getId(), "$cytomineHost$", true, 700);
+               cytomine.addSoftwareParameter("forceDownloadCrop", "Boolean", software.getId(), "false", false, 800);
+               cytomine.addSoftwareParameter("storeName", "String", software.getId(), "KYOTOSINGLEFILE", false, 900);
+               cytomine.addSoftwareParameter("indexProject", "ListDomain", software.getId(), "$currentProject$", true, 1000, "/api/ontology/$currentOntology$/project.json", "name", "name");
+               cytomine.addSoftwareParameter("searchProject", "Domain", software.getId(), "$currentProject$", true, 1100, "/api/ontology/$currentOntology$/project.json", "name", "name");
+
+               cytomine.addSoftwareProject(software.getId(), 67L);
+               cytomine.addSoftwareProject(software.getId(), 716498L);
+               cytomine.addSoftwareProject(software.getId(), 75985L);
 
         } catch (CytomineException e) {
             log.error(e);
@@ -113,7 +99,7 @@ public class SoftwareExample {
     }
 
     public static void addSoftwareProject(Cytomine cytomine) throws Exception {
-        cytomine.addSoftwareProject(485324l, 75985l);
+        cytomine.addSoftwareProject(485324L, 75985L);
     }
 
     public static void addSoftwareRetrieval(Cytomine cytomine) throws Exception {
@@ -145,9 +131,9 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("indexProject", "ListDomain", software.getId(), "$currentProject$", true, 1000, "/api/ontology/$currentOntology$/project.json", "name", "name");
             cytomine.addSoftwareParameter("searchProject", "Domain", software.getId(), "$currentProject$", true, 1100, "/api/ontology/$currentOntology$/project.json", "name", "name");
 
-            cytomine.addSoftwareProject(software.getId(), 67l);
-            cytomine.addSoftwareProject(software.getId(), 716498l);
-            cytomine.addSoftwareProject(software.getId(), 75985l);
+            cytomine.addSoftwareProject(software.getId(), 67L);
+            cytomine.addSoftwareProject(software.getId(), 716498L);
+            cytomine.addSoftwareProject(software.getId(), 75985L);
 
         } catch (CytomineException e) {
             log.error(e);
@@ -185,9 +171,9 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("dateStart", "Date", software.getId(), "$currentProjectCreationDate$", true, 1200);
             cytomine.addSoftwareParameter("dateStop", "Date", software.getId(), "$currentDate$", true, 1300);
             cytomine.addSoftwareParameter("dateIncr", "String", software.getId(), "MONTH+1", true, 1400);
-            cytomine.addSoftwareProject(software.getId(), 67l);
-            cytomine.addSoftwareProject(software.getId(), 716498l);
-            cytomine.addSoftwareProject(software.getId(), 75985l);
+            cytomine.addSoftwareProject(software.getId(), 67L);
+            cytomine.addSoftwareProject(software.getId(), 716498L);
+            cytomine.addSoftwareProject(software.getId(), 75985L);
 
         } catch (CytomineException e) {
             log.error(e);
