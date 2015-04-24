@@ -53,6 +53,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -105,7 +107,7 @@ public class HttpClient {
         headersArray = headers;
     }
 
-    public void connect(String url, String username, String password) throws Exception {
+    public void connect(String url, String username, String password) throws IOException {
         isAuthByPrivateKey = false;
         log.info("Connection to " + url + " with login=" + username + " and pass=" + password);
         URL = new URL(url);
@@ -126,7 +128,7 @@ public class HttpClient {
         client.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
     }
 
-    public void connect(String url) throws Exception {
+    public void connect(String url) throws IOException {
         log.info("Connection to " + url);
         isAuthByPrivateKey = true;
         URL = new URL(url);
@@ -136,14 +138,14 @@ public class HttpClient {
 
     }
 
-    public int get() throws Exception {
+    public int get() throws IOException {
         HttpGet httpGet = new HttpGet(URL.toString());
         if (isAuthByPrivateKey) httpGet.setHeaders(headersArray);
         response = client.execute(targetHost, httpGet, localcontext);
         return response.getStatusLine().getStatusCode();
     }
 
-    public int get(String url, String dest) throws Exception {
+    public int get(String url, String dest) throws IOException {
         log.debug("get:" + url);
         URL URL = new URL(url);
         HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
@@ -178,7 +180,7 @@ public class HttpClient {
         return code;
     }
 
-    public int delete() throws Exception {
+    public int delete() throws IOException {
         log.debug("Delete " + URL.getPath());
         HttpDelete httpDelete = new HttpDelete(URL.toString());
         if (isAuthByPrivateKey) {
@@ -188,7 +190,7 @@ public class HttpClient {
         return response.getStatusLine().getStatusCode();
     }
 
-    public int post(String data) throws Exception {
+    public int post(String data) throws IOException {
         log.debug("Post " + URL.getPath());
         HttpPost httpPost = new HttpPost(URL.toString());
         if (isAuthByPrivateKey) {
@@ -207,7 +209,7 @@ public class HttpClient {
     }
 
 
-    public int put(String data) throws Exception {
+    public int put(String data) throws IOException {
         log.debug("Put " + URL.getPath());
         HttpPut httpPut = new HttpPut(URL.toString());
         if (isAuthByPrivateKey) {
@@ -223,7 +225,7 @@ public class HttpClient {
         return response.getStatusLine().getStatusCode();
     }
 
-    public int post(byte[] data) throws Exception {
+    public int post(byte[] data) throws IOException {
         log.debug("POST " + URL.toString());
         HttpPost httpPost = new HttpPost(URL.toString());
         if (isAuthByPrivateKey) {
@@ -253,7 +255,7 @@ public class HttpClient {
 //    entity.addPart("file", new FileBody(file));
 //    post.setEntity(entity);
 
-    public int post(MultipartEntity entity) throws Exception {
+    public int post(MultipartEntity entity) throws IOException {
         log.debug("POST " + URL.toString());
         HttpPost httpPost = new HttpPost(URL.toString());
         if (isAuthByPrivateKey) {
@@ -267,7 +269,7 @@ public class HttpClient {
     }
 
 
-    public int put(byte[] data) throws Exception {
+    public int put(byte[] data) throws IOException {
         log.debug("Put " + URL.getPath());
         HttpPut httpPut = new HttpPut(URL.getPath());
         if (isAuthByPrivateKey) {
@@ -292,7 +294,7 @@ public class HttpClient {
         return response.getStatusLine().getStatusCode();
     }
 
-    public int download(String dest) throws Exception {
+    public int download(String dest) throws IOException {
         log.debug("Download " + URL.getPath());
         HttpGet httpGet = new HttpGet(URL.getPath());
         if (isAuthByPrivateKey) {
@@ -308,7 +310,7 @@ public class HttpClient {
         return response.getStatusLine().getStatusCode();
     }
 
-    public BufferedImage readBufferedImageFromURL(String url) throws Exception {
+    public BufferedImage readBufferedImageFromURL(String url) throws IOException {
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
         HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
@@ -347,7 +349,7 @@ public class HttpClient {
 
 
 
-    public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws MalformedURLException, IOException, Exception {
+    public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws IOException {
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
         HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
@@ -383,7 +385,7 @@ public class HttpClient {
 
     }
 
-    public static Header[] authorizeFromRETRIEVAL(String action, String urlFullStr, String contentType, String accept, String publicKey, String privateKey, String host) throws Exception {
+    public static Header[] authorizeFromRETRIEVAL(String action, String urlFullStr, String contentType, String accept, String publicKey, String privateKey, String host) throws IOException {
         log.debug("authorize: action=" + action + ", url=" + urlFullStr + ", contentType=" + contentType + ",accept=" + accept);
         String url = urlFullStr.replace(host, "");
         log.debug("authorize: url short=" + url);
@@ -395,18 +397,24 @@ public class HttpClient {
         String canonicalHeaders = action + "\n\n" + contentType + "\n" + headers[1].getValue() + "\n";
         String messageToSign = canonicalHeaders + url;
         SecretKeySpec privateKeySign = new SecretKeySpec(privateKey.getBytes(), "HmacSHA1");
-        Mac mac = Mac.getInstance("HmacSHA1");
-        mac.init(privateKeySign);
-        byte[] rawHmac = mac.doFinal(new String(messageToSign.getBytes(), "UTF-8").getBytes());
-        //byte[] signatureBytes = Base64.encodeToByte(rawHmac,false);
-        byte[] signatureBytes = org.apache.commons.codec.binary.Base64.encodeBase64(rawHmac, false);
-        String authorization = "CYTOMINE " + publicKey + ":" + new String(signatureBytes);
-        headers[2] = new BasicHeader("authorization", authorization);
+
+        try {
+            Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(privateKeySign);
+            byte[] rawHmac = mac.doFinal(new String(messageToSign.getBytes(), "UTF-8").getBytes());
+            //byte[] signatureBytes = Base64.encodeToByte(rawHmac,false);
+            byte[] signatureBytes = org.apache.commons.codec.binary.Base64.encodeBase64(rawHmac, false);
+            String authorization = "CYTOMINE " + publicKey + ":" + new String(signatureBytes);
+            headers[2] = new BasicHeader("authorization", authorization);
+        } catch (GeneralSecurityException e) {
+            throw new IOException(e);
+        }
+
         return headers;
     }
 
 
-    public void authorize(String action, String url, String contentType, String accept) throws Exception {
+    public void authorize(String action, String url, String contentType, String accept) throws IOException {
         url = url.replace(host, "");
         url = url.replace("http://" + host, "");
         url = url.replace("https://" + host, "");
@@ -428,43 +436,48 @@ public class HttpClient {
 
         SecretKeySpec privateKeySign = new SecretKeySpec(privateKey.getBytes(), "HmacSHA1");
 
-        Mac mac = Mac.getInstance("HmacSHA1");
+        try {
+            Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(privateKeySign);
+            byte[] rawHmac = mac.doFinal(new String(messageToSign.getBytes(), "UTF-8").getBytes());
 
-        mac.init(privateKeySign);
-        byte[] rawHmac = mac.doFinal(new String(messageToSign.getBytes(), "UTF-8").getBytes());
+            byte[] signatureBytes = Base64.encodeBase64(rawHmac);
 
-        byte[] signatureBytes = Base64.encodeBase64(rawHmac);
+            String signature = new String(signatureBytes);
 
-        String signature = new String(signatureBytes);
+            String authorization = "CYTOMINE " + publicKey + ":" + signature;
 
-        String authorization = "CYTOMINE " + publicKey + ":" + signature;
+            log.debug("signature=" + signature);
+            log.debug("authorization=" + authorization);
 
-        log.debug("signature=" + signature);
-        log.debug("authorization=" + authorization);
+            headers.put("authorization", authorization);
 
-        headers.put("authorization", authorization);
+            for (String key : headers.keySet()) {
+                addHeader(key, headers.get(key));
+            }
 
-        for (String key : headers.keySet()) {
-            addHeader(key, headers.get(key));
+        } catch (GeneralSecurityException e) {
+            throw new IOException(e);
         }
+
     }
 
-    public static String getActualDateStr() throws Exception {
+    public static String getActualDateStr()  {
         Date today = Calendar.getInstance().getTime();
         return new SimpleDateFormat("%E, %d %M %Y %H:%M:%S +0000").format(today);
     }
 
 
-    public String getResponseData() throws Exception {
+    public String getResponseData() throws IOException {
         HttpEntity entityResponse = response.getEntity();
         return IOUtils.toString(entityResponse.getContent());
     }
 
-    public int getResponseCode() throws Exception {
+    public int getResponseCode()  {
         return response.getStatusLine().getStatusCode();
     }
 
-    public void disconnect() throws Exception {
+    public void disconnect() {
         log.debug("Disconnect");
         try {
             client.getConnectionManager().shutdown();

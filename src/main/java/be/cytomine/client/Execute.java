@@ -24,7 +24,7 @@ public class Execute {
 
     private static final Logger log = Logger.getLogger(Execute.class);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws CytomineException {
         BasicConfigurator.configure();
         PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
@@ -34,7 +34,7 @@ public class Execute {
         cytomine.getAmqpQueue();
     }
 
-    public static void ping(Cytomine cytomine) throws Exception {
+    public static void ping(Cytomine cytomine) throws CytomineException {
         log.info("Hello " + cytomine.getCurrentUser().get("username"));
     }
 }

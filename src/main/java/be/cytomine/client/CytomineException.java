@@ -36,6 +36,11 @@ public class CytomineException extends Exception {
     int httpCode;
     String message = "";
 
+    public CytomineException(Exception e) {
+        super(e);
+        this.message = e.getMessage();
+    }
+
     public CytomineException(int httpCode, String message) {
         this.httpCode = httpCode;
         this.message = message;
