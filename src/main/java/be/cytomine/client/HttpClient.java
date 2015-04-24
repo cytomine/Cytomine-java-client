@@ -227,7 +227,7 @@ public class HttpClient {
             myEntity = new BufferedHttpEntity(reqEntity);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e);
         }
 
         httpPost.setEntity(myEntity);
@@ -268,7 +268,7 @@ public class HttpClient {
             myEntity = new BufferedHttpEntity(reqEntity);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e);
         }
 
         httpPut.setEntity(myEntity);

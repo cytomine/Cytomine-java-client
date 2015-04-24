@@ -177,6 +177,15 @@ public abstract class Model {
         return getJSONResourceURL(id + "");
     }
 
+    @Override
+    public int hashCode() {
+        if(getId()!=null) {
+            return getId().intValue() ;
+        } else {
+            return 0;
+        }
+    }
+
     public String getJSONResourceURL(String id) {
         if (params.isEmpty()) {
             return "/api/" + getDomainName() + "/" + id + ".json";
@@ -187,6 +196,7 @@ public abstract class Model {
             }
             base = base.substring(0, base.length() - 1);
             return base;
+
         }
     }
 

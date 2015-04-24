@@ -77,7 +77,6 @@ public class AnnotationExample {
 
         } catch (CytomineException e) {
             log.error(e);
-            e.printStackTrace();
         }
     }
 

@@ -139,7 +139,6 @@
         </plugins>
     </build>
 
-
     <properties>
         <sonar.sources>src</sonar.sources>
         <sonar.language>java</sonar.language>
