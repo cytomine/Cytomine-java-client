@@ -20,6 +20,7 @@ import be.cytomine.client.collections.*;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -947,12 +948,12 @@ public class Cytomine {
         return userFinal;
     }
 
-    public Software addSoftware(String name, String serviceName, String resultType, String executedCommand) throws CytomineException {
+    public Software addSoftware(String name, String serviceName, String resultType, String executeCommand) throws CytomineException {
         Software software = new Software();
         software.set("name", name);
         software.set("serviceName", serviceName);
         software.set("resultName", resultType);
-        software.set("executedCommand", executedCommand);
+        software.set("executeCommand", executeCommand);
         return saveModel(software);
     }
 
@@ -965,6 +966,10 @@ public class Cytomine {
     }
 
     public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
+    }
+
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
         SoftwareParameter softwareParameter = new SoftwareParameter();
         softwareParameter.set("name", name);
         softwareParameter.set("type", type);
@@ -975,12 +980,17 @@ public class Cytomine {
         softwareParameter.set("uri", uri);
         softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
         softwareParameter.set("uriSortAttribut", uriSortAttribut);
+        softwareParameter.set("setByServer", setByServer);
 
         return saveModel(softwareParameter);
     }
 
     public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null);
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
+    }
+
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
     }
 
     public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {

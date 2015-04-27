@@ -16,6 +16,8 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
+import be.cytomine.client.models.Software;
+import be.cytomine.client.sample.SoftwareExample;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
