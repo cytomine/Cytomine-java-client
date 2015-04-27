@@ -957,6 +957,12 @@ public class Cytomine {
         return saveModel(software);
     }
 
+    public void deleteSoftware(Long idSoftware) throws CytomineException {
+        Software software = new Software();
+        software.set("id", idSoftware);
+        deleteModel(software);
+    }
+
     public void unionAnnotation(Long idImage, Long idUser, Integer minIntersectionLength) throws CytomineException {
         AnnotationUnion annotation = new AnnotationUnion();
         annotation.addParams("idImage", idImage + "");

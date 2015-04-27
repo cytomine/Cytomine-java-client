@@ -211,9 +211,9 @@ public class SoftwareExample {
     public static void addSoftwareSegmentationModelBuilder(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("3Pyxit_SegmentationModel_Builder", "createRabbitJobWithArgsService", "DownloadFiles", "python add_and_run_job.py --cytomine_host $cytomine_host --cytomine_public_key $cytomine_public_key --cytomine_private_key $cytomine_private_key --cytomine_base_path $cytomine_base_path --cytomine_id_software $cytomine_id_software --cytomine_working_path $cytomine_working_path --cytomine_id_project $cytomine_id_project --cytomine_annotation_projects $cytomine_annotation_projects -z $z --cytomine_predict_terms $cytomine_predict_terms --cytomine_excluded_terms $cytomine_excluded_terms --pyxit_target_width $pyxit_target_width --pyxit_target_height $pyxit_target_height --pyxit_colorspace $pyxit_colorspace --pyxit_n_jobs $pyxit_n_jobs --pyxit_save_to $pyxit_save_to --pyxit_transpose $pyxit_transpose --pyxit_fixed_size $pyxit_fixed_size --pyxit_interpolation $pyxit_interpolation --forest_n_estimators $forest_n_estimators --forest_max_features $forest_max_features --forest_min_samples_split $forest_min_samples_split --pyxit_n_subwindows $pyxit_n_subwindows --verbose");
-            cytomine.addSoftwareParameter("cytomine_host", "String", software.getId(), "$cytomineHosts$", true, 100);
-            cytomine.addSoftwareParameter("cytomine_public_key", "String", software.getId(), "", true, 200);
-            cytomine.addSoftwareParameter("cytomine_private_key", "String", software.getId(), "", true, 300);
+            cytomine.addSoftwareParameter("host", "String", software.getId(), "$cytomineHosts$", true, 100);
+            cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
+            cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
             cytomine.addSoftwareParameter("cytomine_base_path", "String", software.getId(), "/api/", true, 400);
             cytomine.addSoftwareParameter("cytomine_software", "Number", software.getId(), "", true, 500);
             cytomine.addSoftwareParameter("cytomine_working_path", "String", software.getId(), "/home/julien/bigdata/cytomine/", true, 600);
