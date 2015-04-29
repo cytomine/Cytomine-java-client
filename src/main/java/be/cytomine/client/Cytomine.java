@@ -160,7 +160,10 @@ public class Cytomine {
             Object obj = JSONValue.parse(response);
             JSONObject json = (JSONObject) obj;
             return json;
-        } catch (Exception | Error e) {
+        } catch (Exception e) {
+            log.error(e);
+            throw new CytomineException(code, response);
+        } catch (Error e) {
             log.error(e);
             throw new CytomineException(code, response);
         }
