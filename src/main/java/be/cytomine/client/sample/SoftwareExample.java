@@ -196,7 +196,8 @@ public class SoftwareExample {
 
     public static void addSoftwareComputeArea(Cytomine cytomine) throws Exception {
         try {
-            Software software = cytomine.addSoftware("ComputeTermArea", "createRabbitJobService", "DownloadFiles", "groovy -cp algo/computeAnnotationStats/Cytomine-Java-Client.jar:algo/computeAnnotationStats/jts-1.13.jar algo/computeAnnotationStats/computeAnnotationStats.groovy");
+            Software software = cytomine.addSoftware("ComputeTermArea", "createRabbitJobService", "DownloadFiles",
+                    "groovy -cp algo/computeAnnotationStats/Cytomine-Java-Client.jar:algo/computeAnnotationStats/jts-1.13.jar algo/computeAnnotationStats/computeAnnotationStats.groovy");
             cytomine.addSoftwareParameter("host", "String", software.getId(), "$cytomineHost$", true, 100);
             cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
             cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
@@ -210,7 +211,33 @@ public class SoftwareExample {
 
     public static void addSoftwareSegmentationModelBuilder(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("3Pyxit_SegmentationModel_Builder", "createRabbitJobWithArgsService", "DownloadFiles", "python add_and_run_job.py --cytomine_host $host --cytomine_public_key $publicKey --cytomine_private_key $privateKey --cytomine_base_path $cytomine_base_path --cytomine_id_software $cytomine_id_software --cytomine_working_path $cytomine_working_path --cytomine_id_project $cytomine_id_project --cytomine_annotation_projects $cytomine_annotation_projects -z $z --cytomine_predict_terms $cytomine_predict_terms --cytomine_excluded_terms $cytomine_excluded_terms --pyxit_target_width $pyxit_target_width --pyxit_target_height $pyxit_target_height --pyxit_colorspace $pyxit_colorspace --pyxit_n_jobs $pyxit_n_jobs --pyxit_save_to $pyxit_save_to --pyxit_transpose $pyxit_transpose --pyxit_fixed_size $pyxit_fixed_size --pyxit_interpolation $pyxit_interpolation --forest_n_estimators $forest_n_estimators --forest_max_features $forest_max_features --forest_min_samples_split $forest_min_samples_split --pyxit_n_subwindows $pyxit_n_subwindows --verbose");
+            Software software = cytomine.addSoftware("3Pyxit_SegmentationModel_Builder", "createRabbitJobWithArgsService", "DownloadFiles",
+                    "python add_and_run_job.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path $cytomine_base_path " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_working_path $cytomine_working_path " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_annotation_projects $cytomine_annotation_projects " +
+                            "-z $z " +
+                            "--cytomine_predict_terms $cytomine_predict_terms " +
+                            "--cytomine_excluded_terms $cytomine_excluded_terms " +
+                            "--pyxit_target_width $pyxit_target_width " +
+                            "--pyxit_target_height $pyxit_target_height " +
+                            "--pyxit_colorspace $pyxit_colorspace " +
+                            "--pyxit_n_jobs $pyxit_n_jobs " +
+                            "--pyxit_save_to $pyxit_save_to " +
+                            "--pyxit_transpose $pyxit_transpose " +
+                            "--pyxit_fixed_size $pyxit_fixed_size " +
+                            "--pyxit_interpolation $pyxit_interpolation " +
+                            "--forest_n_estimators $forest_n_estimators " +
+                            "--forest_max_features $forest_max_features " +
+                            "--forest_min_samples_split $forest_min_samples_split " +
+                            "--pyxit_n_subwindows $pyxit_n_subwindows " +
+                            "--verbose");
+
             cytomine.addSoftwareParameter("cytomine_base_path", "String", software.getId(), "/api/", true, 400);
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500);
             cytomine.addSoftwareParameter("cytomine_working_path", "String", software.getId(), "/home/julien/bigdata/cytomine/", true, 600);
@@ -242,7 +269,8 @@ public class SoftwareExample {
 
     public static void addSoftwareEasySegmentationModelBuilder(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("Easy_3Pyxit_SegmentationModel_Builder_4", "createRabbitJobWithArgsService", "DownloadFiles", "python algo/segmentation_model_builder/src/add_and_run_job.py --cytomine_host $host --cytomine_public_key $publicKey --cytomine_private_key $privateKey --cytomine_base_path $cytomine_base_path --cytomine_id_software $cytomine_id_software --cytomine_working_path $cytomine_working_path --cytomine_id_project $cytomine_id_project --cytomine_annotation_projects $cytomine_annotation_projects -z $z --cytomine_predict_terms $cytomine_predict_terms --cytomine_excluded_terms $cytomine_excluded_terms --pyxit_target_width $pyxit_target_width --pyxit_target_height $pyxit_target_height --pyxit_colorspace $pyxit_colorspace --pyxit_n_jobs $pyxit_n_jobs --pyxit_save_to $pyxit_save_to --pyxit_transpose $pyxit_transpose --pyxit_fixed_size $pyxit_fixed_size --pyxit_interpolation $pyxit_interpolation --forest_n_estimators $forest_n_estimators --forest_max_features $forest_max_features --forest_min_samples_split $forest_min_samples_split --pyxit_n_subwindows $pyxit_n_subwindows --verbose");
+            Software software = cytomine.addSoftware("Easy_3Pyxit_SegmentationModel_Builder_4", "createRabbitJobWithArgsService", "DownloadFiles",
+                    "python algo/segmentation_model_builder/src/add_and_run_job.py --cytomine_host $host --cytomine_public_key $publicKey --cytomine_private_key $privateKey --cytomine_base_path $cytomine_base_path --cytomine_id_software $cytomine_id_software --cytomine_working_path $cytomine_working_path --cytomine_id_project $cytomine_id_project --cytomine_annotation_projects $cytomine_annotation_projects -z $z --cytomine_predict_terms $cytomine_predict_terms --cytomine_excluded_terms $cytomine_excluded_terms --pyxit_target_width $pyxit_target_width --pyxit_target_height $pyxit_target_height --pyxit_colorspace $pyxit_colorspace --pyxit_n_jobs $pyxit_n_jobs --pyxit_save_to $pyxit_save_to --pyxit_transpose $pyxit_transpose --pyxit_fixed_size $pyxit_fixed_size --pyxit_interpolation $pyxit_interpolation --forest_n_estimators $forest_n_estimators --forest_max_features $forest_max_features --forest_min_samples_split $forest_min_samples_split --pyxit_n_subwindows $pyxit_n_subwindows --verbose");
             cytomine.addSoftwareParameter("cytomine_base_path", "String", software.getId(), "/api/", true, 400);
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "160438263", true, 500);
             cytomine.addSoftwareParameter("cytomine_working_path", "String", software.getId(), "/home/julien/bigdata/cytomine/", true, 600);
@@ -269,4 +297,39 @@ public class SoftwareExample {
             log.error(e);
         }
     }
+
+
+    public static void addSoftwareTissueDetect(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("TissueDetect", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/detect_sample/detect_sample.py --cytomine_host $host --cytomine_public_key $publicKey --cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path /software_router/algo/detect_sample/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_predict_term $cytomine_predict_term " +
+                            "--cytomine_max_image_size $cytomine_max_image_size " +
+                            "--cytomine_erode_iterations $cytomine_erode_iterations " +
+                            "--cytomine_dilate_iterations $cytomine_dilate_iterations " +
+                            "--cytomine_athreshold_blocksize $cytomine_athreshold_blocksize " +
+                            "--cytomine_athreshold_constant $cytomine_athreshold_constant ");
+
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 400, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 500, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("cytomine_predict_term", "Number", software.getId(), "", true, 600);
+            cytomine.addSoftwareParameter("cytomine_max_image_size", "Number", software.getId(), "0", true, 700);
+            cytomine.addSoftwareParameter("cytomine_erode_iterations", "Number", software.getId(), "0", true, 800);
+            cytomine.addSoftwareParameter("cytomine_dilate_iterations", "Number", software.getId(), "0", true, 900);
+            cytomine.addSoftwareParameter("cytomine_athreshold_blocksize", "Number", software.getId(), "0", true, 1000);
+            cytomine.addSoftwareParameter("cytomine_athreshold_constant", "Number", software.getId(), "0", true, 1100);
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+
+
 }
