@@ -19,7 +19,7 @@ package be.cytomine.client;
 import be.cytomine.client.collections.*;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
-
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
