@@ -20,7 +20,6 @@ import be.cytomine.client.collections.*;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -355,7 +354,7 @@ public class Cytomine {
         }
     }
 
-    public void uploadFile(String url, byte[] data) throws CytomineException {
+	public void uploadFile(String url, byte[] data) throws CytomineException {
         
         try {
             HttpClient client = null;
@@ -542,6 +541,40 @@ public class Cytomine {
         return fetchCollection(image);
 	}
     
+	public String getImageServersOfAbstractImage(Long abstractImageID) {
+		
+		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
+		
+		    HttpClient client = null;
+            client = new HttpClient(publicKey, privateKey, getHost());
+
+            
+			try {
+	            client.authorize("GET", subUrl, "", "application/json,*/*");
+	            client.connect(getHost() + subUrl);
+	            int code = client.get();
+	            
+	            String response = client.getResponseData();
+	            client.disconnect();
+	            JSONObject json = createJSONResponse(code, response);
+            	analyzeCode(code, json);
+            	
+            	JSONArray servers = (JSONArray) json.get("imageServersURLs");
+            	
+            	return (String) servers.get(0);
+	            
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CytomineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		return null;
+	}
+
+	
     public Annotation getAnnotation(Long id) throws CytomineException {
         Annotation annotation = new Annotation();
         annotation.set("id", id);
