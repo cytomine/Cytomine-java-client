@@ -20,6 +20,9 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 public class Execute {
 
     private static final Logger log = Logger.getLogger(Execute.class);
@@ -30,8 +33,6 @@ public class Execute {
         log.info("Connection to cytomine...");
 
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
-        ping(cytomine);
-        cytomine.getAmqpQueue();
     }
 
     public static void ping(Cytomine cytomine) throws CytomineException {
