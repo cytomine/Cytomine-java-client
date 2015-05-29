@@ -16,12 +16,12 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
+import be.cytomine.client.sample.SoftwareExample;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.Date;
 
 public class Execute {
 
@@ -33,6 +33,9 @@ public class Execute {
         log.info("Connection to cytomine...");
 
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
+        ping(cytomine);
+        //cytomine.addUserJob(104606215l,16l,57l,new Date(),104606261l);
+        cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
     }
 
     public static void ping(Cytomine cytomine) throws CytomineException {
