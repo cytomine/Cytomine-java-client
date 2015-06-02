@@ -25,6 +25,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -33,11 +34,13 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -56,10 +59,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * HTTP Client abstraction
@@ -338,6 +338,37 @@ public class HttpClient {
 
     }
 
+    public static BufferedImage readBufferedImageFromPOST(String url, String post) throws IOException{
+        log.debug("readBufferedImageFromURL:" + url);
+        URL URL = new URL(url);
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        log.debug("targetHost:" + targetHost);
+        DefaultHttpClient client = new DefaultHttpClient();
+
+        log.debug("client:" + client);
+        // Add AuthCache to the execution context
+        BasicHttpContext localcontext = new BasicHttpContext();
+        log.debug("localcontext:" + localcontext);
+
+        BufferedImage img = null;
+        HttpPost httpPost = new HttpPost(URL.toString());
+        httpPost.setEntity(new StringEntity(post, "UTF-8"));
+        HttpResponse response = client.execute(targetHost, httpPost, localcontext);
+
+        int code = response.getStatusLine().getStatusCode();
+        log.info("url=" + url + " is " + code + "(OK=" + HttpURLConnection.HTTP_OK + ",MOVED=" + HttpURLConnection.HTTP_MOVED_TEMP + ")");
+
+        boolean isOK = (code == HttpURLConnection.HTTP_OK);
+        boolean isFound = (code == HttpURLConnection.HTTP_MOVED_TEMP);
+        boolean isErrorServer = (code == HttpURLConnection.HTTP_INTERNAL_ERROR);
+
+        if (!isOK && !isFound & !isErrorServer) throw new IOException(url + " cannot be read: " + code);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            img = ImageIO.read(entity.getContent());
+        }
+        return img;
+    }
 
 
     public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws IOException {

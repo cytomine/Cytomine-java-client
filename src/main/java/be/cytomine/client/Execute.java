@@ -21,6 +21,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.util.Date;
+
 public class Execute {
 
     private static final Logger log = Logger.getLogger(Execute.class);
@@ -32,6 +34,8 @@ public class Execute {
 
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
         ping(cytomine);
+        //cytomine.addUserJob(104606215l,16l,57l,new Date(),104606261l);
+        cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
     }
 
     public static void ping(Cytomine cytomine) throws CytomineException {
