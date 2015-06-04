@@ -222,14 +222,15 @@ public class SoftwareExample {
                             "--cytomine_erode_iterations $cytomine_erode_iterations " +
                             "--cytomine_dilate_iterations $cytomine_dilate_iterations " +
                             "--cytomine_athreshold_blocksize $cytomine_athreshold_blocksize " +
-                            "--cytomine_athreshold_constant $cytomine_athreshold_constant ");
+                            "--cytomine_athreshold_constant $cytomine_athreshold_constant " +
+                            "--verbose true ");
 
 
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 400, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 500, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_predict_term", "Number", software.getId(), "", true, 600);
+            cytomine.addSoftwareParameter("cytomine_predict_term", "Domain", software.getId(), "", true, 600, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("cytomine_max_image_size", "Number", software.getId(), "0", true, 700);
             cytomine.addSoftwareParameter("cytomine_erode_iterations", "Number", software.getId(), "0", true, 800);
             cytomine.addSoftwareParameter("cytomine_dilate_iterations", "Number", software.getId(), "0", true, 900);
@@ -240,7 +241,6 @@ public class SoftwareExample {
         }
     }
 
-//NOT TESTED
     public static void addSoftwareTissueSegmentBuilder(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("TissueSegment_Model_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
@@ -269,7 +269,7 @@ public class SoftwareExample {
                             "--forest_min_samples_split $forest_min_samples_split " +
                             "--pyxit_n_subwindows $pyxit_n_subwindows " +
                             "--cytomine_reviewed $cytomine_reviewed " +
-                            "--verbose ");
+                            "--verbose True");
 
 
             // set by server
@@ -277,10 +277,10 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 500, null, null, null, true);
             cytomine.addSoftwareParameter("pyxit_save_to", "String", software.getId(), "algo/segmentation_model_builder/logs/segmentation_tumor_model.pkl", true, 1600, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_annotation_projects", "List", software.getId(), "", true, 600); // ???
-            cytomine.addSoftwareParameter("zoom", "Number", software.getId(), "0", true, 700); // ???
-            cytomine.addSoftwareParameter("cytomine_predict_terms", "List", software.getId(), "", true, 800);// ???
-            cytomine.addSoftwareParameter("cytomine_excluded_terms", "List", software.getId(), "", true, 900);// ???
+            cytomine.addSoftwareParameter("cytomine_annotation_projects", "ListDomain", software.getId(), "", true, 600, "/api/project.json", "id", "id");
+            cytomine.addSoftwareParameter("zoom", "Number", software.getId(), "0", true, 700);
+            cytomine.addSoftwareParameter("cytomine_predict_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_excluded_terms", "ListDomain", software.getId(), "", true, 900, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "16", true, 1000);
             cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "16", true, 1100);
             cytomine.addSoftwareParameter("pyxit_colorspace", "Number", software.getId(), "2", true, 1200);
@@ -627,6 +627,27 @@ public class SoftwareExample {
         }
     }
 
+
+//for landmark
+    // build_model
+    /*		'cytomine_working_path' : '/home/remy/cytomine/',
+		'cytomine_dataset_storage' : 'drosophiles/',
+		'cytomine_id_term': 152147653,
+		'cytomine_id_project': 159904926,
+		'image_type': 'jpg',
+		'model_njobs': 2,
+		'model_R': 6,
+		'model_RMAX': 70,
+		'model_P': 2,
+		'model_npred': 50000,
+		'model_ntrees': 50,
+		'model_ntimes': 1,
+		'model_angle': 0,
+		'model_depth': 5,
+		'model_step': 1,
+		'model_wsize': 8,
+		'model_name': 'landmark-1'
+*/
 
     // NOT TESTED
     public static void addSoftwareBONUS(Cytomine cytomine) throws Exception { // wait for the real name
