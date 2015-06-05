@@ -253,7 +253,7 @@ public class SoftwareExample {
                             "--cytomine_working_path algo/segmentation_model_builder/ " +
                             "--cytomine_id_project $cytomine_id_project " +
                             "--cytomine_annotation_projects $cytomine_annotation_projects " +
-                            "-z $zoom " +
+                            "-z $cytomine_zoom_level " +
                             "--cytomine_predict_terms $cytomine_predict_terms " +
                             "--cytomine_excluded_terms $cytomine_excluded_terms " +
                             "--pyxit_target_width $pyxit_target_width " +
@@ -278,7 +278,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("pyxit_save_to", "String", software.getId(), "algo/segmentation_model_builder/logs/segmentation_tumor_model.pkl", true, 1600, null, null, null, true);
             // set by user
             cytomine.addSoftwareParameter("cytomine_annotation_projects", "ListDomain", software.getId(), "", true, 600, "/api/project.json", "id", "id");
-            cytomine.addSoftwareParameter("zoom", "Number", software.getId(), "0", true, 700);
+            cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 700);
             cytomine.addSoftwareParameter("cytomine_predict_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("cytomine_excluded_terms", "ListDomain", software.getId(), "", true, 900, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "16", true, 1000);
@@ -314,7 +314,7 @@ public class SoftwareExample {
                             "--cytomine_working_path algo/segmentation_model_builder/ " +
                             "--cytomine_id_project $cytomine_id_project " +
                             "--cytomine_annotation_projects $cytomine_annotation_projects " +
-                            "-z $zoom " +
+                            "-z $cytomine_zoom_level " +
                             "--cytomine_predict_terms $cytomine_predict_terms " +
                             "--cytomine_excluded_terms $cytomine_excluded_terms " +
                             "--pyxit_target_width $pyxit_target_width " +
@@ -338,7 +338,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("pyxit_save_to", "String", software.getId(), "algo/segmentation_model_builder/logs/segmentation_tumor_model.pkl", true, 1600, null, null, null, true);
             // set by user
             cytomine.addSoftwareParameter("cytomine_annotation_projects", "List", software.getId(), "160436450", true, 600); // ???
-            cytomine.addSoftwareParameter("zoom", "Number", software.getId(), "0", true, 700); // ???
+            cytomine.addSoftwareParameter("$cytomine_zoom_level", "Number", software.getId(), "0", true, 700); // ???
             cytomine.addSoftwareParameter("cytomine_predict_terms", "List", software.getId(), "20202", true, 800);// ???
             cytomine.addSoftwareParameter("cytomine_excluded_terms", "List", software.getId(), "5735", true, 900);// ???
             cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "24", true, 1000);
@@ -360,16 +360,16 @@ public class SoftwareExample {
 // NOT TESTED
     public static void addSoftwareTissueSegmentPrediction(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("Segmentation_Model_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
+            Software software = cytomine.addSoftware("TissueSegment_Model_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
                     "python algo/segmentation_prediction/image_prediction_wholeslide.py " +
                             "--cytomine_host $host " +
-                            "--cytomine_public_key $public_key " +
-                            "--cytomine_private_key $private_key " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
                             "--cytomine_base_path /api/ " +
-                            "--cytomine_id_software $software " +
+                            "--cytomine_id_software $cytomine_id_software " +
                             "--cytomine_working_path algo/segmentation_prediction/ " +
-                            "--cytomine_id_project $id_project " +
-                            "-i $image " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "-i $cytomine_id_image " +
                             "-z $cytomine_zoom_level " +
                             "-t $cytomine_tile_size " +
                             "--cytomine_tile_min_stddev $cytomine_tile_min_stddev " +
@@ -381,7 +381,7 @@ public class SoftwareExample {
                             "-j $cytomine_nb_jobs " +
                             "--cytomine_predict_term $cytomine_predict_term " +
                             "--cytomine_roi_term $cytomine_roi_term " +
-                            "--cytomine_reviewed_roi $cytomine_reviewed_roi" +
+                            "--cytomine_reviewed_roi $cytomine_reviewed_roi " +
                             "--pyxit_target_width $pyxit_target_width " +
                             "--pyxit_target_height $pyxit_target_height " +
                             "--pyxit_colorspace $pyxit_colorspace " +
@@ -416,8 +416,8 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
             cytomine.addSoftwareParameter("pyxit_load_from", "String", software.getId(), "algo/segmentation_prediction/logs/segmentation_tumor_model.pkl", true, 2500, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("model_id_job", "Number", software.getId(), "", true, 750);
-            cytomine.addSoftwareParameter("image", "Number", software.getId(), "", true, 800);
+            cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "id", "id");
+            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 500, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 900);
             cytomine.addSoftwareParameter("cytomine_tile_size", "Number", software.getId(), "512", true, 1000);
             cytomine.addSoftwareParameter("cytomine_tile_min_stddev", "Number", software.getId(), "5", true, 1100);
@@ -427,14 +427,14 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_endx", "Number", software.getId(), "0", true, 1500);
             cytomine.addSoftwareParameter("cytomine_endy", "Number", software.getId(), "0", true, 1600);
             cytomine.addSoftwareParameter("cytomine_nb_jobs", "Number", software.getId(), "10", true, 1700);
-            cytomine.addSoftwareParameter("cytomine_predict_term", "Number", software.getId(), "4", true, 1800);
-            cytomine.addSoftwareParameter("cytomine_roi_term", "Number", software.getId(), "0", true, 1900);
-            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Number", software.getId(), "0", true, 2000);
+            cytomine.addSoftwareParameter("cytomine_predict_term", "Domain", software.getId(), "", true, 1800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_roi_term", "Number", software.getId(), "0", true, 1900); //???
+            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Number", software.getId(), "0", true, 2000); //???
             cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "24", true, 2100);
             cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "24", true, 2200);
             cytomine.addSoftwareParameter("pyxit_colorspace", "Number", software.getId(), "2", true, 2300);
             cytomine.addSoftwareParameter("pyxit_nb_jobs", "Number", software.getId(), "10", true, 2400);
-            cytomine.addSoftwareParameter("cytomine_predict_step", "Number", software.getId(), "4", true, 2600);
+            cytomine.addSoftwareParameter("cytomine_predict_step", "Number", software.getId(), "4", true, 2600); //??
             cytomine.addSoftwareParameter("cytomine_union", "Boolean", software.getId(), "true", true, 2700);
             cytomine.addSoftwareParameter("cytomine_postproc", "Boolean", software.getId(), "true", true, 2800);
             cytomine.addSoftwareParameter("cytomine_min_size", "Number", software.getId(), "1000", true, 2900);
