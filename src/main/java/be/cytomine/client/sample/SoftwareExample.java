@@ -445,8 +445,8 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_endy", "Number", software.getId(), "0", true, 1600);
             cytomine.addSoftwareParameter("cytomine_nb_jobs", "Number", software.getId(), "10", true, 1700);
             cytomine.addSoftwareParameter("cytomine_predict_term", "Domain", software.getId(), "", true, 1800, "/api/project/$currentProject$/term.json", "name", "name");
-            cytomine.addSoftwareParameter("cytomine_roi_term", "Number", software.getId(), "0", true, 1900); //???
-            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Number", software.getId(), "0", true, 2000); //???
+            cytomine.addSoftwareParameter("cytomine_roi_term", "Domain", software.getId(), "", true, 1900, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Boolean", software.getId(), "false", true, 2000);
             cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "24", true, 2100);
             cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "24", true, 2200);
             cytomine.addSoftwareParameter("pyxit_colorspace", "Number", software.getId(), "2", true, 2300);
@@ -568,7 +568,8 @@ public class SoftwareExample {
                             "--cytomine_predict_terms $cytomine_predict_terms " +
                             "--pyxit_fixed_size $pyxit_fixed_size " +
                             "--forest_shared_mem $forest_shared_mem " +
-                            "--svm_c $svm_c ");
+                            "--svm_c $svm_c " +
+                            "--verbose true ");
 
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
@@ -582,15 +583,15 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "16", true, 1200);
             cytomine.addSoftwareParameter("pyxit_colorspace", "Number", software.getId(), "2", true, 1300);
             cytomine.addSoftwareParameter("pyxit_n_jobs", "Number", software.getId(), "-1", true, 1400);
-            cytomine.addSoftwareParameter("pyxit_min_size", "Number", software.getId(), "0.1", true, 1500);
+            cytomine.addSoftwareParameter("pyxit_min_size", "Number", software.getId(), "0.0", true, 1500);
             cytomine.addSoftwareParameter("pyxit_max_size", "Number", software.getId(), "1", true, 1600);
             cytomine.addSoftwareParameter("pyxit_interpolation", "Number", software.getId(), "2", true, 1700);
             cytomine.addSoftwareParameter("forest_n_estimators", "Number", software.getId(), "10", true, 1800);
-            cytomine.addSoftwareParameter("forest_max_features", "Number", software.getId(), "1", true, 1900);
+            cytomine.addSoftwareParameter("forest_max_features", "Number", software.getId(), "28", true, 1900);
             cytomine.addSoftwareParameter("forest_min_samples_split", "Number", software.getId(), "1", true, 2000);
             cytomine.addSoftwareParameter("pyxit_n_subwindows", "Number", software.getId(), "10", true, 2100);
-            cytomine.addSoftwareParameter("svm", "Number", software.getId(), "0", true, 2200);
-            cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "10", true, 2300);
+            cytomine.addSoftwareParameter("svm", "Number", software.getId(), "1", true, 2200);
+            cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "1", true, 2300);
             cytomine.addSoftwareParameter("cytomine_reviewed", "Boolean", software.getId(), "true", true, 2400);
             cytomine.addSoftwareParameter("pyxit_transpose", "Boolean", software.getId(), "true", true, 2500);
             cytomine.addSoftwareParameter("cytomine_predict_terms", "ListDomain", software.getId(), "", true, 2600, "/api/project/$currentProject$/term.json", "name", "name");
@@ -618,7 +619,8 @@ public class SoftwareExample {
                             "--cytomine_zoom_level $cytomine_zoom_level " +
                             "--cytomine_id_userjob $cytomine_id_userjob " +
                             "--pyxit_save_to $pyxit_load_from " +
-                            "--cytomine_dump_type $cytomine_dump_type ");
+                            "--cytomine_dump_type $cytomine_dump_type " +
+                            "--verbose true ");
 
 
 
@@ -632,7 +634,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "id", "id");
             cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 900);
-            cytomine.addSoftwareParameter("cytomine_id_userjob", "Number", software.getId(), "1", true, 1000); // ??
+            cytomine.addSoftwareParameter("cytomine_id_userjob", "Number", software.getId(), "1", true, 1000); // ?? user_id which uploaded images :/
             cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "1", true, 1200);
 
 
@@ -733,9 +735,9 @@ public class SoftwareExample {
     }
 
     // NOT TESTED
-    public static void addSoftwareBONUS(Cytomine cytomine) throws Exception { // wait for the real name
+    public static void addSoftwareCellClassifierValidation(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("BONUS", "createRabbitJobWithArgsService", "ValidateAnnotation", // wait for the real name
+            Software software = cytomine.addSoftware("Cell_Classifier_Validation", "createRabbitJobWithArgsService", "ValidateAnnotation", // wait for the real name
                     "python algo/classification_validation/add_and_run_job.py " +
                             "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
