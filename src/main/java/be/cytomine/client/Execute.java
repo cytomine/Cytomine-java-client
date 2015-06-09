@@ -27,7 +27,7 @@ public class Execute {
 
     private static final Logger log = Logger.getLogger(Execute.class);
 
-    public static void main(String[] args) throws CytomineException {
+    public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
         PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
@@ -35,7 +35,11 @@ public class Execute {
         Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
         ping(cytomine);
         //cytomine.addUserJob(104606215l,16l,57l,new Date(),104606261l);
-        cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
+        //cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
+
+//        SoftwareExample.testAddJobTemplate2(cytomine);
+//        SoftwareExample.testAddJobTemplate3(cytomine);
+//        SoftwareExample.testAddJobTemplate4(cytomine);
     }
 
     public static void ping(Cytomine cytomine) throws CytomineException {

@@ -140,9 +140,8 @@ public class Cytomine {
 
     private void analyzeCode(int code, JSONObject json) throws CytomineException {
 
-        if (code == 200 || code == 201 || code == 304) {
-            return;
-        } else if (code == 400) {
+        //if 200,201,...no exception
+        if (code == 400) {
             throw new CytomineException(code, json);
         } else if (code == 401) {
             throw new CytomineException(code, json);
@@ -158,8 +157,7 @@ public class Cytomine {
     private JSONObject createJSONResponse(int code, String response) throws CytomineException {
         try {
             Object obj = JSONValue.parse(response);
-            JSONObject json = (JSONObject) obj;
-            return json;
+            return (JSONObject) obj;
         } catch (Exception e) {
             log.error(e);
             throw new CytomineException(code, response);
@@ -171,8 +169,7 @@ public class Cytomine {
 
     private JSONArray createJSONArrayResponse(int code, String response) throws CytomineException {
         Object obj = JSONValue.parse(response);
-        JSONArray json = (JSONArray) obj;
-        return json;
+        return (JSONArray) obj;
     }
 
     public String doGet(String suburl) throws CytomineException {
@@ -411,8 +408,7 @@ public class Cytomine {
         HttpClient client = null;
         try {
             client = new HttpClient(publicKey, privateKey, getHost());
-            BufferedImage img = client.readBufferedImageFromURL(url);
-            return img;
+            return client.readBufferedImageFromURL(url);
 
         } catch (Exception e) {
             throw new CytomineException(0, e.toString());
@@ -470,7 +466,6 @@ public class Cytomine {
         Project project = getProject(idProject);
         project.set("name", name);
         project.set("ontology", idOntology);
-        ;
         return updateModel(project);
     }
 
@@ -923,7 +918,6 @@ public class Cytomine {
     public Job editJob(Long id, Job newJob) throws CytomineException {
         Job job = new Job();
         job.setAttr(newJob.getAttr());
-        ;
         return updateModel(job);
     }
 
@@ -1428,8 +1422,7 @@ public class Cytomine {
             String response = client.getResponseData();
             log.debug("response=" + response);
             client.disconnect();
-            JSONObject json = createJSONResponse(code, response);
-            return json;
+            return createJSONResponse(code, response);
         } catch(IOException e) {
             throw new CytomineException(e);
         }
@@ -1507,8 +1500,7 @@ public class Cytomine {
             String response = client.getResponseData();
             log.debug("response=" + response);
             client.disconnect();
-            JSONArray json = createJSONArrayResponse(code, response);
-            return json;
+            return createJSONArrayResponse(code, response);
         } catch(IOException e) {
             throw new CytomineException(e);
         }

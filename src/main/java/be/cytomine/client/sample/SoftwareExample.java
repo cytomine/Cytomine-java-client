@@ -59,6 +59,24 @@ public class SoftwareExample {
         JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562L, "456");
     }
 
+    public static void testAddJobTemplate2(Cytomine cytomine) throws Exception {
+        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAdenoBig", 57L, 900532L);
+        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556L, "20202");
+        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562L, "456");
+    }
+
+    public static void testAddJobTemplate3(Cytomine cytomine) throws Exception {
+        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeBigAnnot", 57L, 900532L);
+        //JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556L, "20202");
+        JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562L, "456");
+    }
+
+    public static void testAddJobTemplate4(Cytomine cytomine) throws Exception {
+        JobTemplate jobTemplate = cytomine.addJobTemplate("ComputeAdenno", 57L, 900532L);
+        JobParameter jobParameter1 = cytomine.addJobParameter(jobTemplate.getId(), 900556L, "20202");
+        //JobParameter jobParameter2 = cytomine.addJobParameter(jobTemplate.getId(), 900562L, "456");
+    }
+
 
     public static void addSoftwareTest(Cytomine cytomine) throws Exception {
         try {
