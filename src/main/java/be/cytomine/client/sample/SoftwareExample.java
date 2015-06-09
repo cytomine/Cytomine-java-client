@@ -375,7 +375,6 @@ public class SoftwareExample {
         }
     }*/
 
-// NOT TESTED
     public static void addSoftwareTissueSegmentPrediction(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("TissueSegment_Model_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
@@ -477,7 +476,6 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareCellClassifierFinder(Cytomine cytomine) throws Exception {
         try{
 
@@ -536,7 +534,6 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareCellClassifierBuilder(Cytomine cytomine) throws Exception {
         try{
 
@@ -644,27 +641,96 @@ public class SoftwareExample {
         }
     }
 
+    // NOT TESTED
+    public static void addSoftwareLandMarkBuilder(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("LandMark_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/landmark_model_builder/download.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/landmark_model_builder/ " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_dataset_storage ldm_detect/ " +
+                            "--verbose true " +
+                            " && " +
+                            " python algo/landmark_model_builder/build_model.py " +
+                            /*"--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +*/
+                            "--cytomine_working_path algo/classification_prediction/ " +
+                            "--cytomine_dataset_storage ldm_detect/ " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_id_term $cytomine_id_term " +
+                            "--image_type $image_type " +
+                            "--model_njobs $model_njobs " +
+                            "--model_R $model_R" +
+                            "--model_RMAX $model_RMAX " +
+                            "--model_P $model_P " +
+                            "--model_npred $model_npred " +
+                            "--model_ntrees $model_ntrees " +
+                            "--model_ntimes $model_ntimes " +
+                            "--model_angle $model_angle " +
+                            "--model_depth $model_depth " +
+                            "--model_step $model_step " +
+                            "--model_wsize $model_wsize " +
+                            "--model_name XXX" + // change this by save_to
+                            "--verbose true ");
 
-//for landmark
-    // build_model
-    /*		'cytomine_working_path' : '/home/remy/cytomine/',
-		'cytomine_dataset_storage' : 'drosophiles/',
-		'cytomine_id_term': 152147653,
-		'cytomine_id_project': 159904926,
-		'image_type': 'jpg',
-		'model_njobs': 2,
-		'model_R': 6,
-		'model_RMAX': 70,
-		'model_P': 2,
-		'model_npred': 50000,
-		'model_ntrees': 50,
-		'model_ntimes': 1,
-		'model_angle': 0,
-		'model_depth': 5,
-		'model_step': 1,
-		'model_wsize': 8,
-		'model_name': 'landmark-1'
-*/
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("cytomine_id_term", "Domain", software.getId(), "", true, 750, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("image_type", "String", software.getId(), "tiff", true, 800);
+            cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "1", true, 900);
+            cytomine.addSoftwareParameter("model_R", "Number", software.getId(), "6", true, 1000); // ??
+            cytomine.addSoftwareParameter("model_RMAX", "Number", software.getId(), "200", true, 1200);
+            cytomine.addSoftwareParameter("model_P", "Number", software.getId(), "3", true, 1400);
+            cytomine.addSoftwareParameter("model_npred", "Number", software.getId(), "50000", true, 1500);
+            cytomine.addSoftwareParameter("model_ntrees", "Number", software.getId(), "50", true, 1600);
+            cytomine.addSoftwareParameter("model_ntimes", "Number", software.getId(), "3", true, 1700);
+            cytomine.addSoftwareParameter("model_angle", "Number", software.getId(), "30", true, 1800);
+            cytomine.addSoftwareParameter("model_depth", "Number", software.getId(), "5", true, 1900);
+            cytomine.addSoftwareParameter("model_step", "Number", software.getId(), "1", true, 2000);
+            cytomine.addSoftwareParameter("model_wsize", "Number", software.getId(), "8", true, 2100);
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+    // NOT TESTED
+    public static void addSoftwareLandMarkPredict(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("LandMark_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/landmark_prediction/landmark_predict.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/landmark_prediction/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_dataset_storage ldm_detect/ " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_id_training_project $cytomine_id_training_project " +
+                            "--cytomine_model_names $cytomine_model_names " + // change this by load from
+                            "--image_type $image_type " +
+                            "--verbose true ");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 800, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("cytomine_id_training_project", "Domain", software.getId(), "", true, 900, "/api/project.json", "id", "id");
+            cytomine.addSoftwareParameter("cytomine_model_names", "String", software.getId(), "", true, 1000);
+            cytomine.addSoftwareParameter("image_type", "String", software.getId(), "tiff", true, 1100);
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
 
     // NOT TESTED
     public static void addSoftwareBONUS(Cytomine cytomine) throws Exception { // wait for the real name
