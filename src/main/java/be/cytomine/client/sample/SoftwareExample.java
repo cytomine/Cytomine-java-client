@@ -433,8 +433,8 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
             cytomine.addSoftwareParameter("pyxit_load_from", "String", software.getId(), "algo/segmentation_prediction/logs/segmentation_tumor_model.pkl", true, 2500, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "id", "id");
-            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 500, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
+            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 500, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 900);
             cytomine.addSoftwareParameter("cytomine_tile_size", "Number", software.getId(), "512", true, 1000);
             cytomine.addSoftwareParameter("cytomine_tile_min_stddev", "Number", software.getId(), "5", true, 1100);
@@ -511,7 +511,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
             cytomine.addSoftwareParameter("cytomine_tile_size", "Number", software.getId(), "512", true, 900);
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 1000);
             cytomine.addSoftwareParameter("cytomine_tile_overlap", "Number", software.getId(), "0", true, 1100);
@@ -631,8 +631,8 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
             cytomine.addSoftwareParameter("pyxit_load_from", "String", software.getId(), "", true, 1100, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "id", "id");
-            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
+            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 900);
             cytomine.addSoftwareParameter("cytomine_id_userjob", "Number", software.getId(), "1", true, 1000); // ?? user_id which uploaded images :/
             cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "1", true, 1200);
@@ -654,21 +654,20 @@ public class SoftwareExample {
                             "--cytomine_base_path /api/ " +
                             "--cytomine_working_path algo/landmark_model_builder/ " +
                             "--cytomine_id_project $cytomine_id_project " +
-                            "--cytomine_dataset_storage ldm_detect/ " +
                             "--verbose true " +
                             " && " +
                             " python algo/landmark_model_builder/build_model.py " +
-                            /*"--cytomine_host $host " +
+                            "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
                             "--cytomine_private_key $privateKey " +
-                            "--cytomine_base_path /api/ " +*/
-                            "--cytomine_working_path algo/classification_prediction/ " +
-                            "--cytomine_dataset_storage ldm_detect/ " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/landmark_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
                             "--cytomine_id_project $cytomine_id_project " +
                             "--cytomine_id_term $cytomine_id_term " +
-                            "--image_type $image_type " +
+                            "--image_type jpg " +
                             "--model_njobs $model_njobs " +
-                            "--model_R $model_R" +
+                            "--model_R $model_R " +
                             "--model_RMAX $model_RMAX " +
                             "--model_P $model_P " +
                             "--model_npred $model_npred " +
@@ -678,27 +677,29 @@ public class SoftwareExample {
                             "--model_depth $model_depth " +
                             "--model_step $model_step " +
                             "--model_wsize $model_wsize " +
-                            "--model_name XXX" + // change this by save_to
+                            "--model_save_to $model_save_to_dir " +
+                            "--model_name $model_name_to_save " +
                             "--verbose true ");
 
 
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
+            cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2000, null, null, null, true);
+            cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2100, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_id_term", "Domain", software.getId(), "", true, 750, "/api/project/$currentProject$/term.json", "name", "name");
-            cytomine.addSoftwareParameter("image_type", "String", software.getId(), "tiff", true, 800);
+            cytomine.addSoftwareParameter("cytomine_id_term", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "1", true, 900);
-            cytomine.addSoftwareParameter("model_R", "Number", software.getId(), "6", true, 1000); // ??
-            cytomine.addSoftwareParameter("model_RMAX", "Number", software.getId(), "200", true, 1200);
-            cytomine.addSoftwareParameter("model_P", "Number", software.getId(), "3", true, 1400);
-            cytomine.addSoftwareParameter("model_npred", "Number", software.getId(), "50000", true, 1500);
-            cytomine.addSoftwareParameter("model_ntrees", "Number", software.getId(), "50", true, 1600);
-            cytomine.addSoftwareParameter("model_ntimes", "Number", software.getId(), "3", true, 1700);
-            cytomine.addSoftwareParameter("model_angle", "Number", software.getId(), "30", true, 1800);
-            cytomine.addSoftwareParameter("model_depth", "Number", software.getId(), "5", true, 1900);
-            cytomine.addSoftwareParameter("model_step", "Number", software.getId(), "1", true, 2000);
-            cytomine.addSoftwareParameter("model_wsize", "Number", software.getId(), "8", true, 2100);
+            cytomine.addSoftwareParameter("model_R", "Number", software.getId(), "6", true, 1000);
+            cytomine.addSoftwareParameter("model_RMAX", "Number", software.getId(), "200", true, 1100);
+            cytomine.addSoftwareParameter("model_P", "Number", software.getId(), "3", true, 1200);
+            cytomine.addSoftwareParameter("model_npred", "Number", software.getId(), "50000", true, 1300);
+            cytomine.addSoftwareParameter("model_ntrees", "Number", software.getId(), "50", true, 1400);
+            cytomine.addSoftwareParameter("model_ntimes", "Number", software.getId(), "3", true, 1500);
+            cytomine.addSoftwareParameter("model_angle", "Number", software.getId(), "30", true, 1600);
+            cytomine.addSoftwareParameter("model_depth", "Number", software.getId(), "5", true, 1700);
+            cytomine.addSoftwareParameter("model_step", "Number", software.getId(), "1", true, 1800);
+            cytomine.addSoftwareParameter("model_wsize", "Number", software.getId(), "8", true, 1900);
         } catch (CytomineException e) {
             log.error(e);
         }
@@ -707,7 +708,7 @@ public class SoftwareExample {
     // NOT TESTED
     public static void addSoftwareLandMarkPredict(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("LandMark_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
+            Software software = cytomine.addSoftware("LandMark_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
                     "python algo/landmark_prediction/landmark_predict.py " +
                             "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
@@ -715,20 +716,19 @@ public class SoftwareExample {
                             "--cytomine_base_path /api/ " +
                             "--cytomine_working_path algo/landmark_prediction/ " +
                             "--cytomine_id_software $cytomine_id_software " +
-                            "--cytomine_dataset_storage ldm_detect/ " +
                             "--cytomine_id_project $cytomine_id_project " +
-                            "--cytomine_id_training_project $cytomine_id_training_project " +
-                            "--cytomine_model_names $cytomine_model_names " + // change this by load from
-                            "--image_type $image_type " +
+                            "--model_load_from algo/models/ " + // TODO only for test. Improve that !
+                            "--model_names $cytomine_model_names_to_load " + // TODO core will set dir/name. To improve
+                            "--image_type jpg " +
                             "--verbose true ");
 
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 800, null, null, null, true);
+            //cytomine.addSoftwareParameter("model_load_from_dir", "String", software.getId(), "", true, 900, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_model_names_to_load", "String", software.getId(), "", true, 1000, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_id_training_project", "Domain", software.getId(), "", true, 900, "/api/project.json", "id", "id");
-            cytomine.addSoftwareParameter("cytomine_model_names", "String", software.getId(), "", true, 1000);
-            cytomine.addSoftwareParameter("image_type", "String", software.getId(), "tiff", true, 1100);
+            cytomine.addSoftwareParameter("models_id_job", "ListDomain", software.getId(), "", true, 1100, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
         } catch (CytomineException e) {
             log.error(e);
         }
@@ -749,7 +749,7 @@ public class SoftwareExample {
 
                             "-z $cytomine_zoom_level " +
                             "--cytomine_dump_type $cytomine_dump_type " +
-                            "--cytomine_fixed_tile $cytomine_fixed_tile" +
+                            "--cytomine_fixed_tile $cytomine_fixed_tile " +
                             "--cytomine_n_shifts $cytomine_n_shifts " +
                             "--cytomine_annotation_projects $cytomine_annotation_projects " +
                             "--cytomine_excluded_terms $cytomine_excluded_terms " +
