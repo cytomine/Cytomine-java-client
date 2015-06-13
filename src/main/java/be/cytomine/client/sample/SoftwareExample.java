@@ -212,15 +212,30 @@ public class SoftwareExample {
         }
     }
 
-    public static void addSoftwareComputeArea(Cytomine cytomine) throws Exception {
+    public static void addSoftwareComputeTermArea(Cytomine cytomine) throws Exception {
         try {
             Software software = cytomine.addSoftware("ComputeTermArea", "createRabbitJobService", "DownloadFiles",
+                    "java -Xmx1G -cp algo/computeTermArea.jar ComputeArea ");
+            cytomine.addSoftwareParameter("host", "String", software.getId(), "$cytomineHost$", true, 100);
+            cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
+            cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
+            cytomine.addSoftwareParameter("terms", "ListDomain", software.getId(), "", true, 400, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("images", "ListDomain", software.getId(), "", true, 500, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
+
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+    public static void addSoftwareComputeAnnotationStats(Cytomine cytomine) throws Exception {
+        try {
+            Software software = cytomine.addSoftware("ComputeAnnotationStats", "createRabbitJobService", "DownloadFiles",
                     "groovy -cp algo/computeAnnotationStats/Cytomine-Java-Client.jar:algo/computeAnnotationStats/jts-1.13.jar algo/computeAnnotationStats/computeAnnotationStats.groovy");
             cytomine.addSoftwareParameter("host", "String", software.getId(), "$cytomineHost$", true, 100);
             cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
             cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
             cytomine.addSoftwareParameter("annotation", "Domain", software.getId(), "", true, 400);
-            cytomine.addSoftwareParameter("term", "Domain", software.getId(), "", true, 500);
+            cytomine.addSoftwareParameter("term", "Domain", software.getId(), "", true, 500, "/api/project/$currentProject$/term.json", "name", "name");
 
         } catch (CytomineException e) {
             log.error(e);
@@ -503,7 +518,8 @@ public class SoftwareExample {
                             "--cytomine_union_nb_zones_height $cytomine_union_nb_zones_height " +
                             "--cytomine_predict_term $cytomine_predict_term " +
                             "--cytomine_min_area $cytomine_min_area " +
-                            "--cytomine_max_area $cytomine_max_area ");
+                            "--cytomine_max_area $cytomine_max_area " +
+                            "--verbose true");
 
 
 
@@ -756,7 +772,6 @@ public class SoftwareExample {
                             "--cytomine_reviewed $cytomine_reviewed " +
                             "--pyxit_target_width $pyxit_target_width " +
                             "--pyxit_target_height $pyxit_target_height " +
-                            "--pyxit_save_to $pyxit_save_to " +
                             "--pyxit_colorspace $pyxit_colorspace " +
                             "--pyxit_n_jobs $pyxit_n_jobs " +
                             "--pyxit_n_subwindows $pyxit_n_subwindows " +
@@ -778,7 +793,6 @@ public class SoftwareExample {
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
-            cytomine.addSoftwareParameter("pyxit_save_to", "String", software.getId(), "algo/segmentation_prediction/logs/segmentation_tumor_model.pkl", true, 1700, null, null, null, true);
             // set by user
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 800);
             cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "1", true, 900);
