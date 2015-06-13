@@ -1009,6 +1009,11 @@ public class Cytomine {
         return fetchCollection(softwares);
     }
 
+    public SoftwareCollection getSoftwares(Long idProject) throws CytomineException {
+        SoftwareCollection softwares = new SoftwareCollection(offset, max);
+        return fetchCollection(softwares);
+    }
+
     public JobData getJobData(Long id) throws CytomineException {
         JobData jobData = new JobData();
         jobData.set("id", id);
