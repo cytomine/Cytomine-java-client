@@ -650,7 +650,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
             cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "0", true, 900);
-            cytomine.addSoftwareParameter("cytomine_id_userjob", "Number", software.getId(), "1", true, 1000); // ?? user_id which uploaded images :/
+            cytomine.addSoftwareParameter("cytomine_id_userjob", "Domain", software.getId(), "", true, 1000, "/api/project/$currentProject$/user.json?showJob=true", "username", "username");
             cytomine.addSoftwareParameter("cytomine_dump_type", "Number", software.getId(), "1", true, 1200);
 
 
@@ -663,16 +663,7 @@ public class SoftwareExample {
     public static void addSoftwareLandMarkBuilder(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("LandMark_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
-                    "python algo/landmark_model_builder/download.py " +
-                            "--cytomine_host $host " +
-                            "--cytomine_public_key $publicKey " +
-                            "--cytomine_private_key $privateKey " +
-                            "--cytomine_base_path /api/ " +
-                            "--cytomine_working_path algo/landmark_model_builder/ " +
-                            "--cytomine_id_project $cytomine_id_project " +
-                            "--verbose true " +
-                            " && " +
-                            " python algo/landmark_model_builder/build_model.py " +
+                    "python algo/landmark_model_builder/build_model.py " +
                             "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
                             "--cytomine_private_key $privateKey " +
