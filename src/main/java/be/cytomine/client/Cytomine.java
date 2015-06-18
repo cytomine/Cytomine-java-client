@@ -1009,7 +1009,7 @@ public class Cytomine {
         return fetchCollection(softwares);
     }
 
-    public SoftwareCollection getSoftwares(Long idProject) throws CytomineException {
+    public SoftwareCollection getSoftwares() throws CytomineException {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         return fetchCollection(softwares);
     }
