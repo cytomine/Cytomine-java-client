@@ -316,8 +316,8 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_excluded_terms", "ListDomain", software.getId(), "", true, 900, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("cytomine_reviewed", "Boolean", software.getId(), "false", true, 925);
             cytomine.addSoftwareParameter("pyxit_n_subwindows", "Number", software.getId(), "100", true, 950);
-            cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "16", true, 1000);
-            cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "16", true, 1100);
+            cytomine.addSoftwareParameter("pyxit_target_width", "Number", software.getId(), "24", true, 1000);
+            cytomine.addSoftwareParameter("pyxit_target_height", "Number", software.getId(), "24", true, 1100);
             cytomine.addSoftwareParameter("pyxit_colorspace", "Number", software.getId(), "2", true, 1200);
             cytomine.addSoftwareParameter("pyxit_n_jobs", "Number", software.getId(), "10", true, 1300);
             cytomine.addSoftwareParameter("pyxit_transpose", "Boolean", software.getId(), "false", false, 1500);
@@ -454,7 +454,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "2", true, 900);
             cytomine.addSoftwareParameter("cytomine_predict_term", "Domain", software.getId(), "", true, 925, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("cytomine_roi_term", "Domain", software.getId(), "", true, 950, "/api/project/$currentProject$/term.json", "name", "name");
-            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Boolean", software.getId(), "false", true, 975);
+            cytomine.addSoftwareParameter("cytomine_reviewed_roi", "Boolean", software.getId(), "true", true, 975);
             cytomine.addSoftwareParameter("cytomine_tile_size", "Number", software.getId(), "512", true, 1000);
             cytomine.addSoftwareParameter("cytomine_tile_min_stddev", "Number", software.getId(), "5", true, 1100);
             cytomine.addSoftwareParameter("cytomine_tile_max_mean", "Number", software.getId(), "250", true, 1200);
