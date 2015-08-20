@@ -1003,7 +1003,7 @@ public class Cytomine {
         return saveModel(softwareProject);
     }
 
-    public SoftwareCollection getSoftwareByProject(Long idProject) throws CytomineException {
+    public SoftwareCollection getSoftwaresByProject(Long idProject) throws CytomineException {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         softwares.addFilter("project", idProject + "");
         return fetchCollection(softwares);
@@ -1012,6 +1012,20 @@ public class Cytomine {
     public SoftwareCollection getSoftwares() throws CytomineException {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         return fetchCollection(softwares);
+    }
+
+    public ProcessingServer addProcessingServer(String url) throws CytomineException {
+        ProcessingServer processingServer = new ProcessingServer();
+        processingServer.set("url", url);
+        return saveModel(processingServer);
+    }
+
+    public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
+        ImageFilter imageFilter = new ImageFilter();
+        imageFilter.set("name", name);
+        imageFilter.set("baseUrl", baseUrl);
+        imageFilter.set("processingServer", processingServer);
+        return saveModel(imageFilter);
     }
 
     public JobData getJobData(Long id) throws CytomineException {
