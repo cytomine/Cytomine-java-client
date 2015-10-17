@@ -94,6 +94,18 @@ public class Cytomine {
         this.pass = privateKey;
     }
 
+    /**
+     * Legacy constructor (kept for downward compatibility)
+     * @param host Full url of the Cytomine instance (e.g. 'http://...')
+     * @param publicKey Your cytomine public key
+     * @param privateKey Your cytomine private key
+     * @param basePath the base path (will be ignored)
+     */
+    @Deprecated
+    public Cytomine(String host, String publicKey, String privateKey, String basePath) {
+        this(host,publicKey,privateKey);
+    }
+
     public String getHost() {
         return host;
     }
@@ -116,6 +128,22 @@ public class Cytomine {
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
+    /**
+     * Get the public key of this connection.
+     * @author Philipp Kainz
+     * @since
+     * @return
+     */
+    public String getPublicKey() { return this.publicKey; }
+
+    /**
+     * Get the private key of this connection.
+     * @author Philipp Kainz
+     * @since
+     * @return
+     */
+    public String getPrivateKey() { return this.privateKey; }
 
     /**
      * Go to the next page of a collection
