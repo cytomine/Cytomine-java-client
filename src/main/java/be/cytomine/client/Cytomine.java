@@ -95,7 +95,7 @@ public class Cytomine {
     }
 
     /**
-     * Legacy constructor (kept for downward compatibility)
+     * Legacy constructor (kept for downward compatibility).
      * @param host Full url of the Cytomine instance (e.g. 'http://...')
      * @param publicKey Your cytomine public key
      * @param privateKey Your cytomine private key
@@ -144,6 +144,26 @@ public class Cytomine {
      * @return
      */
     public String getPrivateKey() { return this.privateKey; }
+
+    /**
+     * Test the connection to the Cytomine host instance.
+     * This test can be run by external applications to check for the
+     * availability of the Cytomine-Core.
+     * @return true, if HTTP response code (200, 201, 304), i.e. the host is available
+     * @throws Exception if the host is not available
+     */
+    boolean testHostConnection() throws Exception {
+        HttpClient client = new HttpClient();
+        client.connect(getHost() + "/server/ping", login, pass);
+        int code = 0;
+        try {
+            code = client.get();
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+        client.disconnect();
+        return code == 200 || code == 201 || code == 304;
+    }
 
     /**
      * Go to the next page of a collection
