@@ -111,6 +111,7 @@ public abstract class Model {
     }
 
     public Double getDbl(String name) {
+        if(get(name) == null) return null;
         if (get(name).getClass().getName().equals("java.lang.Long")) {
             return ((Long) get(name)).doubleValue();
         } else {
