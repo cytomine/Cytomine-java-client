@@ -970,9 +970,14 @@ public class Cytomine {
     }
 
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
+        return this.changeStatus(id, status, progress, null);
+    }
+
+    public Job changeStatus(Long id, int status, int progress, String comment) throws CytomineException {
         Job job = this.getJob(id);
         job.set("progress", progress);
         job.set("status", status);
+        job.set("statusComment", comment);
         return this.editJob(id, job);
     }
 
