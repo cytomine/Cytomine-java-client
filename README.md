@@ -1,11 +1,10 @@
 # Cytomine Java client
 
+When using our software, you agree to cite our website url and related publications in all your work (publications, studies, oral presentations,...). In particular, you agree to cite our (Marée et al., Bioinformatics 2016) paper, and to use our logo when appropriate:
 
-If you use Cytomine in scientific publications, please cite it properly with both its URL and scientific paper:
 - URL: http://www.cytomine.be/
-- Scientific paper:
-Raphaël Marée, Loïc Rollus, Benjamin Stévens, Renaud Hoyoux, Gilles Louppe, Rémy Vandaele, Jean-Michel Begon, Philipp Kainz, Pierre Geurts and Louis Wehenkel. Collaborative analysis of multi-gigapixel imaging data using Cytomine, Bioinformatics, 2016.
-
+- Logo: http://www.cytomine.be/logo/logo.png
+- Scientific paper: Raphaël Marée, Loïc Rollus, Benjamin Stévens, Renaud Hoyoux, Gilles Louppe, Rémy Vandaele, Jean-Michel Begon, Philipp Kainz, Pierre Geurts and Louis Wehenkel. Collaborative analysis of multi-gigapixel imaging data using Cytomine, Bioinformatics, 2016.
 
 ## Presentation
 Cytomine-java-client is an opensource Cytomine client.  It is a JAR file that you can import in your JVM application (Java, Groovy, …). You will be able to manage data in a Cytomine instance according to your credentials: manage users, add annotations, upload images,...
