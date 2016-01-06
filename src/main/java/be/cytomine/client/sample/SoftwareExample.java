@@ -621,7 +621,6 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareCellClassifierPrediction(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("Cell_Classifier_Model_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
@@ -661,7 +660,6 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareLandMarkBuilder(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("Landmark_Model_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
@@ -714,7 +712,6 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareLandMarkPredict(Cytomine cytomine) throws Exception {
         try{
             Software software = cytomine.addSoftware("Landmark_Model_Predict", "createRabbitJobWithArgsService", "ValidateAnnotation",
@@ -743,10 +740,9 @@ public class SoftwareExample {
         }
     }
 
-    // NOT TESTED
     public static void addSoftwareCellClassifierValidation(Cytomine cytomine) throws Exception {
         try{
-            Software software = cytomine.addSoftware("Cell_Classifier_Validation", "createRabbitJobWithArgsService", "ValidateAnnotation", // wait for the real name
+            Software software = cytomine.addSoftware("Cell_Classifier_Validation", "createRabbitJobWithArgsService", "ValidateAnnotation",
                     "python algo/classification_validation/add_and_run_job.py " +
                             "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
@@ -815,6 +811,27 @@ public class SoftwareExample {
 
 
 
+
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+    public static void addSoftwareExportLandmark(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("Export_LandMark", "createRabbitJobWithArgsService", "DownloadFiles",
+                    "python algo/export_landmark/export_landmark.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_working_path algo/export_landmark/files/ " +
+                            "--cytomine_id_project $cytomine_id_project ");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
 
         } catch (CytomineException e) {
             log.error(e);
