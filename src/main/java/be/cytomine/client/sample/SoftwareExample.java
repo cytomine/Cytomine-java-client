@@ -1,6 +1,6 @@
 package be.cytomine.client.sample;
 /*
- * Copyright (c) 2009-2015. Authors: see NOTICE file.
+ * Copyright (c) 2009-2016. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -402,7 +402,6 @@ public class SoftwareExample {
                             "--cytomine_id_software $cytomine_id_software " +
                             "--cytomine_working_path algo/segmentation_prediction/ " +
                             "--cytomine_id_project $cytomine_id_project " +
-                            "-i $cytomine_id_image " +
                             "-z $cytomine_zoom_level " +
                             "-t $cytomine_tile_size " +
                             "--cytomine_tile_min_stddev $cytomine_tile_min_stddev " +
@@ -418,7 +417,7 @@ public class SoftwareExample {
                             "--pyxit_target_width $pyxit_target_width " +
                             "--pyxit_target_height $pyxit_target_height " +
                             "--pyxit_colorspace $pyxit_colorspace " +
-                            "--pyxit_n_jobs $pyxit_nb_jobs " +
+                            "--pyxit_nb_jobs $pyxit_nb_jobs " +
                             "--pyxit_save_to $pyxit_load_from " +
                             "--cytomine_predict_step $cytomine_predict_step " +
 
@@ -449,7 +448,6 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
             cytomine.addSoftwareParameter("pyxit_load_from", "String", software.getId(), "algo/segmentation_prediction/logs/segmentation_tumor_model.pkl", true, 2500, null, null, null, true);
             // set by user
-            cytomine.addSoftwareParameter("cytomine_id_image", "Domain", software.getId(), "", true, 500, "/api/project/$currentProject$/imageinstance.json", "instanceFilename", "instanceFilename");
             cytomine.addSoftwareParameter("model_id_job", "Domain", software.getId(), "", true, 750, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
             cytomine.addSoftwareParameter("cytomine_zoom_level", "Number", software.getId(), "2", true, 900);
             cytomine.addSoftwareParameter("cytomine_predict_term", "Domain", software.getId(), "", true, 925, "/api/project/$currentProject$/term.json", "name", "name");
