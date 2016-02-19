@@ -215,7 +215,7 @@ public class SoftwareExample {
     public static void addSoftwareComputeTermArea(Cytomine cytomine) throws Exception {
         try {
             Software software = cytomine.addSoftware("ComputeTermArea", "createRabbitJobService", "DownloadFiles",
-                    "java -Xmx1G -cp algo/computeTermArea.jar ComputeArea ");
+                    "groovy -cp lib/jars/Cytomine-client-java.jar algo/computeTermArea.groovy ");
             cytomine.addSoftwareParameter("host", "String", software.getId(), "$cytomineHost$", true, 100);
             cytomine.addSoftwareParameter("publicKey", "String", software.getId(), "", true, 200);
             cytomine.addSoftwareParameter("privateKey", "String", software.getId(), "", true, 300);
