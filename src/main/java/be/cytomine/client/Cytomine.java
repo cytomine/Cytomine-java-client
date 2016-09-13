@@ -1376,18 +1376,20 @@ public class Cytomine {
     }
 
 
-    public AbstractImage addNewImage(Long idUploadedFile) throws CytomineException {
+    public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String mimeType) throws CytomineException {
         AbstractImage image = new AbstractImage();
+        image.set("path",path);
+        image.set("filename",filename);
+        image.set("mimeType",mimeType);
         image.addFilter("uploadedFile", idUploadedFile + "");
         return saveModel(image);
     }
 
-
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
-        return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, mimeType, idProjects, idStorages, idUser, -1l, idParent);
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
+        return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, idProjects, idStorages, idUser, -1l, idParent);
     }
 
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, String mimeType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws CytomineException {
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws CytomineException {
         UploadedFile uploadedFile = new UploadedFile();
         uploadedFile.set("originalFilename", originalFilename);
         uploadedFile.set("filename", realFilename);
@@ -1397,7 +1399,6 @@ public class Cytomine {
 
         uploadedFile.set("ext", ext);
         uploadedFile.set("contentType", contentType);
-        uploadedFile.set("mimeType", mimeType);
         uploadedFile.set("path", path);
 
         uploadedFile.set("projects", idProjects);
