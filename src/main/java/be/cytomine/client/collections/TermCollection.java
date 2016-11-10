@@ -33,6 +33,8 @@ public class TermCollection extends Collection {
     public String toURL() {
         if (isFilterBy("ontology")) {
             return getJSONResourceURLWithFilter("ontology");
+        } else if (isFilterBy("annotation")) {
+            return getJSONResourceURLWithFilter("annotation");
         } else {
             return getJSONResourceURL();
         }
