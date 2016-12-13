@@ -584,7 +584,20 @@ public class Cytomine {
         image.addFilter("max", max + "");
         return fetchCollection(image);
 	}
-    
+
+    public ImageInstance addImageInstance(Long idAbstractImage, Long idProject) throws CytomineException {
+        ImageInstance image = new ImageInstance();
+        image.set("baseImage", idAbstractImage);
+        image.set("project", idProject);
+        return saveModel(image);
+    }
+
+    public void deleteImageInstance(Long idImageInstance) throws CytomineException {
+        ImageInstance image = new ImageInstance();
+        image.set("id", idImageInstance);
+        deleteModel(image);
+    }
+
     public Annotation getAnnotation(Long id) throws CytomineException {
         Annotation annotation = new Annotation();
         annotation.set("id", id);
@@ -738,12 +751,6 @@ public class Cytomine {
         Term term = new Term();
         term.set("id", idTerm);
         deleteModel(term);
-    }
-
-    public void deleteImageInstance(Long idImageInstance) throws CytomineException {
-        ImageInstance image = new ImageInstance();
-        image.set("id", idImageInstance);
-        deleteModel(image);
     }
 
     public AnnotationTerm getAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
