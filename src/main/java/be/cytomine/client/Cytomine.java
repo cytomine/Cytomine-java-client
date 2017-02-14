@@ -558,6 +558,14 @@ public class Cytomine {
         deleteModel(ontology);
     }
 
+    public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
+        AbstractImage abstractImage = new AbstractImage();
+        abstractImage.set("filename",filename);
+        abstractImage.set("path",filename);
+        abstractImage.set("mime",mime);
+        return saveModel(abstractImage);
+    }
+
     public AbstractImage getAbstractImage(Long id) throws CytomineException {
         AbstractImage abstractImage = new AbstractImage();
         abstractImage.set("id", id);
@@ -1268,6 +1276,13 @@ public class Cytomine {
     public StorageCollection getStorages() throws CytomineException {
         StorageCollection storages = new StorageCollection(offset, max);
         return fetchCollection(storages);
+    }
+
+    public StorageAbstractImage addStorageAbstractImage(Long idStorage, Long idAbstractImage) throws CytomineException {
+        StorageAbstractImage sai = new StorageAbstractImage();
+        sai.set("storage", idStorage);
+        sai.set("abstractimage", idAbstractImage);
+        return saveModel(sai);
     }
 
     public String resetPassword(Long idUser, String newPassword) throws CytomineException {
