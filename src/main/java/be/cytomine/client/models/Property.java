@@ -35,9 +35,12 @@ public class Property extends Model {
         Long id = (Long) get("id");
         Long domainIdent = (Long) get("domainIdent");
         String domain = (String) get("domain");
+        String key = (String) get("key");
 
         if (id != null && domainIdent != null && domain != null) {
             return getJSONResourceURL(id, domainIdent, domain);
+        } else if (domainIdent != null && domain != null && key != null) {
+            return getJSONResourceURL(domainIdent, domain, key);
         } else if (domainIdent != null && domain != null) {
             return getJSONResourceURL(domainIdent, domain);
         } else {
@@ -78,5 +81,14 @@ public class Property extends Model {
             base = base.substring(0, base.length() - 1);
             return base;
         }
+    }
+
+    public String getJSONResourceURL(Long domainIdent, String domain, String key) {
+        String domainFix = domain;
+        if (domain.contains(".")) {
+            domainFix = "domain/" + domain;
+        }
+        String base = "/api/" + domainFix + "/" + domainIdent + "/key/"+key+"/property.json";
+        return base;
     }
 }

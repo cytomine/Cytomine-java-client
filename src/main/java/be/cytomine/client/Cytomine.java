@@ -1179,13 +1179,12 @@ public class Cytomine {
         return fetchCollection(properties);
     }
 
-    public PropertyCollection getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws CytomineException {
-        PropertyCollection properties = new PropertyCollection(offset, max);
-        properties.addFilter(domain, domainIdent + "");
-        properties.addFilter("domainClassName", domain + "");
-        properties.addFilter("domainIdent", domainIdent + "");
-        properties.addFilter("key", key);
-        return fetchCollection(properties);
+    public Property getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws CytomineException {
+        Property property = new Property();
+        property.set("domainIdent", domainIdent);
+        property.set("domain", domain);
+        property.set("key", key);
+        return fetchModel(property);
     }
 
     public Property addDomainProperties(String domain, Long domainIdent, String key, String value) throws CytomineException {
