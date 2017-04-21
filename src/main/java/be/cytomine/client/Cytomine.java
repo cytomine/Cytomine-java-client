@@ -452,6 +452,10 @@ public class Cytomine {
         downloadPicture(url,dest,"png");
     }
 
+    public void downloadImageInstance(long ID, String dest) throws CytomineException{
+        downloadFile("/api/imageinstance/"+ID+"/download",dest);
+    }
+
     public BufferedImage downloadPictureAsBufferedImage(String url, String format) throws CytomineException {
         HttpClient client = null;
         try {
