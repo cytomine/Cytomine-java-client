@@ -836,5 +836,290 @@ public class SoftwareExample {
         }
     }
 
+    public static void addSoftwareGlmBuilderPigeon(Cytomine cytomine) throws Exception {
+        try{
+
+            Software software = cytomine.addSoftware("GLM_Builder_Pigeon", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_model_builder/build_generic_model.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+
+                            "--cytomine_id_term $cytomine_id_term " +
+                            "--cytomine_training_images $cytomine_training_images " +
+                            "--image_type jpg "+
+                            "--model_njobs $model_njobs" +
+                            "--model_R $model_R" +
+                            "--model_RMAX $model_RMAX" +
+                            "--model_P $model_P" +
+                            "--model_npred $model_npred" +
+                            "--model_ntrees $model_ntrees" +
+                            "--model_ntimes $model_ntimes" +
+                            "--model_angle $model_angle" +
+                            "--model_depth $model_depth" +
+                            "--model_step $model_step" +
+                            "--model_wsize $model_wsize" +
+                            "--model_feature_type $model_feature_type" +
+                            "--model_feature_haar_n $model_feature_haar_n" +
+                            "--model_feature_gaussian_n $model_feature_gaussian_n" +
+                            "--model_feature_gaussian_std $model_feature_gaussian_std" +
+                            "--model_save_to $model_save_to_dir " +
+                            "--model_name $model_name_to_save " +
+                            "--verbose true");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
+            cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2400, null, null, null, true);
+            cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2500, null, null, null, true);
+            // set by user
+            //cytomine.addSoftwareParameter("model_name", "String", software.getId(), "", true, 750);
+            cytomine.addSoftwareParameter("cytomine_id_term", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_training_images", "ListDomain", software.getId(), "", true, 850, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "10", true, 900);
+            cytomine.addSoftwareParameter("model_R", "Number", software.getId(), "20", true, 1000);
+            cytomine.addSoftwareParameter("model_RMAX", "Number", software.getId(), "200", true, 1100);
+            cytomine.addSoftwareParameter("model_P", "Number", software.getId(), "3", true, 1200);
+            cytomine.addSoftwareParameter("model_npred", "Number", software.getId(), "50000", true, 1300);
+            cytomine.addSoftwareParameter("model_ntrees", "Number", software.getId(), "100", true, 1400);
+            cytomine.addSoftwareParameter("model_ntimes", "Number", software.getId(), "3", true, 1500);
+            cytomine.addSoftwareParameter("model_angle", "Number", software.getId(), "30", true, 1600);
+            cytomine.addSoftwareParameter("model_depth", "Number", software.getId(), "5", true, 1700);
+            cytomine.addSoftwareParameter("model_step", "Number", software.getId(), "1", true, 1800);
+            cytomine.addSoftwareParameter("model_wsize", "Number", software.getId(), "8", true, 1900);
+            cytomine.addSoftwareParameter("model_feature_type", "String", software.getId(), "haar", true, 2000);
+            cytomine.addSoftwareParameter("model_feature_haar_n", "Number", software.getId(), "1600", true, 2100);
+            cytomine.addSoftwareParameter("model_feature_gaussian_n", "Number", software.getId(), "1600", true, 2200);
+            cytomine.addSoftwareParameter("model_feature_gaussian_std", "Number", software.getId(), "20", true, 2300);
+
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+
+
+
+
+
+
+    public static void addSoftwareDmblLandmarkModelBuilder(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("DMBL_Landmark_Model_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_model_builder/build_dmbl_model.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_id_terms $cytomine_id_terms " +
+                            "--cytomine_training_images $cytomine_training_images " +
+                            "--image_type jpg " +
+                            "--model_NT_P1 $model_NT_P1 " +
+                            "--model_F_P1 $model_F_P1 " +
+                            "--model_R_P1 $model_R_P1 " +
+                            "--model_sigma $model_sigma " +
+                            "--model_delta $model_delta " +
+                            "--model_P $model_P " +
+                            "--model_R_P2 $model_R_P2 " +
+                            "--model_ns_P2 $model_ns_P2 " +
+                            "--model_NT_P2 $model_NT_P2 " +
+                            "--model_F_P2 $model_F_P2 " +
+                            "--model_filter_size $model_filter_size " +
+                            "--model_beta $model_beta " +
+                            "--model_n_iterations $model_n_iterations " +
+                            "--model_ncandidates $model_ncandidates " +
+                            "--model_sde $model_sde " +
+                            "--model_T $model_T " +
+                            //"--model_save_to $model_save_to_dir " +
+                            "--model_name $model_name_to_save " +
+                            "--verbose true ");
+
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
+            //cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2000, null, null, null, true);
+            cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2100, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("cytomine_id_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_training_images", "ListDomain", software.getId(), "", true, 900, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "10", true, 1000);
+            cytomine.addSoftwareParameter("model_NT_P1", "Number", software.getId(), "", true, 1100);
+            cytomine.addSoftwareParameter("model_F_P1", "Number", software.getId(), "", true, 1200);
+            cytomine.addSoftwareParameter("model_R_P1", "Number", software.getId(), "", true, 1300);
+            cytomine.addSoftwareParameter("model_sigma", "Number", software.getId(), "", true, 1400);
+            cytomine.addSoftwareParameter("model_delta", "Number", software.getId(), "", true, 1500);
+            cytomine.addSoftwareParameter("model_P", "Number", software.getId(), "", true, 1600);
+            cytomine.addSoftwareParameter("model_R_P2", "Number", software.getId(), "", true, 1700);
+            cytomine.addSoftwareParameter("model_ns_P2", "Number", software.getId(), "", true, 1800);
+            cytomine.addSoftwareParameter("model_NT_P2", "Number", software.getId(), "", true, 1900);
+            cytomine.addSoftwareParameter("model_F_P2", "Number", software.getId(), "", true, 2000);
+            cytomine.addSoftwareParameter("model_filter_size", "Number", software.getId(), "", true, 2100);
+            cytomine.addSoftwareParameter("model_beta", "Number", software.getId(), "", true, 2200);
+            cytomine.addSoftwareParameter("model_n_iterations", "Number", software.getId(), "", true, 2300);
+            cytomine.addSoftwareParameter("model_ncandidates", "Number", software.getId(), "", true, 2400);
+            cytomine.addSoftwareParameter("model_sde", "Number", software.getId(), "", true, 2500);
+            cytomine.addSoftwareParameter("model_T", "Number", software.getId(), "", true, 2600);
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+
+    public static void addSoftwareLcLandmarkModelBuilder(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("LC_Landmark_Model_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_model_builder/build_lc_model.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_id_terms $cytomine_id_terms " +
+                            "--cytomine_training_images $cytomine_training_images " +
+                            "--image_type jpg " +
+                            "--model_njobs $model_njobs " +
+                            "--model_D_MAX $model_D_MAX " +
+                            "--model_n_samples $model_n_samples " +
+                            "--model_W $model_W " +
+                            "--model_n $model_n " +
+                            "--model_T $model_T " +
+                            "--model_step $model_step " +
+                            "--model_n_reduc $model_n_reduc " +
+                            "--model_R_MAX $model_R_MAX " +
+                            "--model_R_MIN $model_R_MIN " +
+                            "--model_alpha $model_alpha " +
+                            "--model_name $model_name_to_save " +
+                            "--model_save_to $model_save_to_dir " +
+                            "--verbose true ");
+
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
+            cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2000, null, null, null, true);
+            cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2100, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("cytomine_id_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_training_images", "ListDomain", software.getId(), "", true, 900, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+            cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "10", true, 1000);
+            cytomine.addSoftwareParameter("model_D_MAX", "Number", software.getId(), "", true, 1100);
+            cytomine.addSoftwareParameter("model_n_samples", "Number", software.getId(), "", true, 1200);
+            cytomine.addSoftwareParameter("model_W", "Number", software.getId(), "", true, 1300);
+            cytomine.addSoftwareParameter("model_n", "Number", software.getId(), "", true, 1400);
+            cytomine.addSoftwareParameter("model_T", "Number", software.getId(), "", true, 1500);
+            cytomine.addSoftwareParameter("model_step", "Number", software.getId(), "", true, 1600);
+            cytomine.addSoftwareParameter("model_n_reduc", "Number", software.getId(), "", true, 1700);
+            cytomine.addSoftwareParameter("model_R_MAX", "Number", software.getId(), "", true, 1800);
+            cytomine.addSoftwareParameter("model_R_MIN", "Number", software.getId(), "", true, 1900);
+            cytomine.addSoftwareParameter("model_alpha", "Number", software.getId(), "", true, 2000);
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+
+
+
+    public static void addSoftwareLandmarkGenericPredictor(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("Landmark_Generic_Predictor", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_prediction/landmark_generic_predict.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_predict_images $cytomine_predict_images " +
+                            "--model_load_from algo/models/ " + // TODO only for test. Improve that !
+                            "--image_type jpg " +
+                            "--model_names $cytomine_model_names_to_load " + // TODO core will set dir/name. To improve
+                            "--verbose true ");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 800, null, null, null, true);
+            //cytomine.addSoftwareParameter("model_load_from_dir", "String", software.getId(), "", true, 900, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_model_names_to_load", "String", software.getId(), "", true, 1000, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("models_id_job", "ListDomain", software.getId(), "", true, 1100, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
+            cytomine.addSoftwareParameter("cytomine_predict_images", "ListDomain", software.getId(), "", true, 1200, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+
+    public static void addSoftwareLandmarkDmblPredictor(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("Landmark_DMBL_Predictor", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_prediction/landmark_dmbl_predict.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_predict_images $cytomine_predict_images " +
+                            "--model_load_from algo/models/ " + // TODO only for test. Improve that !
+                            "--image_type jpg " +
+                            "--model_names $cytomine_model_names_to_load " + // TODO core will set dir/name. To improve
+                            "--verbose true ");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 800, null, null, null, true);
+            //cytomine.addSoftwareParameter("model_load_from_dir", "String", software.getId(), "", true, 900, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_model_names_to_load", "String", software.getId(), "", true, 1000, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("models_id_job", "ListDomain", software.getId(), "", true, 1100, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
+            cytomine.addSoftwareParameter("cytomine_predict_images", "ListDomain", software.getId(), "", true, 1200, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
+    public static void addSoftwareLandmarkLcPredictor(Cytomine cytomine) throws Exception {
+        try{
+            Software software = cytomine.addSoftware("Landmark_LC_Predictor", "createRabbitJobWithArgsService", "ValidateAnnotation",
+                    "python algo/ldm_prediction/landmark_lc_predict.py " +
+                            "--cytomine_host $host " +
+                            "--cytomine_public_key $publicKey " +
+                            "--cytomine_private_key $privateKey " +
+                            "--cytomine_base_path /api/ " +
+                            "--cytomine_working_path algo/ldm_model_builder/ " +
+                            "--cytomine_id_software $cytomine_id_software " +
+                            "--cytomine_id_project $cytomine_id_project " +
+                            "--cytomine_predict_images $cytomine_predict_images " +
+                            "--model_load_from algo/models/ " + // TODO only for test. Improve that !
+                            "--image_type jpg " +
+                            "--model_names $cytomine_model_names_to_load " + // TODO core will set dir/name. To improve
+                            "--verbose true ");
+
+            // set by server
+            cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 600, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 800, null, null, null, true);
+            //cytomine.addSoftwareParameter("model_load_from_dir", "String", software.getId(), "", true, 900, null, null, null, true);
+            cytomine.addSoftwareParameter("cytomine_model_names_to_load", "String", software.getId(), "", true, 1000, null, null, null, true);
+            // set by user
+            cytomine.addSoftwareParameter("models_id_job", "ListDomain", software.getId(), "", true, 1100, "/api/job.json?project=$currentProject$", "softwareName", "softwareName");
+            cytomine.addSoftwareParameter("cytomine_predict_images", "ListDomain", software.getId(), "", true, 1200, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
+        } catch (CytomineException e) {
+            log.error(e);
+        }
+    }
+
 
 }
