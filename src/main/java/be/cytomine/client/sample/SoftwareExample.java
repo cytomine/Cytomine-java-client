@@ -836,10 +836,10 @@ public class SoftwareExample {
         }
     }
 
-    public static void addSoftwareGlmBuilderPigeon(Cytomine cytomine) throws Exception {
+    public static void addSoftwareGlmBuilder(Cytomine cytomine) throws Exception {
         try{
 
-            Software software = cytomine.addSoftware("GLM_Builder_Pigeon", "createRabbitJobWithArgsService", "ValidateAnnotation",
+            Software software = cytomine.addSoftware("GLM_Builder", "createRabbitJobWithArgsService", "ValidateAnnotation",
                     "python algo/ldm_model_builder/build_generic_model.py " +
                             "--cytomine_host $host " +
                             "--cytomine_public_key $publicKey " +
@@ -849,7 +849,7 @@ public class SoftwareExample {
                             "--cytomine_id_software $cytomine_id_software " +
                             "--cytomine_id_project $cytomine_id_project " +
 
-                            "--cytomine_id_term $cytomine_id_term " +
+                            "--cytomine_id_terms $cytomine_id_terms " +
                             "--cytomine_training_images $cytomine_training_images " +
                             "--image_type jpg "+
                             "--model_njobs $model_njobs" +
@@ -878,7 +878,7 @@ public class SoftwareExample {
             cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2500, null, null, null, true);
             // set by user
             //cytomine.addSoftwareParameter("model_name", "String", software.getId(), "", true, 750);
-            cytomine.addSoftwareParameter("cytomine_id_term", "Domain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
+            cytomine.addSoftwareParameter("cytomine_id_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
             cytomine.addSoftwareParameter("cytomine_training_images", "ListDomain", software.getId(), "", true, 850, "/api/project/$currentProject$/imageinstance.json", "filename", "filename");
             cytomine.addSoftwareParameter("model_njobs", "Number", software.getId(), "10", true, 900);
             cytomine.addSoftwareParameter("model_R", "Number", software.getId(), "20", true, 1000);
@@ -920,7 +920,9 @@ public class SoftwareExample {
                             "--cytomine_id_project $cytomine_id_project " +
                             "--cytomine_id_terms $cytomine_id_terms " +
                             "--cytomine_training_images $cytomine_training_images " +
+                            "--model_name $model_name_to_save " +
                             "--image_type jpg " +
+                            "--model_save_to $model_save_to_dir " +
                             "--model_NT_P1 $model_NT_P1 " +
                             "--model_F_P1 $model_F_P1 " +
                             "--model_R_P1 $model_R_P1 " +
@@ -937,15 +939,13 @@ public class SoftwareExample {
                             "--model_ncandidates $model_ncandidates " +
                             "--model_sde $model_sde " +
                             "--model_T $model_T " +
-                            //"--model_save_to $model_save_to_dir " +
-                            "--model_name $model_name_to_save " +
                             "--verbose true ");
 
 
             // set by server
             cytomine.addSoftwareParameter("cytomine_id_software", "Number", software.getId(), "", true, 500, null, null, null, true);
             cytomine.addSoftwareParameter("cytomine_id_project", "Number", software.getId(), "", true, 700, null, null, null, true);
-            //cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2000, null, null, null, true);
+            cytomine.addSoftwareParameter("model_save_to_dir", "String", software.getId(), "", true, 2000, null, null, null, true);
             cytomine.addSoftwareParameter("model_name_to_save", "String", software.getId(), "", true, 2100, null, null, null, true);
             // set by user
             cytomine.addSoftwareParameter("cytomine_id_terms", "ListDomain", software.getId(), "", true, 800, "/api/project/$currentProject$/term.json", "name", "name");
