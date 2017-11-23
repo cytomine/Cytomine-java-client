@@ -18,32 +18,22 @@ package be.cytomine.client;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
 import javax.crypto.Mac;
@@ -54,10 +44,8 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -68,9 +56,9 @@ public class HttpClient {
 
     private static final Logger log = Logger.getLogger(HttpClient.class);
 
-    DefaultHttpClient client;
+    org.apache.http.client.HttpClient client;
     HttpHost targetHost;
-    BasicHttpContext localcontext;
+    HttpClientContext localcontext;
     URL URL;
     HttpResponse response;
     Header[] headersArray;
@@ -112,7 +100,7 @@ public class HttpClient {
         log.info("Connection to " + url + " with login=" + username + " and pass=" + password);
         URL = new URL(url);
         targetHost = new HttpHost(URL.getHost(), URL.getPort());
-        client = new DefaultHttpClient();
+        client = HttpClientBuilder.create().build();
         // Create AuthCache instance
         AuthCache authCache = new BasicAuthCache();
         // Generate BASIC scheme object and add it to the local
@@ -120,21 +108,29 @@ public class HttpClient {
         BasicScheme basicAuth = new BasicScheme();
         authCache.put(targetHost, basicAuth);
 
-        // Add AuthCache to the execution context
-        localcontext = new BasicHttpContext();
-        localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
         // Set credentials
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
-        client.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
+        credsProvider.setCredentials(AuthScope.ANY, creds);
+
+        // Add AuthCache to the execution context
+        localcontext = HttpClientContext.create();
+        localcontext.setCredentialsProvider(credsProvider);
+        localcontext.setAuthCache(authCache);
     }
 
     public void connect(String url) throws IOException {
         log.info("Connection to " + url);
         isAuthByPrivateKey = true;
         URL = new URL(url);
-        targetHost = new HttpHost(URL.getHost(), URL.getPort());
-        client = new DefaultHttpClient();
-        localcontext = new BasicHttpContext();
+        targetHost = null;
+        if(url.substring(0,8).equals("https://")){
+            targetHost = new HttpHost(URL.getHost(), 443, "https");
+        } else {
+            targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        }
+        client = HttpClientBuilder.create().build();
+        localcontext = HttpClientContext.create();
 
     }
 
