@@ -16,6 +16,7 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Annotation;
 import org.json.simple.JSONObject;
 
@@ -26,13 +27,14 @@ import java.util.Map;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AnnotationCollection extends Collection {
+public class AnnotationCollection extends Collection<Annotation> {
 
     public AnnotationCollection(int offset, int max) {
-        super(max, offset);
+        super(Annotation.class, max, offset);
     }
 
-    public String toURL() {
+    @Override
+    protected String getJSONResourceURL() throws CytomineException {
         String start = "/api/annotation.json?";
 
         Map<String, String> filters = getFilters();
@@ -41,17 +43,6 @@ public class AnnotationCollection extends Collection {
         }
 
         return start;
-    }
-
-    public String getDomainName() {
-        return "annotation";
-    }
-
-    public Annotation get(int i) {
-        Annotation annotation = new Annotation();
-        Object item = list.get(i);
-        annotation.setAttr((JSONObject) item);
-        return annotation;
     }
 
 }

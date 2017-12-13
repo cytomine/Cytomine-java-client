@@ -16,15 +16,25 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import java.util.List;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Annotation extends Model {
-
-    public String getDomainName() {
-        return "annotation";
+public class Annotation extends Model<Annotation> {
+    public Annotation(){}
+    public Annotation(String locationWKT, Long image){
+        this.set("location", locationWKT);
+        this.set("image", image);
     }
-
+    public Annotation(String locationWKT, Long image, List<Long> terms){
+        this(locationWKT, image);
+        this.set("term", terms);
+    }
+    public Annotation(String locationWKT, Long image, Long project){
+        this(locationWKT, image);
+        this.set("project", project);
+    }
 }

@@ -21,14 +21,23 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class User extends Model {
+public class User extends Model<User> {
 
+    public User(){}
+    public User(String username, String firstname, String lastname, String email, String password){
+        this.set("username", username);
+        this.set("firstname", firstname);
+        this.set("lastname", lastname);
+        this.set("email", email);
+        this.set("password", password);
+    }
+    @Override
     public String toURL() {
 
         if (getLong("id") != null) {
-            return getJSONResourceURL(getLong("id"));
-        } else if (getStr("username get") != null) {
-            return getJSONResourceURL(getStr("username get"));
+            return getJSONResourceURL();
+        /*} else if (getStr("username get") != null) {
+            return getJSONResourceURL(getStr("username get")); ???*/
         } else if (getStr("current") != null) {
             return "/api/user/current.json";
         } else if (isFilterBy("publicKey")) {
@@ -41,9 +50,4 @@ public class User extends Model {
             return getJSONResourceURL();
         }
     }
-
-    public String getDomainName() {
-        return "user";
-    }
-
 }

@@ -21,10 +21,11 @@ package be.cytomine.client.models;
  * Date: 19/08/15
  * GIGA-ULg
  */
-public class ImageFilter extends Model {
-
-    public String getDomainName() {
-        return "imagefilter";
+public class ImageFilter extends Model<ImageFilter> {
+    public ImageFilter(){}
+    public ImageFilter(String name, String baseUrl, String processingServer){
+        this.set("name", name);
+        this.set("baseUrl", baseUrl);
+        this.set("processingServer", processingServer);
     }
-
 }

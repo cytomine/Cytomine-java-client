@@ -16,8 +16,11 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Model;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +30,7 @@ import java.util.Map;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public abstract class Collection {
+public class Collection<T extends Model> {
 
     JSONArray list = new JSONArray();
     HashMap<String, String> map = new HashMap<String, String>();
@@ -35,23 +38,67 @@ public abstract class Collection {
 
     protected int max;
     protected int offset;
+    private Class<T> type;
+    private T modelInstance;
 
-    public Collection(int max, int offset) {
+    protected Collection(Class<T> type) {
+        this(type, 0,0);
+    }
+    protected Collection(Class<T> type, int max, int offset) {
         this.max = max;
         this.offset = offset;
+        this.type = type;
+        try {
+            modelInstance = type.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void nextPageIndex() {
+    public static <T extends Model> Collection<T> fetch(Class<T> clazz) throws CytomineException {
+        return fetch(clazz,0,0);
+    }
+    public static <T extends Model> Collection<T> fetch(Class<T> clazz, int offset, int max) throws CytomineException {
+        Collection<T> c = new Collection<>(clazz, max, offset);
+        return Cytomine.getInstance().fetchCollection(c);
+    }
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter) throws CytomineException {
+        return fetchWithFilter(clazz, filter, idFilter, 0,0);
+    }
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
+        Collection<T> c = new Collection<>(clazz, max, offset);
+        try {
+            c.addFilter(filter.newInstance().getDomainName(), idFilter.toString());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return Cytomine.getInstance().fetchCollection(c);
+    }
+    public Collection<T> fetchNextPage() throws CytomineException {
         this.offset = this.offset + max;
+        return Cytomine.getInstance().fetchCollection(this);
     }
 
-    public String getPaginatorURLParams() {
-        return "&max=" + this.max + "&offset=" + this.offset;
+    public T get(int i) {
+        modelInstance.setAttr((JSONObject) list.get(i));
+        return modelInstance;
     }
 
-    public abstract String toURL();
 
-    public abstract String getDomainName();
+    public String toURL() throws CytomineException {
+        String url = getJSONResourceURL()+"?";
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            url += param.getKey() + "=" + param.getValue() + "&";
+        }
+        url = url.substring(0, url.length() - 1);
+        url += getPaginatorURLParams();
+        return url;
+    }
+
+    public String getDomainName() throws CytomineException {
+        if(type == null) throw new CytomineException(400,"Collection not typed. Not possible to get URL.");
+        return type.getSimpleName().toLowerCase();
+    }
 
     public JSONArray getList() {
         return list;
@@ -95,29 +142,28 @@ public abstract class Collection {
         params.put(name, value);
     }
 
-    public String getJSONResourceURL() {
-        if (params.isEmpty()) {
-            return "/api/" + getDomainName() + ".json";
+    protected String getJSONResourceURL() throws CytomineException {
+        if(map.size() > 1) {
+            throw new CytomineException(400, "Only one filter is allowed by default");
         }
-        else {
-            String base = "/api/" + getDomainName() + ".json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-        }
+        final StringBuilder urlB = new StringBuilder("/api");
+        map.forEach((k, v) -> {
+            urlB.append("/"+k+"/"+v);
+        });
+        urlB.append("/"+ getDomainName() + ".json");
+
+        return urlB.toString();
     }
 
-    public String getJSONResourceURLWithFilter(String filter1Name) {
-        return "/api/" + filter1Name + "/" + getFilter(filter1Name) + "/" + getDomainName() + ".json";
-    }
-
-    public String getJSONResourceURLWithFilter(String filter1Name, String filter2Name) {
-        return "/api/" + filter1Name + "/" + getFilter(filter1Name) + "/" + filter2Name + "/" + getFilter(filter2Name) + "/" + getDomainName() + ".json";
+    private String getPaginatorURLParams() {
+        return "&max=" + this.max + "&offset=" + this.offset;
     }
 
     public String toString() {
-        return getDomainName() + " collection";
+        try {
+            return getDomainName() + " collection";
+        } catch (CytomineException e) {
+            return "collection";
+        }
     }
 }

@@ -16,6 +16,7 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.User;
 import org.json.simple.JSONObject;
 
@@ -24,30 +25,20 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class UserCollection extends Collection {
+public class UserCollection extends Collection<User> {
 
     public UserCollection(int offset, int max) {
-        super(max, offset);
+        super(User.class, max, offset);
     }
 
-    public String toURL() {
+    @Override
+    protected String getJSONResourceURL() throws CytomineException {
         if (isFilterBy("project") && isFilterBy("admin")) {
             return "/api/project/" + getFilter("project") + "/admin.json";
         } else if (isFilterBy("project")) {
             return "/api/project/" + getFilter("project") + "/user.json";
         } else {
-            return getJSONResourceURL();
+            return super.getJSONResourceURL();
         }
-    }
-
-    public String getDomainName() {
-        return "user";
-    }
-
-    public User get(int i) {
-        User user = new User();
-        Object item = list.get(i);
-        user.setAttr((JSONObject) item);
-        return user;
     }
 }

@@ -16,12 +16,13 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class UserJob extends Model {
+public class UserJob extends Model<UserJob> {
 
+    @Override
     public String toURL() {
         Long id = getLong("id");
         if (id != null) {
-            return getJSONResourceURL(id);
+            return getJSONResourceURL();
         } else if (isFilterBy("publicKey")) {
             return getJSONResourceURL() + "?publicKey=" + getFilter("publicKey");
         } else {
@@ -29,6 +30,7 @@ public class UserJob extends Model {
         }
     }
 
+    @Override
     public String getDomainName() {
         return "userJob";
     }

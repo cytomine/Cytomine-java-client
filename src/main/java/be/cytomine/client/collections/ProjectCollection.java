@@ -24,30 +24,9 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class ProjectCollection extends Collection {
+public class ProjectCollection extends Collection<Project> {
 
     public ProjectCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        if (isFilterBy("user")) {
-            return getJSONResourceURLWithFilter("user");
-        } else if (isFilterBy("ontology")) {
-            return getJSONResourceURLWithFilter("ontology");
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    public String getDomainName() {
-        return "project";
-    }
-
-    public Project get(int i) {
-        Project project = new Project();
-        Object item = list.get(i);
-        project.setAttr((JSONObject) item);
-        return project;
+        super(Project.class, max, offset);
     }
 }

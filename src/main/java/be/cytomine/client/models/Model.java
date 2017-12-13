@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
@@ -28,7 +30,7 @@ import java.util.Map;
  * GIGA-ULg
  * A generic Model
  */
-public abstract class Model {
+public abstract class Model<T extends Model> {
     /**
      * Attribute for the current model
      */
@@ -37,13 +39,102 @@ public abstract class Model {
     /**
      * Params map (url params: ?param1=value&...
      */
-    HashMap<String, String> params = new HashMap<String, String>();
+    HashMap<String, String> params = new HashMap<>();
 
     /**
      * Filter maps (url params: /api/param1/value/model.json
      */
-    HashMap<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<>();
 
+    //public Model() {}
+
+    /**
+     * Build model REST url
+     *
+     * @return
+     */
+    public String toURL() {
+        return getJSONResourceURL();
+    }
+
+    /**
+     * Direct method to accessto the id
+     *
+     * @return Model id
+     */
+    public Long getId() {
+        return getLong("id");
+    }
+
+    /**
+     * Generate JSON from Model
+     *
+     * @return JSON
+     */
+    public String toJSON() {
+        return attr.toString();
+    }
+
+    /**
+     * Get Model URL
+     *
+     * @return URL
+     */
+    public String getJSONResourceURL() {
+        Long id = getId();
+        String base;
+        if(id!= null) {
+            base = "/api/" + getDomainName() + "/" + id + ".json?";
+        } else {
+            base = "/api/" + getDomainName() + ".json?";
+        }
+
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            base = base + param.getKey() + "=" + param.getValue() + "&";
+        }
+        base = base.substring(0, base.length() - 1);
+        return base;
+    }
+
+    /**
+     * Get the name of the domain for the domain
+     *
+     * @return Domain name
+     */
+    public String getDomainName(){
+        return getClass().getSimpleName().toLowerCase();
+    }
+
+    public T fetch(Long id) throws CytomineException {
+        this.set("id", id);
+        return Cytomine.getInstance().fetchModel((T)this);
+    }
+
+    public T save() throws CytomineException {
+        return Cytomine.getInstance().saveModel((T)this);
+    }
+
+    public void delete() throws CytomineException {
+        this.delete((T) this);
+    }
+    public void delete(Long id) throws CytomineException {
+        this.set("id", id);
+        this.delete((T) this);
+    }
+    private void delete(T model) throws CytomineException {
+        Cytomine.getInstance().deleteModel(model);
+    }
+
+    public T update() throws CytomineException {
+        return Cytomine.getInstance().updateModel((T) this);
+    }
+
+    public T update(HashMap<String, Object> attributes) throws CytomineException {
+        attributes.forEach((k, v) -> {
+            this.set(k,v);
+        });
+        return Cytomine.getInstance().updateModel((T)this);
+    }
 
     public void addParams(String name, String value) {
         params.put(name, value);
@@ -117,8 +208,6 @@ public abstract class Model {
         } else {
             return (Double) get(name);
         }
-
-
     }
 
     public Boolean getBool(String name) {
@@ -128,97 +217,6 @@ public abstract class Model {
     public List getList(String name) {
         return (List) get(name);
     }
-
-    /**
-     * Build model REST url
-     *
-     * @return
-     */
-    public String toURL() {
-        Long id = (Long) get("id");
-        if (id != null) {
-            return getJSONResourceURL(id);
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    /**
-     * Direct method to accessto the id
-     *
-     * @return Model id
-     */
-    public Long getId() {
-        return getLong("id");
-    }
-
-    /**
-     * Generate JSON from Model
-     *
-     * @return JSON
-     */
-    public String toJSON() {
-        return attr.toString();
-    }
-
-    /**
-     * Get Model URL for the collection
-     *
-     * @return URL
-     */
-    public String getJSONResourceURL() {
-        if (params.isEmpty()) {
-            return "/api/" + getDomainName() + ".json";
-        } else {
-            String base = "/api/" + getDomainName() + ".json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-        }
-    }
-
-    /**
-     * Get Model URL for the model id
-     *
-     * @param id Model id
-     * @return URL
-     */
-    public String getJSONResourceURL(Long id) {
-        return getJSONResourceURL(id + "");
-    }
-
-    @Override
-    public int hashCode() {
-        if(getId()!=null) {
-            return getId().intValue() ;
-        } else {
-            return 0;
-        }
-    }
-
-    public String getJSONResourceURL(String id) {
-        if (params.isEmpty()) {
-            return "/api/" + getDomainName() + "/" + id + ".json";
-        } else {
-            String base = "/api/" + getDomainName() + "/" + id + ".json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-
-        }
-    }
-
-    /**
-     * Get the name of the domain for the domain
-     *
-     * @return Domain name
-     */
-    public abstract String getDomainName();
-
 
     boolean isFilterBy(String name) {
         return map.containsKey(name);
@@ -236,6 +234,16 @@ public abstract class Model {
         return getDomainName() + getId();
     }
 
+    @Override
+    public int hashCode() {
+        if(getId()!=null) {
+            return getId().intValue() ;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

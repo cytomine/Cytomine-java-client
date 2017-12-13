@@ -23,7 +23,7 @@ import java.util.Map;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Description extends Model {
+public class Description extends Model<Description> {
 
     public String getDomainName() {
         return "description";

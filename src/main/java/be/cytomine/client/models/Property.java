@@ -25,11 +25,7 @@ import java.util.Map;
  * Time: 10:09
  * To change this template use File | Settings | File Templates.
  */
-public class Property extends Model {
-
-    public String getDomainName() {
-        return "property";
-    }
+public class Property extends Model<Property> {
 
     public String toURL() {
         Long id = (Long) get("id");

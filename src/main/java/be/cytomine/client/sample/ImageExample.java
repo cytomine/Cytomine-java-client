@@ -34,12 +34,12 @@ public class ImageExample {
     public static void changeImageName(Cytomine cytomine, Long idImageInstance, String newName) throws Exception {
 
         System.out.println("Look for image instance " + idImageInstance);
-        ImageInstance ii = cytomine.getImageInstance(idImageInstance);
+        ImageInstance ii = new ImageInstance().fetch(idImageInstance);
         System.out.println("Look for abstract image " + ii.getLong("baseImage"));
-        AbstractImage ai = cytomine.editAbstractImage(ii.getLong("baseImage"), newName);
-        System.out.println("Edit name");
-        cytomine.editAbstractImage(ai.getId(), newName);
-        System.out.println("New name is " + cytomine.getAbstractImage(ai.getId()).getStr("originalFilename"));
+        AbstractImage ai = new AbstractImage().fetch(ii.getLong("baseImage"));
+        ai.set("originalFilename", newName);
+        ai.update();
+        System.out.println("New name is " + new AbstractImage().fetch(ai.getId()).getStr("originalFilename"));
     }
 
 

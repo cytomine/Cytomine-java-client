@@ -21,10 +21,11 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class JobParameter extends Model {
-
-    public String getDomainName() {
-        return "jobparameter";
+public class JobParameter extends Model<JobParameter> {
+    public JobParameter(){}
+    public JobParameter(Long job, Long softwareParameter, String value){
+        this.set("job", job);
+        this.set("softwareParameter", softwareParameter);
+        this.set("value", value);
     }
-
 }

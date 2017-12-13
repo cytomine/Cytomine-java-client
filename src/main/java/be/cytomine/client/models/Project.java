@@ -21,10 +21,10 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Project extends Model {
-
-    public String getDomainName() {
-        return "project";
+public class Project extends Model<Project> {
+    public Project(){}
+    public Project(String name, Long idOntology){
+        this.set("name", name);
+        this.set("ontology", idOntology);
     }
-
 }

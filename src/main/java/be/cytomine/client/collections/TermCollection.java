@@ -24,30 +24,9 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class TermCollection extends Collection {
+public class TermCollection extends Collection<Term> {
 
     public TermCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        if (isFilterBy("ontology")) {
-            return getJSONResourceURLWithFilter("ontology");
-        } else if (isFilterBy("annotation")) {
-            return getJSONResourceURLWithFilter("annotation");
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    public String getDomainName() {
-        return "term";
-    }
-
-    public Term get(int i) {
-        Term term = new Term();
-        Object item = list.get(i);
-        term.setAttr((JSONObject) item);
-        return term;
+        super(Term.class, max, offset);
     }
 }

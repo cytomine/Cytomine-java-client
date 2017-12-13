@@ -21,10 +21,10 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class ImageInstance extends Model {
-
-    public String getDomainName() {
-        return "imageinstance";
+public class ImageInstance extends Model<ImageInstance> {
+    public ImageInstance(){}
+    public ImageInstance(Long idAbstractImage, Long idProject){
+        this.set("baseImage", idAbstractImage);
+        this.set("project", idProject);
     }
-
 }

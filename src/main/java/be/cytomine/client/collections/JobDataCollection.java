@@ -24,28 +24,9 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class JobDataCollection extends Collection {
+public class JobDataCollection extends Collection<JobData> {
 
     public JobDataCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        if (isFilterBy("job")) {
-            return getJSONResourceURLWithFilter("job");
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    public String getDomainName() {
-        return "jobdata";
-    }
-
-    public JobData get(int i) {
-        JobData jobdata = new JobData();
-        Object item = list.get(i);
-        jobdata.setAttr((JSONObject) item);
-        return jobdata;
+        super(JobData.class, max, offset);
     }
 }

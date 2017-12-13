@@ -21,8 +21,9 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Role extends Model {
+public class Role extends Model<Role> {
 
+    @Override
     public String toURL() {
 
         if (isFilterBy("user") && isFilterBy("role")) {
@@ -32,9 +33,5 @@ public class Role extends Model {
         } else {
             return "/api/user/baduser/role.json";
         }
-    }
-
-    public String getDomainName() {
-        return "role";
     }
 }

@@ -27,25 +27,6 @@ import org.json.simple.JSONObject;
 public class ImageInstanceCollection extends Collection {
 
     public ImageInstanceCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        if (isFilterBy("project")) {
-            return getJSONResourceURLWithFilter("project");
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    public String getDomainName() {
-        return "imageinstance";
-    }
-
-    public ImageInstance get(int i) {
-        ImageInstance image = new ImageInstance();
-        Object item = list.get(i);
-        image.setAttr((JSONObject) item);
-        return image;
+        super(ImageInstance.class, max, offset);
     }
 }

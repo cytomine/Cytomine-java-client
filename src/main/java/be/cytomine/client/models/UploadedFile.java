@@ -17,18 +17,37 @@ package be.cytomine.client.models;
  */
 
 import java.io.File;
+import java.util.List;
 
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class UploadedFile extends Model {
+public class UploadedFile extends Model<UploadedFile> {
 
-    public String getDomainName() {
-        return "uploadedfile";
+    public UploadedFile(){}
+    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent){
+        this.set("originalFilename", originalFilename);
+        this.set("filename", realFilename);
+
+        this.set("path", path);
+        this.set("size", size);
+
+        this.set("ext", ext);
+        this.set("contentType", contentType);
+        this.set("path", path);
+
+        this.set("projects", idProjects);
+        this.set("storages", idStorages);
+
+        this.set("user", idUser);
+
+        this.set("parent", idParent);
+        if (status != -1l) {
+            this.set("status", status);
+        }
     }
-
 
     public String getAbsolutePath() {
         return this.get("path") + File.separator + this.get("filename");

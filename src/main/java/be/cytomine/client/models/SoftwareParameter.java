@@ -21,10 +21,27 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class SoftwareParameter extends Model {
-
-    public String getDomainName() {
-        return "softwareparameter";
+public class SoftwareParameter extends Model<SoftwareParameter> {
+    public SoftwareParameter(){}
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer){
+        this.set("name", name);
+        this.set("type", type);
+        this.set("software", idSoftware);
+        this.set("defaultValue", defaultValue);
+        this.set("required", required);
+        this.set("index", index);
+        this.set("uri", uri);
+        this.set("uriPrintAttribut", uriPrintAttribut);
+        this.set("uriSortAttribut", uriSortAttribut);
+        this.set("setByServer", setByServer);
     }
-
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut){
+        this(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
+    }
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index){
+        this(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
+    }
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer){
+        this(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
+    }
 }

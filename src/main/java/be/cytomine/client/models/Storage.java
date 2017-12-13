@@ -22,10 +22,4 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Storage extends Model {
-
-    public String getDomainName() {
-        return "storage";
-    }
-
-}
+public class Storage extends Model<Storage> {}

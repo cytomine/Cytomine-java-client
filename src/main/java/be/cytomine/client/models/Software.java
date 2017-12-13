@@ -21,10 +21,12 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Software extends Model {
-
-    public String getDomainName() {
-        return "software";
+public class Software extends Model<Software> {
+    public Software(){}
+    public Software(String name, String serviceName, String resultType, String executeCommand){
+        this.set("name", name);
+        this.set("serviceName", serviceName);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
     }
-
 }

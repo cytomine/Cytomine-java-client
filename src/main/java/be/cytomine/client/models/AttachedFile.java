@@ -21,10 +21,4 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AttachedFile extends Model {
-
-    public String getDomainName() {
-        return "attachedfile";
-    }
-
-}
+public class AttachedFile extends Model<AttachedFile> {}

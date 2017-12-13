@@ -21,21 +21,23 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AbstractImage extends Model {
+public class AbstractImage extends Model<AbstractImage> {
 
+    public AbstractImage(){}
+    public AbstractImage(String filename, String mime){
+        this.set("filename",filename);
+        this.set("path",filename);
+        this.set("mime",mime);
+    }
+    @Override
     public String toURL() {
         Long id = getLong("id");
         if (id != null) {
-            return getJSONResourceURL(id);
+            return getJSONResourceURL();
         } else if (isFilterBy("uploadedFile")) {
             return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
         } else {
             return getJSONResourceURL();
         }
     }
-
-    public String getDomainName() {
-        return "abstractimage";
-    }
-
 }

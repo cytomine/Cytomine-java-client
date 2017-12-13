@@ -42,6 +42,7 @@ import java.util.*;
 public class Cytomine {
 
     private static final Logger log = Logger.getLogger(Cytomine.class);
+    static Cytomine CYTOMINE;
 
     private String host;
     private String login;
@@ -85,24 +86,23 @@ public class Cytomine {
      * @param publicKey Your cytomine public key
      * @param privateKey Your cytomine private key
      */
-    public Cytomine(String host, String publicKey, String privateKey) {
+    public static synchronized void connection(String host, String publicKey, String privateKey) {
+        CYTOMINE = new Cytomine(host,publicKey,privateKey);
+    }
+    /**
+     * Get Cytomine singleton
+     */
+    public static Cytomine getInstance() throws CytomineException{
+        log.info("Hello " + CYTOMINE.getCurrentUser().get("username"));
+        return CYTOMINE;
+    }
+
+    private Cytomine(String host, String publicKey, String privateKey) {
         this.host = host;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.login = publicKey;
         this.pass = privateKey;
-    }
-
-    /**
-     * Legacy constructor (kept for downward compatibility).
-     * @param host Full url of the Cytomine instance (e.g. 'http://...')
-     * @param publicKey Your cytomine public key
-     * @param privateKey Your cytomine private key
-     * @param basePath the base path (will be ignored)
-     */
-    @Deprecated
-    public Cytomine(String host, String publicKey, String privateKey, String basePath) {
-        this(host,publicKey,privateKey);
     }
 
     public String getHost() {
@@ -172,8 +172,7 @@ public class Cytomine {
      * @throws Exception
      */
     public boolean nextPage(Collection collection) throws CytomineException {
-        collection.nextPageIndex();
-        collection = fetchCollection(collection);
+        collection.fetchNextPage();
         return !collection.isEmpty();
     }
 
@@ -188,13 +187,7 @@ public class Cytomine {
     private void analyzeCode(int code, JSONObject json) throws CytomineException {
 
         //if 200,201,...no exception
-        if (code == 400) {
-            throw new CytomineException(code, json);
-        } else if (code == 401) {
-            throw new CytomineException(code, json);
-        } else if (code == 404) {
-            throw new CytomineException(code, json);
-        } else if (code == 500) {
+        if (code >= 400 && code < 600) {
             throw new CytomineException(code, json);
         } else if (code == 302) {
             throw new CytomineException(code, json);
@@ -237,7 +230,7 @@ public class Cytomine {
         return response;
     }
 
-    private <T extends Model> T fetchModel(T model) throws CytomineException {
+    public <T extends Model> T fetchModel(T model) throws CytomineException {
         HttpClient client = null;
         try {
             client = new HttpClient(publicKey, privateKey, getHost());
@@ -255,15 +248,15 @@ public class Cytomine {
         return model;
     }
 
-    private <T extends Collection> T fetchCollection(T collection) throws CytomineException {
+    // TODO When delete Deprecated method into this class for fetching collections, change this signature by this one
+    //public  <T extends Model> Collection<T> fetchCollection(Collection<T> collection) throws CytomineException {
+    public  <T extends Collection> T fetchCollection(T collection) throws CytomineException {
         HttpClient client = null;
 
         String url = collection.toURL();
         if (!url.contains("?")) {
             url = url + "?";
         }
-        url = url + collection.getPaginatorURLParams();
-        log.info("fetchCollection=" + url);
 
         try {
             client = new HttpClient(publicKey, privateKey, getHost());
@@ -325,7 +318,7 @@ public class Cytomine {
     }
 
 
-    private <T extends Model> T saveModel(T model) throws CytomineException {
+    public <T extends Model> T saveModel(T model) throws CytomineException {
         try {
             HttpClient client = null;
             client = new HttpClient(publicKey, privateKey, getHost());
@@ -364,7 +357,7 @@ public class Cytomine {
     }
 
 
-    private void deleteModel(Model model) throws CytomineException {
+    public void deleteModel(Model model) throws CytomineException {
         try {
             HttpClient client = null;
             client = new HttpClient(publicKey, privateKey, getHost());
@@ -481,295 +474,11 @@ public class Cytomine {
             throw new CytomineException(0, e.toString());
         }
     }
-    
-
-    public Project getProject(Long id) throws CytomineException {
-        Project project = new Project();
-        project.set("id", id);
-        return fetchModel(project);
-    }
-
-    public ProjectCollection getProjects() throws CytomineException {
-        ProjectCollection projects = new ProjectCollection(offset, max);
-        return fetchCollection(projects);
-    }
-
-    public ProjectCollection getProjectsByOntology(Long idOntology) throws CytomineException {
-        ProjectCollection projects = new ProjectCollection(offset, max);
-        projects.addFilter("ontology", idOntology + "");
-        return fetchCollection(projects);
-    }
-
-    public ProjectCollection getProjectsByUser(Long idUser) throws CytomineException {
-        ProjectCollection projects = new ProjectCollection(offset, max);
-        projects.addFilter("user", idUser + "");
-        return fetchCollection(projects);
-    }
-
-    public Project addProject(String name, Long idOntology) throws CytomineException {
-        Project project = new Project();
-        project.set("name", name);
-        project.set("ontology", idOntology);
-        return saveModel(project);
-    }
-
-    public Project editProject(Long idProject, String name, Long idOntology) throws CytomineException {
-        Project project = getProject(idProject);
-        project.set("name", name);
-        project.set("ontology", idOntology);
-        return updateModel(project);
-    }
-
-    public void deleteProject(Long idProject) throws CytomineException {
-        Project project = new Project();
-        project.set("id", idProject);
-        deleteModel(project);
-    }
-
-    public Ontology getOntology(Long id) throws CytomineException {
-        Ontology ontology = new Ontology();
-        ontology.set("id", id);
-        return fetchModel(ontology);
-    }
-
-    public OntologyCollection getOntologies() throws CytomineException {
-        OntologyCollection ontologys = new OntologyCollection(offset, max);
-        return fetchCollection(ontologys);
-    }
-
-    public OntologyCollection getOntologiesByProject(Long idProject) throws CytomineException {
-        OntologyCollection ontologys = new OntologyCollection(offset, max);
-        ontologys.addFilter("project", idProject + "");
-        return fetchCollection(ontologys);
-    }
-
-    public Ontology addOntology(String name) throws CytomineException {
-        Ontology ontology = new Ontology();
-        ontology.set("name", name);
-        return saveModel(ontology);
-    }
-
-    public Ontology editOntology(Long idOntology, String name) throws CytomineException {
-        Ontology ontology = getOntology(idOntology);
-        ontology.set("name", name);
-        return updateModel(ontology);
-    }
-
-    public void deleteOntology(Long idOntology) throws CytomineException {
-        Ontology ontology = new Ontology();
-        ontology.set("id", idOntology);
-        deleteModel(ontology);
-    }
-
-    public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
-        AbstractImage abstractImage = new AbstractImage();
-        abstractImage.set("filename",filename);
-        abstractImage.set("path",filename);
-        abstractImage.set("mime",mime);
-        return saveModel(abstractImage);
-    }
-
-    public AbstractImage getAbstractImage(Long id) throws CytomineException {
-        AbstractImage abstractImage = new AbstractImage();
-        abstractImage.set("id", id);
-        return fetchModel(abstractImage);
-    }
-
-    public ImageInstance getImageInstance(Long id) throws CytomineException {
-        ImageInstance image = new ImageInstance();
-        image.set("id", id);
-        return fetchModel(image);
-    }
-
-    public ImageInstanceCollection getImageInstances(Long idProject) throws CytomineException {
-        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
-        image.addFilter("project", idProject + "");
-        return fetchCollection(image);
-    }
-
-
-	public ImageInstanceCollection getImageInstancesByOffsetWithMax(Long idProject, int offset, int max) throws CytomineException {
-        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
-        image.addFilter("project", idProject + "");
-        image.addFilter("offset", offset + "");
-        image.addFilter("max", max + "");
-        return fetchCollection(image);
-	}
-
-    public ImageInstance addImageInstance(Long idAbstractImage, Long idProject) throws CytomineException {
-        ImageInstance image = new ImageInstance();
-        image.set("baseImage", idAbstractImage);
-        image.set("project", idProject);
-        return saveModel(image);
-    }
-
-    public void deleteImageInstance(Long idImageInstance) throws CytomineException {
-        ImageInstance image = new ImageInstance();
-        image.set("id", idImageInstance);
-        deleteModel(image);
-    }
-
-    public Annotation getAnnotation(Long id) throws CytomineException {
-        Annotation annotation = new Annotation();
-        annotation.set("id", id);
-        return fetchModel(annotation);
-    }
-
-    public AnnotationCollection getAnnotations() throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByProject(Long idProject) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("project", idProject + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByTermAndProject(Long idTerm, Long idProject) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("term", idTerm + "");
-        annotations.addFilter("project", idProject + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByTerm(Long idTerm) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("term", idTerm + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByUser(Long idUser) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("user", idUser + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByOntology(Long idOntology) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("ontology", idOntology + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByImage(Long idImage) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("image", idImage + "");
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotations(Map<String, String> filters) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        //http://beta.cytomine.be/api/annotation.json?user=14794107&image=14391346&term=8171841
-        for (Map.Entry<String, String> entry : filters.entrySet()) {
-            annotations.addFilter(entry.getKey(), entry.getValue());
-        }
-        return fetchCollection(annotations);
-    }
-
-    public AnnotationCollection getAnnotationsByTermAndImage(Long idTerm, Long idImage) throws CytomineException {
-        AnnotationCollection annotations = new AnnotationCollection(offset, max);
-        annotations.addFilter("term", idTerm + "");
-        annotations.addFilter("imageinstance", idImage + "");
-        return fetchCollection(annotations);
-    }
-
-    public Annotation addAnnotation(String locationWKT, Long image) throws CytomineException {
-        Annotation annotation = new Annotation();
-        annotation.set("location", locationWKT);
-        annotation.set("image", image);
-        annotation.set("name", "");
-        return saveModel(annotation);
-    }
-
-    public Annotation addAnnotationWithTerms(String locationWKT, Long image, List<Long> terms) throws CytomineException {
-        Annotation annotation = new Annotation();
-        annotation.set("location", locationWKT);
-        annotation.set("image", image);
-        annotation.set("name", "");
-        annotation.set("term", terms);
-        return saveModel(annotation);
-    }
-    
-    public Annotation addAnnotation(String locationWKT, Long image, Long project) throws CytomineException {
-        Annotation annotation = new Annotation();
-        annotation.set("location", locationWKT);
-        annotation.set("image", image);
-        annotation.set("project", project);
-        annotation.set("name", "");
-        return saveModel(annotation);
-    }
-
-    public Annotation editAnnotation(Long idAnnotation, String locationWKT) throws CytomineException {
-        Annotation annotation = getAnnotation(idAnnotation);
-        annotation.set("location", locationWKT);
-        return updateModel(annotation);
-    }
-
-
-    public void deleteAnnotation(Long idAnnotation) throws CytomineException {
-        Annotation annotation = new Annotation();
-        annotation.set("id", idAnnotation);
-        deleteModel(annotation);
-    }
 
 
     public void simplifyAnnotation(Long idAnnotation, Long minPoint, Long maxPoint) throws CytomineException {
         String url = "/api/annotation/" + idAnnotation + "/simplify.json?minPoint=" + minPoint + "&maxPoint=" + maxPoint;
         doPut(url, "");
-    }
-
-    public Term getTerm(Long id) throws CytomineException {
-        Term term = new Term();
-        term.set("id", id);
-        return fetchModel(term);
-    }
-
-    public TermCollection getTerms() throws CytomineException {
-        TermCollection terms = new TermCollection(offset, max);
-        return fetchCollection(terms);
-    }
-
-    public TermCollection getTermsByOntology(Long idOntology) throws CytomineException {
-        TermCollection terms = new TermCollection(offset, max);
-        terms.addFilter("ontology", idOntology + "");
-        return fetchCollection(terms);
-    }
-
-    public TermCollection getTermsByAnnotation(Long idAnnotation) throws CytomineException {
-        TermCollection terms = new TermCollection(offset, max);
-        terms.addFilter("annotation", idAnnotation + "");
-        return fetchCollection(terms);
-    }
-
-    public Term addTerm(String name, String color, Long idOntology) throws CytomineException {
-        Term term = new Term();
-        term.set("name", name);
-        term.set("color", color);
-        term.set("ontology", idOntology);
-
-        return saveModel(term);
-    }
-
-    public Term editTerm(Long idTerm, String name, String color, Long idOntology) throws CytomineException {
-        Term term = getTerm(idTerm);
-        term.set("name", name);
-        term.set("color", color);
-        term.set("ontology", idOntology);
-        return updateModel(term);
-    }
-
-    public void deleteTerm(Long idTerm) throws CytomineException {
-        Term term = new Term();
-        term.set("id", idTerm);
-        deleteModel(term);
-    }
-
-    public AnnotationTerm getAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
-        AnnotationTerm annotationTerm = new AnnotationTerm();
-        annotationTerm.set("annotation", idAnnotation);
-        annotationTerm.set("userannotation", idAnnotation);
-        annotationTerm.set("term", idTerm);
-        return fetchModel(annotationTerm);
     }
 
     /**
@@ -817,23 +526,32 @@ public class Cytomine {
         }
     }
 
-    public AnnotationTerm addAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
-        AnnotationTerm annotationTerm = new AnnotationTerm();
-        annotationTerm.set("userannotation", idAnnotation);
-        annotationTerm.set("annotationIdent", idAnnotation);
-        annotationTerm.set("term", idTerm);
-        return saveModel(annotationTerm);
+    public AnnotationCollection getAnnotationsByTermAndProject(Long idTerm, Long idProject) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("term", idTerm + "");
+        annotations.addFilter("project", idProject + "");
+        return fetchCollection(annotations);
     }
 
-    public AnnotationTerm addAnnotationTerm(Long idAnnotation, Long idTerm, Long idExpectedTerm, Long idUser, double rate) throws CytomineException {
-        AnnotationTerm annotationTerm = new AnnotationTerm();
-        annotationTerm.set("annotation", idAnnotation);
-        annotationTerm.set("annotation", idAnnotation);
-        annotationTerm.set("term", idTerm);
-        annotationTerm.set("expectedTerm", idExpectedTerm);
-        annotationTerm.set("user", idUser);
-        annotationTerm.set("rate", rate);
-        return saveModel(annotationTerm);
+    public AnnotationCollection getAnnotations(Map<String, String> filters) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        //http://beta.cytomine.be/api/annotation.json?user=14794107&image=14391346&term=8171841
+        for (Map.Entry<String, String> entry : filters.entrySet()) {
+            annotations.addFilter(entry.getKey(), entry.getValue());
+        }
+        return fetchCollection(annotations);
+    }
+
+    public AnnotationCollection getAnnotationsByTermAndImage(Long idTerm, Long idImage) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("term", idTerm + "");
+        annotations.addFilter("imageinstance", idImage + "");
+        return fetchCollection(annotations);
+    }
+
+    public AnnotationTerm getAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
+        AnnotationTerm annotationTerm = new AnnotationTerm(idAnnotation,idTerm);
+        return fetchModel(annotationTerm);
     }
 
     public void deleteAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
@@ -844,24 +562,8 @@ public class Cytomine {
         deleteModel(annotationTerm);
     }
 
-    public User addUser(String username, String firstname, String lastname, String email, String password) throws CytomineException {
-        User user = new User();
-        user.set("username", username);
-        user.set("firstname", firstname);
-        user.set("lastname", lastname);
-        user.set("email", email);
-        user.set("password", password);
-        return saveModel(user);
-    }
-
     public void addUserFromLDAP(String username) throws CytomineException {
         doPost("/api/ldap/user.json?username=" + username, "");
-    }
-
-    public User getUser(Long id) throws CytomineException {
-        User user = new User();
-        user.set("id", id);
-        return fetchModel(user);
     }
 
     public User getCurrentUser() throws CytomineException {
@@ -895,7 +597,6 @@ public class Cytomine {
     public void deleteUserProject(Long idUser, Long idProject, boolean admin) throws CytomineException {
         doDelete("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin" : "") + ".json");
     }
-
 
     public UserCollection getProjectUsers(Long idProject) throws CytomineException {
         UserCollection users = new UserCollection(offset, max);
@@ -943,12 +644,6 @@ public class Cytomine {
         return fetchModel(user);
     }
 
-    public UserCollection getUsers() throws CytomineException {
-        UserCollection users = new UserCollection(offset, max);
-
-        return fetchCollection(users);
-    }
-
     public User getKeys(String publicKey) throws CytomineException {
         User user = new User();
         user.addFilter("publicKeyFilter", publicKey);
@@ -969,34 +664,16 @@ public class Cytomine {
         return fetchModel(user);
     }
 
-    public UserJob getUserJob(Long id) throws CytomineException {
-        UserJob user = new UserJob();
-        user.set("id", id);
-        return fetchModel(user);
-    }
-
-    public Job getJob(Long id) throws CytomineException {
-        Job job = new Job();
-        job.set("id", id);
-        return fetchModel(job);
-    }
-
-    public Job editJob(Long id, Job newJob) throws CytomineException {
-        Job job = new Job();
-        job.setAttr(newJob.getAttr());
-        return updateModel(job);
-    }
-
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
         return this.changeStatus(id, status, progress, null);
     }
 
     public Job changeStatus(Long id, int status, int progress, String comment) throws CytomineException {
-        Job job = this.getJob(id);
+        Job job = new Job().fetch(id);
         job.set("progress", progress);
         job.set("status", status);
         job.set("statusComment", comment);
-        return this.editJob(id, job);
+        return job.update();
     }
 
     public User addUserJob(Long idSoftware, Long idUserParent) throws CytomineException {
@@ -1016,21 +693,6 @@ public class Cytomine {
         return userFinal;
     }
 
-    public Software addSoftware(String name, String serviceName, String resultType, String executeCommand) throws CytomineException {
-        Software software = new Software();
-        software.set("name", name);
-        software.set("serviceName", serviceName);
-        software.set("resultName", resultType);
-        software.set("executeCommand", executeCommand);
-        return saveModel(software);
-    }
-
-    public void deleteSoftware(Long idSoftware) throws CytomineException {
-        Software software = new Software();
-        software.set("id", idSoftware);
-        deleteModel(software);
-    }
-
     public void unionAnnotation(Long idImage, Long idUser, Integer minIntersectionLength) throws CytomineException {
         AnnotationUnion annotation = new AnnotationUnion();
         annotation.addParams("idImage", idImage + "");
@@ -1039,103 +701,11 @@ public class Cytomine {
         updateModel(annotation);
     }
 
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
-        SoftwareParameter softwareParameter = new SoftwareParameter();
-        softwareParameter.set("name", name);
-        softwareParameter.set("type", type);
-        softwareParameter.set("software", idSoftware);
-        softwareParameter.set("defaultValue", defaultValue);
-        softwareParameter.set("required", required);
-        softwareParameter.set("index", index);
-        softwareParameter.set("uri", uri);
-        softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
-        softwareParameter.set("uriSortAttribut", uriSortAttribut);
-        softwareParameter.set("setByServer", setByServer);
-
-        return saveModel(softwareParameter);
-    }
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
-    }
-
-    public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
-        SoftwareProject softwareProject = new SoftwareProject();
-        softwareProject.set("software", idSoftware);
-        softwareProject.set("project", idProject);
-        return saveModel(softwareProject);
-    }
-
-    public SoftwareCollection getSoftwaresByProject(Long idProject) throws CytomineException {
-        SoftwareCollection softwares = new SoftwareCollection(offset, max);
-        softwares.addFilter("project", idProject + "");
-        return fetchCollection(softwares);
-    }
-
-    public SoftwareCollection getSoftwares() throws CytomineException {
-        SoftwareCollection softwares = new SoftwareCollection(offset, max);
-        return fetchCollection(softwares);
-    }
-
-    public ProcessingServer addProcessingServer(String url) throws CytomineException {
-        ProcessingServer processingServer = new ProcessingServer();
-        processingServer.set("url", url);
-        return saveModel(processingServer);
-    }
-
-    public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
-        ImageFilter imageFilter = new ImageFilter();
-        imageFilter.set("name", name);
-        imageFilter.set("baseUrl", baseUrl);
-        imageFilter.set("processingServer", processingServer);
-        return saveModel(imageFilter);
-    }
-
-    public JobData getJobData(Long id) throws CytomineException {
-        JobData jobData = new JobData();
-        jobData.set("id", id);
-        return fetchModel(jobData);
-    }
-
-    public JobDataCollection getJobDatas() throws CytomineException {
-        JobDataCollection jobDatas = new JobDataCollection(offset, max);
-        return fetchCollection(jobDatas);
-    }
-
-    public JobDataCollection getJobDataByJob(Long idJob) throws CytomineException {
-        JobDataCollection jobDatas = new JobDataCollection(offset, max);
-        jobDatas.addFilter("job", idJob + "");
-        return fetchCollection(jobDatas);
-    }
-
-    public JobData addJobData(String key, Long idJob, String filename) throws CytomineException {
-        JobData jobData = new JobData();
-        jobData.set("key", key);
-        jobData.set("job", idJob);
-        jobData.set("filename", filename);
-        return saveModel(jobData);
-    }
-
-    public JobData editJobData(Long idJobData, String key, Long idJob, String filename) throws CytomineException {
-        JobData jobData = getJobData(idJobData);
-        jobData.set("key", key);
-        jobData.set("job", idJob);
-        jobData.set("filename", filename);
-        return updateModel(jobData);
-    }
-
-    public void deleteJobData(Long idJobData) throws CytomineException {
-        JobData jobData = new JobData();
-        jobData.set("id", idJobData);
-        deleteModel(jobData);
+    public ReviewedAnnotationCollection getReviewedAnnotationsByTermAndImage(Long idTerm, Long idImage) throws CytomineException {
+        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
+        reviewed.addFilter("term", idTerm + "");
+        reviewed.addFilter("imageinstance", idImage + "");
+        return fetchCollection(reviewed);
     }
 
     public void uploadJobData(Long idJobData, byte[] data) throws CytomineException {
@@ -1149,20 +719,6 @@ public class Cytomine {
     public void downloadAnnotation(Annotation annotation, String path) throws CytomineException {
         String url = annotation.getStr("url");
         downloadPicture(url, path);
-    }
-
-
-    public ReviewedAnnotationCollection getReviewedAnnotationsByTermAndImage(Long idTerm, Long idImage) throws CytomineException {
-        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
-        reviewed.addFilter("term", idTerm + "");
-        reviewed.addFilter("imageinstance", idImage + "");
-        return fetchCollection(reviewed);
-    }
-
-    public ReviewedAnnotationCollection getReviewedAnnotationsByProject(Long idProject) throws CytomineException {
-        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
-        reviewed.addFilter("project", idProject + "");
-        return fetchCollection(reviewed);
     }
 
     //PROPERTY
@@ -1269,54 +825,9 @@ public class Cytomine {
         return buffer.toString();
     }
 
-    public Storage getStorage(Long id) throws CytomineException {
-        Storage storage = new Storage();
-        storage.set("id", id);
-        return fetchModel(storage);
-    }
-
-    public StorageCollection getStorages() throws CytomineException {
-        StorageCollection storages = new StorageCollection(offset, max);
-        return fetchCollection(storages);
-    }
-
-    public StorageAbstractImage addStorageAbstractImage(Long idStorage, Long idAbstractImage) throws CytomineException {
-        StorageAbstractImage sai = new StorageAbstractImage();
-        sai.set("storage", idStorage);
-        sai.set("abstractimage", idAbstractImage);
-        return saveModel(sai);
-    }
-
     public String resetPassword(Long idUser, String newPassword) throws CytomineException {
         return doPut("/api/user/" + idUser + "/password.json?password=" + newPassword, "");
     }
-
-
-    public AbstractImage editAbstractImage(Long idAbstractImage, String originalFilename) throws CytomineException {
-        AbstractImage image = getAbstractImage(idAbstractImage);
-        image.set("originalFilename", originalFilename);
-        return updateModel(image);
-    }
-
-    public ImageGroup addImageGroup(Long idProject) throws CytomineException {
-        ImageGroup imageGroup = new ImageGroup();
-        imageGroup.set("project", idProject + "");
-        return saveModel(imageGroup);
-    }
-
-    public ImageSequence addImageSequence(Long idImageGroup, Long idImage, Integer zStack, Integer slice, Integer time, Integer channel) throws CytomineException {
-        ImageSequence imageSequence = new ImageSequence();
-        imageSequence.set("imageGroup", idImageGroup + "");
-        imageSequence.set("image", idImage + "");
-
-        imageSequence.set("zStack", zStack + "");
-        imageSequence.set("slice", slice + "");
-        imageSequence.set("time", time + "");
-        imageSequence.set("channel", channel + "");
-
-        return saveModel(imageSequence);
-    }
-
 
     public Description getDescription(Long domainIdent, String domainClassName) throws CytomineException {
         Description description = new Description();
@@ -1349,16 +860,9 @@ public class Cytomine {
         deleteModel(description);
     }
 
-
-    public RoleCollection getRoles() throws CytomineException {
-        RoleCollection role = new RoleCollection(offset, max);
-        return fetchCollection(role);
-
-    }
-
     public Map<String, Long> getRoleMap() throws CytomineException {
         Map<String, Long> map = new TreeMap<String, Long>();
-        RoleCollection roles = getRoles();
+        Collection<Role> roles = Collection.fetch(Role.class);
         for (int i = 0; i < roles.size(); i++) {
             map.put(roles.get(i).getStr("authority"), roles.get(i).getLong("id"));
         }
@@ -1383,23 +887,6 @@ public class Cytomine {
         deleteModel(role);
     }
 
-    public JobTemplate addJobTemplate(String name, Long iProject, Long idSoftware) throws CytomineException {
-        JobTemplate job = new JobTemplate();
-        job.set("name", name + "");
-        job.set("project", iProject + "");
-        job.set("software", idSoftware + "");
-        return saveModel(job);
-    }
-
-    public JobParameter addJobParameter(Long job, Long softwareParameter, String value) throws CytomineException {
-        JobParameter jobParam = new JobParameter();
-        jobParam.set("job", job + "");
-        jobParam.set("softwareParameter", softwareParameter + "");
-        jobParam.set("value", value + "");
-        return saveModel(jobParam);
-    }
-
-
     public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String mimeType) throws CytomineException {
         AbstractImage image = new AbstractImage();
         image.set("path",path);
@@ -1409,79 +896,10 @@ public class Cytomine {
         return saveModel(image);
     }
 
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
-        return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, idProjects, idStorages, idUser, -1l, idParent);
-    }
-
-    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws CytomineException {
-        UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("originalFilename", originalFilename);
-        uploadedFile.set("filename", realFilename);
-
-        uploadedFile.set("path", path);
-        uploadedFile.set("size", size);
-
-        uploadedFile.set("ext", ext);
-        uploadedFile.set("contentType", contentType);
-        uploadedFile.set("path", path);
-
-        uploadedFile.set("projects", idProjects);
-        uploadedFile.set("storages", idStorages);
-
-        uploadedFile.set("user", idUser);
-
-        uploadedFile.set("parent", idParent);
-
-
-        if (status != -1l) {
-            uploadedFile.set("status", status);
-        }
-
-        return saveModel(uploadedFile);
-    }
-
-    public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
-        UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status", status);
-        uploadedFile.set("converted", converted);
-        uploadedFile.set("parent", idParent);
-        return updateModel(uploadedFile);
-    }
-
-    public UploadedFile editUploadedFile(Long id, int status, boolean converted) throws CytomineException {
-        UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status", status);
-        uploadedFile.set("converted", converted);
-        return updateModel(uploadedFile);
-    }
-
-    public UploadedFile editUploadedFile(Long id, int status) throws CytomineException {
-        UploadedFile uploadedFile = getUploadedFile(id);
-        uploadedFile.set("status", status);
-        return updateModel(uploadedFile);
-    }
-
-    /**
-     * Get the uploaded file
-     *
-     * @param id Uploaded file id
-     */
-    public UploadedFile getUploadedFile(Long id) throws CytomineException {
-        UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("id", id);
-        return fetchModel(uploadedFile);
-    }
-
     public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
         UploadedFileCollection files = new UploadedFileCollection(offset, max);
         files.addParams("deleted", "true");
         return fetchCollection(files);
-    }
-
-    public void deleteUploadedFile(Long idUploadedFile) throws CytomineException {
-        UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("id", idUploadedFile);
-        deleteModel(uploadedFile);
     }
 
     public String clearAbstractImageProperties(Long idImage) throws CytomineException {
@@ -1619,12 +1037,4 @@ public class Cytomine {
         String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
         doPost("/retrieval-web/api/resource.json", data);
     }
-
-
-    public AmqpQueueCollection getAmqpQueue() throws CytomineException {
-        AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
-        return fetchCollection(queues);
-    }
-
-
 }

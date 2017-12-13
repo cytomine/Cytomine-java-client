@@ -21,8 +21,13 @@ package be.cytomine.client.models;
  * Date: 19/08/15
  * GIGA-ULg
  */
-public class ProcessingServer extends Model {
+public class ProcessingServer extends Model<ProcessingServer> {
+    public ProcessingServer(){}
+    public ProcessingServer(String url){
+        this.set("url", url);
+    }
 
+    @Override
     public String getDomainName() {
         return "processing_server";
     }

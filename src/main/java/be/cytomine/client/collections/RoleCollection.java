@@ -24,24 +24,9 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class RoleCollection extends Collection {
+public class RoleCollection extends Collection<Role> {
 
     public RoleCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    public String getDomainName() {
-        return "role";
-    }
-
-    public Role get(int i) {
-        Role role = new Role();
-        Object item = list.get(i);
-        role.setAttr((JSONObject) item);
-        return role;
+        super(Role.class, max, offset);
     }
 }

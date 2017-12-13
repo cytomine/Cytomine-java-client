@@ -21,12 +21,4 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Job extends Model {
-
-    String specificAlgoDomainName = "job";
-
-    public String getDomainName() {
-        return specificAlgoDomainName;
-    }
-
-}
+public class Job extends Model<Job> {}

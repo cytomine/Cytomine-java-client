@@ -21,8 +21,9 @@ package be.cytomine.client.models;
  * Date: 4/16/15
  * GIGA-ULg
  */
-public class AmqpQueue extends Model {
+public class AmqpQueue extends Model<AmqpQueue> {
 
+    @Override
     public String getDomainName() {
         return "amqp_queue";
     }
