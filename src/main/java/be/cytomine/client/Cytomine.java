@@ -1037,4 +1037,592 @@ public class Cytomine {
         String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
         doPost("/retrieval-web/api/resource.json", data);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Still here for backward compatibility
+
+    @Deprecated
+    public Project editProject(Long idProject, String name, Long idOntology) throws CytomineException {
+        Project project = new Project().fetch(idProject);
+        project.set("name", name);
+        project.set("ontology", idOntology);
+        return project.update();
+    }
+
+    @Deprecated
+    public Ontology editOntology(Long idOntology, String name) throws CytomineException {
+        Ontology ontology = new Ontology().fetch(idOntology);
+        ontology.set("name", name);
+        return ontology.update();
+    }
+
+    @Deprecated
+    public Annotation editAnnotation(Long idAnnotation, String locationWKT) throws CytomineException {
+        Annotation annotation = new Annotation().fetch(idAnnotation);
+        annotation.set("location", locationWKT);
+        return annotation.update();
+    }
+
+    @Deprecated
+    public Term editTerm(Long idTerm, String name, String color, Long idOntology) throws CytomineException {
+        Term term = new Term().fetch(idTerm);
+        term.set("name", name);
+        term.set("color", color);
+        term.set("ontology", idOntology);
+        return term.update();
+    }
+
+    @Deprecated
+    public JobData editJobData(Long idJobData, String key, Long idJob, String filename) throws CytomineException {
+        JobData jobData = new JobData().fetch(idJobData);
+        jobData.set("key", key);
+        jobData.set("job", idJob);
+        jobData.set("filename", filename);
+        return jobData.update();
+    }
+
+    @Deprecated
+    public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
+        UploadedFile uploadedFile = new UploadedFile().fetch(id);
+        uploadedFile.set("status", status);
+        uploadedFile.set("converted", converted);
+        uploadedFile.set("parent", idParent);
+        return uploadedFile.update();
+    }
+
+    @Deprecated
+    public UploadedFile editUploadedFile(Long id, int status, boolean converted) throws CytomineException {
+        UploadedFile uploadedFile = new UploadedFile().fetch(id);
+        uploadedFile.set("status", status);
+        uploadedFile.set("converted", converted);
+        return uploadedFile.update();
+    }
+
+    @Deprecated
+    public UploadedFile editUploadedFile(Long id, int status) throws CytomineException {
+        UploadedFile uploadedFile = new UploadedFile().fetch(id);
+        uploadedFile.set("status", status);
+        return uploadedFile.update();
+    }
+
+    // Still here for backward compatibility
+    // one line functions
+
+    @Deprecated
+    public Project getProject(Long id) throws CytomineException {
+        return new Project().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Project.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ProjectCollection getProjects() throws CytomineException {
+        ProjectCollection projects = new ProjectCollection(offset, max);
+        return fetchCollection(projects);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Project.class,Ontology.class,idOntology,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ProjectCollection getProjectsByOntology(Long idOntology) throws CytomineException {
+        ProjectCollection projects = new ProjectCollection(offset, max);
+        projects.addFilter("ontology", idOntology + "");
+        return fetchCollection(projects);
+    }
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Project.class,User.class,idUser,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ProjectCollection getProjectsByUser(Long idUser) throws CytomineException {
+        ProjectCollection projects = new ProjectCollection(offset, max);
+        projects.addFilter("user", idUser + "");
+        return fetchCollection(projects);
+    }
+
+    @Deprecated
+    public Project addProject(String name, Long idOntology) throws CytomineException {
+        return new Project(name,idOntology).save();
+    }
+
+    @Deprecated
+    public void deleteProject(Long idProject) throws CytomineException {
+        new Project().delete(idProject);
+    }
+
+    @Deprecated
+    public Ontology getOntology(Long id) throws CytomineException {
+        return new Ontology().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Ontology.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public OntologyCollection getOntologies() throws CytomineException {
+        OntologyCollection ontologys = new OntologyCollection(offset, max);
+        return fetchCollection(ontologys);
+    }
+
+    @Deprecated
+    public Ontology addOntology(String name) throws CytomineException {
+        return new Ontology(name).save();
+    }
+
+    @Deprecated
+    public void deleteOntology(Long idOntology) throws CytomineException {
+        new Ontology().delete(idOntology);
+    }
+
+    @Deprecated
+    public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
+        return new AbstractImage(filename,mime).save();
+    }
+
+    @Deprecated
+    public AbstractImage getAbstractImage(Long id) throws CytomineException {
+        return new AbstractImage().fetch(id);
+    }
+
+    @Deprecated
+    public ImageInstance getImageInstance(Long id) throws CytomineException {
+        return new ImageInstance().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(ImageInstance.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ImageInstanceCollection getImageInstances(Long idProject) throws CytomineException {
+        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
+        image.addFilter("project", idProject + "");
+        return fetchCollection(image);
+    }
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(ImageInstance.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ImageInstanceCollection getImageInstancesByOffsetWithMax(Long idProject, int offset, int max) throws CytomineException {
+        ImageInstanceCollection image = new ImageInstanceCollection(offset, max);
+        image.addFilter("project", idProject + "");
+        image.addFilter("offset", offset + "");
+        image.addFilter("max", max + "");
+        return fetchCollection(image);
+    }
+
+    @Deprecated
+    public ImageInstance addImageInstance(Long idAbstractImage, Long idProject) throws CytomineException {
+        return new ImageInstance(idAbstractImage, idProject).save();
+    }
+
+    @Deprecated
+    public void deleteImageInstance(Long idImageInstance) throws CytomineException {
+        new ImageInstance().delete(idImageInstance);
+    }
+
+    @Deprecated
+    public Annotation getAnnotation(Long id) throws CytomineException {
+        return new Annotation().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Annotation.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotations() throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        return fetchCollection(annotations);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Annotation.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotationsByProject(Long idProject) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("project", idProject + "");
+        return fetchCollection(annotations);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Annotation.class,Term.class,idTerm,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotationsByTerm(Long idTerm) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("term", idTerm + "");
+        return fetchCollection(annotations);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Annotation.class,User.class,idUser,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotationsByUser(Long idUser) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("user", idUser + "");
+        return fetchCollection(annotations);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Annotation.class,Ontology.class,idOntology,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotationsByOntology(Long idOntology) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("ontology", idOntology + "");
+        return fetchCollection(annotations);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Annotation.class,ImageInstance.class,idImage,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AnnotationCollection getAnnotationsByImage(Long idImage) throws CytomineException {
+        AnnotationCollection annotations = new AnnotationCollection(offset, max);
+        annotations.addFilter("image", idImage + "");
+        return fetchCollection(annotations);
+    }
+
+    @Deprecated
+    public Annotation addAnnotation(String locationWKT, Long image) throws CytomineException {
+        return new Annotation(locationWKT,image).save();
+    }
+
+    @Deprecated
+    public Annotation addAnnotationWithTerms(String locationWKT, Long image, List<Long> terms) throws CytomineException {
+        return new Annotation(locationWKT,image,terms).save();
+    }
+
+    @Deprecated
+    public Annotation addAnnotation(String locationWKT, Long image, Long project) throws CytomineException {
+        return new Annotation(locationWKT,image,project).save();
+    }
+
+    @Deprecated
+    public void deleteAnnotation(Long idAnnotation) throws CytomineException {
+        new Annotation().delete(idAnnotation);
+    }
+
+    @Deprecated
+    public Term getTerm(Long id) throws CytomineException {
+        return new Term().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Term.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public TermCollection getTerms() throws CytomineException {
+        TermCollection terms = new TermCollection(offset, max);
+        return fetchCollection(terms);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Term.class,Ontology.class,idOntology,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public TermCollection getTermsByOntology(Long idOntology) throws CytomineException {
+        TermCollection terms = new TermCollection(offset, max);
+        terms.addFilter("ontology", idOntology + "");
+        return fetchCollection(terms);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Term.class,Annotation.class,idAnnotation,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public TermCollection getTermsByAnnotation(Long idAnnotation) throws CytomineException {
+        TermCollection terms = new TermCollection(offset, max);
+        terms.addFilter("annotation", idAnnotation + "");
+        return fetchCollection(terms);
+    }
+
+    @Deprecated
+    public Term addTerm(String name, String color, Long idOntology) throws CytomineException {
+        return new Term(name,color,idOntology).save();
+    }
+
+    @Deprecated
+    public void deleteTerm(Long idTerm) throws CytomineException {
+        new Term().delete(idTerm);
+    }
+
+    @Deprecated
+    public AnnotationTerm addAnnotationTerm(Long idAnnotation, Long idTerm) throws CytomineException {
+        return new AnnotationTerm(idAnnotation,idTerm).save();
+    }
+
+    @Deprecated
+    public AnnotationTerm addAnnotationTerm(Long idAnnotation, Long idTerm, Long idExpectedTerm, Long idUser, double rate) throws CytomineException {
+        return new AnnotationTerm(idAnnotation,idTerm,idExpectedTerm,idUser,rate).save();
+    }
+
+    @Deprecated
+    public User addUser(String username, String firstname, String lastname, String email, String password) throws CytomineException {
+        return new User(username,firstname,lastname,email,password).save();
+    }
+
+    @Deprecated
+    public User getUser(Long id) throws CytomineException {
+        return new User().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(User.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public UserCollection getUsers() throws CytomineException {
+        UserCollection users = new UserCollection(offset, max);
+        return fetchCollection(users);
+    }
+
+    @Deprecated
+    public UserJob getUserJob(Long id) throws CytomineException {
+        return new UserJob().fetch(id);
+    }
+
+    @Deprecated
+    public Job getJob(Long id) throws CytomineException {
+        return new Job().fetch(id);
+    }
+
+    @Deprecated
+    public Software addSoftware(String name, String serviceName, String resultType, String executeCommand) throws CytomineException {
+        return new Software(name, serviceName, resultType, executeCommand).save();
+    }
+
+    @Deprecated
+    public void deleteSoftware(Long idSoftware) throws CytomineException {
+        new Software().delete(idSoftware);
+    }
+
+    @Deprecated
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
+        return new SoftwareParameter(name,type,idSoftware,defaultValue,required,index,uri,uriSortAttribut,uriPrintAttribut,setByServer).save();
+    }
+
+    @Deprecated
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
+    }
+
+    @Deprecated
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
+    }
+
+    @Deprecated
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
+    }
+
+    @Deprecated
+    public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
+        return new SoftwareProject(idSoftware,idProject).save();
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Software.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public SoftwareCollection getSoftwaresByProject(Long idProject) throws CytomineException {
+        SoftwareCollection softwares = new SoftwareCollection(offset, max);
+        softwares.addFilter("project", idProject + "");
+        return fetchCollection(softwares);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Software.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public SoftwareCollection getSoftwares() throws CytomineException {
+        SoftwareCollection softwares = new SoftwareCollection(offset, max);
+        return fetchCollection(softwares);
+    }
+
+    @Deprecated
+    public ProcessingServer addProcessingServer(String url) throws CytomineException {
+        return new ProcessingServer(url).save();
+    }
+
+    @Deprecated
+    public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
+        return new ImageFilter(name,baseUrl,processingServer).save();
+    }
+
+    public JobData getJobData(Long id) throws CytomineException {
+        return new JobData().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(JobData.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public JobDataCollection getJobDatas() throws CytomineException {
+        JobDataCollection jobDatas = new JobDataCollection(offset, max);
+        return fetchCollection(jobDatas);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(Software.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public JobDataCollection getJobDataByJob(Long idJob) throws CytomineException {
+        JobDataCollection jobDatas = new JobDataCollection(offset, max);
+        jobDatas.addFilter("job", idJob + "");
+        return fetchCollection(jobDatas);
+    }
+
+    @Deprecated
+    public JobData addJobData(String key, Long idJob, String filename) throws CytomineException {
+        return new JobData(key,idJob,filename).save();
+    }
+
+    public void deleteJobData(Long idJobData) throws CytomineException {
+        new JobData().delete(idJobData);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetchWithFilter(ReviewedAnnotation.class,Project.class,idProject,offset,max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public ReviewedAnnotationCollection getReviewedAnnotationsByProject(Long idProject) throws CytomineException {
+        ReviewedAnnotationCollection reviewed = new ReviewedAnnotationCollection(offset, max);
+        reviewed.addFilter("project", idProject + "");
+        return fetchCollection(reviewed);
+    }
+
+    @Deprecated
+    public Storage getStorage(Long id) throws CytomineException {
+        return new Storage().fetch(id);
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Storage.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public StorageCollection getStorages() throws CytomineException {
+        StorageCollection storages = new StorageCollection(offset, max);
+        return fetchCollection(storages);
+    }
+
+    @Deprecated
+    public StorageAbstractImage addStorageAbstractImage(Long idStorage, Long idAbstractImage) throws CytomineException {
+        return new StorageAbstractImage(idStorage,idAbstractImage);
+    }
+
+    @Deprecated
+    public AbstractImage editAbstractImage(Long idAbstractImage, String originalFilename) throws CytomineException {
+        AbstractImage image = new AbstractImage().fetch(idAbstractImage);
+        image.set("originalFilename", originalFilename);
+        return image.update();
+    }
+
+    @Deprecated
+    public ImageGroup addImageGroup(Long idProject) throws CytomineException {
+        return new ImageGroup(idProject).save();
+    }
+
+    @Deprecated
+    public ImageSequence addImageSequence(Long idImageGroup, Long idImage, Integer zStack, Integer slice, Integer time, Integer channel) throws CytomineException {
+        return new ImageSequence(idImageGroup,idImage,zStack,slice,time,channel).save();
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(Role.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public RoleCollection getRoles() throws CytomineException {
+        RoleCollection role = new RoleCollection(offset, max);
+        return fetchCollection(role);
+    }
+
+    @Deprecated
+    public JobTemplate addJobTemplate(String name, Long iProject, Long idSoftware) throws CytomineException {
+        return new JobTemplate(name,iProject,idSoftware).save();
+    }
+
+    @Deprecated
+    public JobParameter addJobParameter(Long job, Long softwareParameter, String value) throws CytomineException {
+        return new JobParameter(job,softwareParameter,value).save();
+    }
+
+    @Deprecated
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
+        return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, idProjects, idStorages, idUser, -1l, idParent);
+    }
+
+    @Deprecated
+    public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws CytomineException {
+        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,status,idParent).save();
+    }
+
+    @Deprecated
+    public UploadedFile getUploadedFile(Long id) throws CytomineException {
+        return new UploadedFile().fetch(id);
+    }
+
+    @Deprecated
+    public void deleteUploadedFile(Long idUploadedFile) throws CytomineException {
+        UploadedFile uploadedFile = new UploadedFile();
+        uploadedFile.set("id", idUploadedFile);
+        uploadedFile.delete();
+    }
+
+    /**
+     * Deprecated. Use Collection.fetch(AmqpQueue.class,offset, max) instead
+     * @throws CytomineException
+     */
+    @Deprecated
+    public AmqpQueueCollection getAmqpQueue() throws CytomineException {
+        AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
+        return fetchCollection(queues);
+    }
 }
