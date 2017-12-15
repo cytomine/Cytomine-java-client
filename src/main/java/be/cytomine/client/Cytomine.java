@@ -575,6 +575,33 @@ public class Cytomine {
         return fetchModel(abstractImage);
     }
 
+  	public List<String> getImageServersForAbstractImage(final Long idAbstractImage) throws CytomineException {
+
+  		final String subUrl = "/api/abstractimage/" + idAbstractImage + "/imageservers.json";
+
+  		HttpClient client;
+  		JSONObject json;
+  		client = new HttpClient(publicKey, privateKey, getHost());
+  		try {
+  			client.authorize("GET", subUrl, "", "application/json,*/*");
+  			client.connect(getHost() + subUrl);
+  			int code = client.get();
+  			String response = client.getResponseData();
+  			client.disconnect();
+  			json = createJSONResponse(code, response);
+  			analyzeCode(code, json);
+  		} catch (IOException e) {
+  			throw new CytomineException(e);
+  		}
+  		final JSONArray responseArray = (JSONArray) json.get("imageServersURLs");
+  		List<String> urls = new ArrayList<>(responseArray.size());
+  		for (int i = 0; i < responseArray.size(); i++) {
+  			urls.add((String) responseArray.get(i));
+  		}
+
+  		return urls;
+  	}
+
     public ImageInstance getImageInstance(Long id) throws CytomineException {
         ImageInstance image = new ImageInstance();
         image.set("id", id);
