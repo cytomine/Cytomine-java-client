@@ -41,7 +41,7 @@ public class Execute {
 		// SoftwareExample.testAddJobTemplate2(cytomine);
 		// SoftwareExample.testAddJobTemplate3(cytomine);
 		// SoftwareExample.testAddJobTemplate4(cytomine);
-		// ImageServersExample.testGetImageServers(cytomine);
+		ImageServersExample.testGetImageServers(cytomine);
 	}
 
 	public static void ping(Cytomine cytomine) throws CytomineException {
