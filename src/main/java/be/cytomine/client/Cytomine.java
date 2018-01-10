@@ -1318,6 +1318,21 @@ public class Cytomine {
     }
 
 
+    public ImageGroupHDF5 getImageGroupHDF5(Long id) throws CytomineException {
+        ImageGroupHDF5 groupHDF5 = new ImageGroupHDF5();
+        groupHDF5.set("id", id);
+        return fetchModel(groupHDF5);
+    }
+
+
+    public ImageGroupHDF5 editImageGroupHDF5(Long id, Integer status, Integer progress) throws CytomineException {
+        ImageGroupHDF5 groupHDF5 = getImageGroupHDF5(id);
+        groupHDF5.set("status", status);
+        groupHDF5.set("progress", progress);
+        return updateModel(groupHDF5);
+    }
+
+
     public Description getDescription(Long domainIdent, String domainClassName) throws CytomineException {
         Description description = new Description();
         description.set("domainIdent", domainIdent);
