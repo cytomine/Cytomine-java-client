@@ -1479,9 +1479,24 @@ public class Cytomine {
 		if (status != -1l) {
 			uploadedFile.set("status", status);
 		}
-
 		return saveModel(uploadedFile);
 	}
+
+    public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
+        UploadedFileCollection files = new UploadedFileCollection(offset, max);
+        files.addParams("deleted", "true");
+        return fetchCollection(files);
+    }
+
+    public void deleteUploadedFile(Long idUploadedFile) throws CytomineException {
+        UploadedFile uploadedFile = new UploadedFile();
+        uploadedFile.set("id", idUploadedFile);
+        deleteModel(uploadedFile);
+    }
+
+    public String clearAbstractImageProperties(Long idImage) throws CytomineException {
+        return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
+    }
 
 	public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
 		UploadedFile uploadedFile = getUploadedFile(id);
