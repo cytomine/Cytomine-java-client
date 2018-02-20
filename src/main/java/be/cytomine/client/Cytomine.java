@@ -1110,6 +1110,12 @@ public class Cytomine {
 		return fetchCollection(softwares);
 	}
 
+	public Software getSoftware(Long id) throws CytomineException {
+		Software software = new Software();
+		software.set("id",id);
+		return fetchModel(software);
+	}
+
 	public ProcessingServer addProcessingServer(String url) throws CytomineException {
 		ProcessingServer processingServer = new ProcessingServer();
 		processingServer.set("url", url);
@@ -1494,10 +1500,6 @@ public class Cytomine {
         deleteModel(uploadedFile);
     }
 
-    public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-        return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
-    }
-
 	public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
 		UploadedFile uploadedFile = getUploadedFile(id);
 		uploadedFile.set("status", status);
@@ -1681,6 +1683,15 @@ public class Cytomine {
 	public void indexToRetrieval(Long id, Long container, String url) throws CytomineException {
 		String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
 		doPost("/retrieval-web/api/resource.json", data);
+	}
+
+	public void executeJob(Long idJob) throws CytomineException {
+		doPost("/api/job/"+idJob+"/execute.json", "");
+	}
+
+	public JSONObject getSimilaritiesByRetrieval(Long idAnnotation) throws CytomineException {
+		String response = doGet("/api/annotation/"+idAnnotation+"/retrieval.json");
+		return (JSONObject) JSONValue.parse(response);
 	}
 
 	public AmqpQueueCollection getAmqpQueue() throws CytomineException {
