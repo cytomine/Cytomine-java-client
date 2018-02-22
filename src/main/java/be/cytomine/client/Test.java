@@ -6,6 +6,8 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Test {
@@ -29,10 +31,9 @@ public class Test {
                 Collection.fetch(c,0,0);
             } catch (CytomineException e) {
                 int code = e.getHttpCode();
-                if (code == 400 || code == 404) {
-                    //err.append("Warning "+code+" : Collection<"+c.getSimpleName()+"> : fetch\n");
-                } else {
-                    err.append("Error 400 : Collection<"+c.getSimpleName()+"> : fetch\n");
+                // 403 : Forbidden ==> not enough right : ok
+                if (code != 403) {
+                    err.append("Error "+code+" : Collection<"+c.getSimpleName()+"> : fetch\n");
                 }
             }
 
@@ -41,16 +42,28 @@ public class Test {
             //call delete
             runMethod(delete,c,err);
         }
-        System.out.println(err.toString());
+        System.out.println("\n"+err.toString());
     }
 
     private static void runMethod(Method m, Class c, StringBuilder err){
+
+        List<Integer> toleratedCodes = new ArrayList<>();
+        // 400 : Bad Request ==> not enough information to create the object
+        // 403 : Forbidden   ==> not enough right
+        // 404 : Not found   ==> not enough information in the request
+        // we will not catch the non existing urls :/
+        toleratedCodes.add(403);
+        toleratedCodes.add(404);
+        if(m.getName().equals("save")){
+            toleratedCodes.add(400);
+        }
+
         try {
             if(m.getParameterCount() == 0) m.invoke(c.newInstance());
             if(m.getParameterCount() == 1) m.invoke(c.newInstance(),0L);
         } catch (InvocationTargetException e) {
             int code = ((CytomineException) e.getCause()).getHttpCode();
-            if (code == 400 || code == 404) {
+            if (toleratedCodes.contains(code)){
                 //err.append("Warning "+code+" : "+c.getSimpleName()+" : "+m.getName()+"\n");
             } else {
                 err.append("Error "+code+" : "+c.getSimpleName()+" : "+m.getName()+"\n");

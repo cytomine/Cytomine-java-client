@@ -21,6 +21,7 @@ import be.cytomine.client.CytomineException;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public abstract class Model<T extends Model> {
     /**
      * Filter maps (url params: /api/param1/value/model.json
      */
-    HashMap<String, String> map = new HashMap<>();
+    LinkedHashMap<String, String> filters = new LinkedHashMap<>();
 
     //public Model() {}
 
@@ -82,11 +83,13 @@ public abstract class Model<T extends Model> {
      */
     public String getJSONResourceURL() {
         Long id = getId();
-        String base;
+        String base = "/api/";
+        base += getFilterPrefix();
+        base += getDomainName();
         if(id!= null) {
-            base = "/api/" + getDomainName() + "/" + id + ".json?";
+            base += "/" + id + ".json?";
         } else {
-            base = "/api/" + getDomainName() + ".json?";
+            base += ".json?";
         }
 
         for (Map.Entry<String, String> param : params.entrySet()) {
@@ -103,6 +106,12 @@ public abstract class Model<T extends Model> {
      */
     public String getDomainName(){
         return getClass().getSimpleName().toLowerCase();
+    }
+
+    protected String getFilterPrefix() {
+        final StringBuilder prefix = new StringBuilder("");
+        filters.forEach((k,v) -> prefix.append(k+"/"+v+"/"));
+        return prefix.toString();//throw new RuntimeException("Error of the java client. "+getClass().getName()+" does not support filters");
     }
 
     public T fetch(Long id) throws CytomineException {
@@ -219,15 +228,15 @@ public abstract class Model<T extends Model> {
     }
 
     boolean isFilterBy(String name) {
-        return map.containsKey(name);
+        return filters.containsKey(name);
     }
 
     public String getFilter(String name) {
-        return map.get(name);
+        return filters.get(name);
     }
 
-    public void addFilter(String name, String value) {
-        map.put(name, value);
+    public /*protected */void addFilter(String name, String value) {
+        if(value != null) filters.put(name, value);
     }
 
     public String toString() {

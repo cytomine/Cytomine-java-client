@@ -87,13 +87,18 @@ public class Cytomine {
      * @param privateKey Your cytomine private key
      */
     public static synchronized void connection(String host, String publicKey, String privateKey) {
-        CYTOMINE = new Cytomine(host,publicKey,privateKey);
+        if(CYTOMINE == null) CYTOMINE = new Cytomine(host,publicKey,privateKey);
+        else {
+            CYTOMINE.host = host;
+            CYTOMINE.publicKey = publicKey;
+            CYTOMINE.privateKey = privateKey;
+        }
     }
     /**
      * Get Cytomine singleton
      */
     public static Cytomine getInstance() throws CytomineException{
-        log.info("Hello " + CYTOMINE.getCurrentUser().get("username"));
+        if(CYTOMINE == null) throw new CytomineException(400,"Connection parameters not set");
         return CYTOMINE;
     }
 
@@ -723,10 +728,8 @@ public class Cytomine {
 
     //PROPERTY
     public Property getDomainProperty(Long id, Long domainIdent, String domain) throws CytomineException {
-        Property property = new Property();
+        Property property = new Property(domain,domainIdent);
         property.set("id", id);
-        property.set("domainIdent", domainIdent);
-        property.set("domain", domain);
         return fetchModel(property);
     }
 
@@ -739,17 +742,13 @@ public class Cytomine {
     }
 
     public Property getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws CytomineException {
-        Property property = new Property();
-        property.set("domainIdent", domainIdent);
-        property.set("domain", domain);
+        Property property = new Property(domain,domainIdent);
         property.set("key", key);
         return fetchModel(property);
     }
 
     public Property addDomainProperties(String domain, Long domainIdent, String key, String value) throws CytomineException {
-        Property property = new Property();
-        property.set("domain", domain);
-        property.set("domainIdent", domainIdent);
+        Property property = new Property(domain,domainIdent);
         property.set("key", key);
         property.set("value", value);
         return saveModel(property);
