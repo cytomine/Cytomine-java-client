@@ -1110,17 +1110,17 @@ public class Cytomine {
 		return fetchCollection(softwares);
 	}
 
-	public ProcessingServer addProcessingServer(String url) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("url", url);
-		return saveModel(processingServer);
+	public ImagingServer addImagingServer(String url) throws CytomineException {
+		ImagingServer imagingServer = new ImagingServer();
+		imagingServer.set("url", url);
+		return saveModel(imagingServer);
 	}
 
-	public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
+	public ImageFilter addImageFilter(String name, String baseUrl, String imagingServer) throws CytomineException {
 		ImageFilter imageFilter = new ImageFilter();
 		imageFilter.set("name", name);
 		imageFilter.set("baseUrl", baseUrl);
-		imageFilter.set("processingServer", processingServer);
+		imageFilter.set("imagingServer", imagingServer);
 		return saveModel(imageFilter);
 	}
 
@@ -1698,10 +1698,25 @@ public class Cytomine {
 		return fetchCollection(softwareRepositoryCollection);
 	}
 
+	public ProcessingServer addProcessingServer(String name, String host, String type) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("name", name);
+		processingServer.set("host", host);
+		processingServer.set("type", type);
+		return saveModel(processingServer);
+	}
+
+	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
+		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
+		return fetchCollection(processingServerCollection);
+	}
+
 	// <editor-fold defaultstate="collapsed" desc="TEST - to remove">
 
 	public void removeSoftwareRepository(long id) throws CytomineException {
-		doDelete("/api/software_repository/" + id + ".json");
+		SoftwareRepository softwareRepository = new SoftwareRepository();
+		softwareRepository.set("id", id);
+		deleteModel(softwareRepository);
 	}
 
 	// </editor-fold>

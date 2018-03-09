@@ -31,11 +31,7 @@ public class Execute {
 		PropertyConfigurator.configure("log4j.properties");
 		log.info("Connection to cytomine...");
 
-		//Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
-
-		Cytomine cytomine = new Cytomine("http://localhost:8080",
-				"530b966f-d828-4983-bc8d-05b8a7ece9cf",
-				"5156fa05-bdc9-402a-9a1f-4523066aa97b");
+		Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
 		ping(cytomine);
 		// cytomine.addUserJob(104606215l,16l,57l,new Date(),104606261l);
 		// cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
@@ -60,7 +56,8 @@ public class Execute {
 			System.out.println("" + current.getStr("id"));
 		}
 
-		cytomine.removeSoftwareRepository(2307);
+		cytomine.removeSoftwareRepository(178);
+
 
 	}
 
