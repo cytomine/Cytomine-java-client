@@ -1498,7 +1498,7 @@ public class Cytomine {
         return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
     }
 
-	public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
+    public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
 		UploadedFile uploadedFile = getUploadedFile(id);
 		uploadedFile.set("status", status);
 		uploadedFile.set("converted", converted);
@@ -1529,10 +1529,6 @@ public class Cytomine {
 		UploadedFile uploadedFile = new UploadedFile();
 		uploadedFile.set("id", id);
 		return fetchModel(uploadedFile);
-	}
-
-	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
 	}
 
 	public String populateAbstractImageProperties(Long idImage) throws CytomineException {
@@ -1687,5 +1683,27 @@ public class Cytomine {
 		AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
 		return fetchCollection(queues);
 	}
+
+	public SoftwareRepository addSoftwareRepository(String provider, String repositoryUser, String prefix, String installerName) throws CytomineException {
+		SoftwareRepository softwareRepository = new SoftwareRepository();
+		softwareRepository.set("provider", provider);
+		softwareRepository.set("repositoryUser", repositoryUser);
+		softwareRepository.set("prefix", prefix);
+		softwareRepository.set("installerName", installerName);
+		return saveModel(softwareRepository);
+	}
+
+	public SoftwareRepositoryCollection getSoftwareRepositories() throws CytomineException {
+		SoftwareRepositoryCollection softwareRepositoryCollection = new SoftwareRepositoryCollection(offset, max);
+		return fetchCollection(softwareRepositoryCollection);
+	}
+
+	// <editor-fold defaultstate="collapsed" desc="TEST - to remove">
+
+	public void removeSoftwareRepository(long id) throws CytomineException {
+		doDelete("/api/software_repository/" + id + ".json");
+	}
+
+	// </editor-fold>
 
 }
