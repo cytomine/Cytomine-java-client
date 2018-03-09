@@ -1531,10 +1531,6 @@ public class Cytomine {
 		return fetchModel(uploadedFile);
 	}
 
-	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
-	}
-
 	public String populateAbstractImageProperties(Long idImage) throws CytomineException {
 		return doPost("/api/abstractimage/" + idImage + "/properties/populate.json", "");
 	}
