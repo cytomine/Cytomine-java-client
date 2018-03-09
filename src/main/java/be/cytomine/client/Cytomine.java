@@ -1110,17 +1110,17 @@ public class Cytomine {
 		return fetchModel(software);
 	}
 
-	public ProcessingServer addProcessingServer(String url) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("url", url);
-		return saveModel(processingServer);
+	public ImagingServer addImagingServer(String url) throws CytomineException {
+		ImagingServer imagingServer = new ImagingServer();
+		imagingServer.set("url", url);
+		return saveModel(imagingServer);
 	}
 
-	public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
+	public ImageFilter addImageFilter(String name, String baseUrl, String imagingServer) throws CytomineException {
 		ImageFilter imageFilter = new ImageFilter();
 		imageFilter.set("name", name);
 		imageFilter.set("baseUrl", baseUrl);
-		imageFilter.set("processingServer", processingServer);
+		imageFilter.set("imagingServer", imagingServer);
 		return saveModel(imageFilter);
 	}
 
