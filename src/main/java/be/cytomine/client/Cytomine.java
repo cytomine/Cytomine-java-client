@@ -210,13 +210,7 @@ public class Cytomine {
 	private void analyzeCode(int code, JSONObject json) throws CytomineException {
 
 		// if 200,201,...no exception
-		if (code == 400) {
-			throw new CytomineException(code, json);
-		} else if (code == 401) {
-			throw new CytomineException(code, json);
-		} else if (code == 404) {
-			throw new CytomineException(code, json);
-		} else if (code == 500) {
+		if (code >= 400 && code < 600) {
 			throw new CytomineException(code, json);
 		} else if (code == 302) {
 			throw new CytomineException(code, json);
