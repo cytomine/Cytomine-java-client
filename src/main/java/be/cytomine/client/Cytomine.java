@@ -1316,7 +1316,7 @@ public class Cytomine {
 	}
 
 	public String resetPassword(Long idUser, String newPassword) throws CytomineException {
-		return doPut("/api/user/" + idUser + "/password.json?password=" + newPassword, "");
+		return doPut("/api/user/" + idUser + "/password.json", "{password: "+newPassword+"}");
 	}
 
 	public AbstractImage editAbstractImage(Long idAbstractImage, String originalFilename) throws CytomineException {
