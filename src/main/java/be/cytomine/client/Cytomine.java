@@ -1023,7 +1023,16 @@ public class Cytomine {
 		return userFinal;
 	}
 
-	public Software addSoftware(String name, String serviceName, String resultType, String executeCommand)
+	public Software addSoftware(String name, Long idSoftwareRepository, String resultType, String executeCommand) throws CytomineException {
+		Software software = new Software();
+		software.set("name", name);
+		software.set("softwareRepository", idSoftwareRepository);
+		software.set("resultName", resultType);
+		software.set("executeCommand", executeCommand);
+		return saveModel(software);
+	}
+
+	/*public Software addSoftware(String name, String serviceName, String resultType, String executeCommand)
 			throws CytomineException {
 		Software software = new Software();
 		software.set("name", name);
@@ -1031,7 +1040,7 @@ public class Cytomine {
 		software.set("resultName", resultType);
 		software.set("executeCommand", executeCommand);
 		return saveModel(software);
-	}
+	}*/
 
 	public void deleteSoftware(Long idSoftware) throws CytomineException {
 		Software software = new Software();
@@ -1694,17 +1703,36 @@ public class Cytomine {
 		return updateModel(softwareRepository);
 	}
 
-	public ProcessingServer addProcessingServer(String name, String host, String type) throws CytomineException {
+	public ProcessingServer getProcessingServer(Long id) throws CytomineException {
 		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("name", name);
-		processingServer.set("host", host);
-		processingServer.set("type", type);
-		return saveModel(processingServer);
+		processingServer.set("id", id);
+		return fetchModel(processingServer);
 	}
+
+	public ProcessingServer addProcessingServer(String name, String host, String type, String serviceName) {
+	    ProcessingServer processingServer = new ProcessingServer();
+	    processingServer.set("name", name);
+	    processingServer.set("host", host);
+	    processingServer.set("type", type);
+	    processingServer.set("serviceName", serviceName);
+	    return processingServer;
+    }
 
 	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
 		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
 		return fetchCollection(processingServerCollection);
+	}
+
+	public void deleteProcessingServer(Long id) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("id", id);
+		deleteModel(processingServer);
+	}
+
+	public ProcessingServer editProcessingServer(Long id, String host) throws CytomineException {
+		ProcessingServer processingServer = getProcessingServer(id);
+		processingServer.set("host", host);
+		return updateModel(processingServer);
 	}
 
 }
