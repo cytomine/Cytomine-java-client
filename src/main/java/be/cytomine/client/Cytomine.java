@@ -161,9 +161,8 @@ public class Cytomine {
 	 * availability of the Cytomine-Core.
 	 *
 	 * @return true, if HTTP response code (200, 201, 304), i.e. the host is
-	 *         available
-	 * @throws Exception
-	 *           if the host is not available
+	 * available
+	 * @throws Exception if the host is not available
 	 */
 	boolean testHostConnection() throws Exception {
 		HttpClient client = new HttpClient();
@@ -1018,24 +1017,15 @@ public class Cytomine {
 		return userFinal;
 	}
 
-	public Software addSoftware(String name, Long idSoftwareRepository, String resultType, String executeCommand) throws CytomineException {
+	public Software addSoftware(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand) throws CytomineException {
 		Software software = new Software();
 		software.set("name", name);
-		software.set("softwareRepository", idSoftwareRepository);
+		software.set("softwareUserRepository", idSoftwareUserRepository);
+		software.set("defaultProcessingServer", idDefaultProcessingServer);
 		software.set("resultName", resultType);
 		software.set("executeCommand", executeCommand);
 		return saveModel(software);
 	}
-
-	/*public Software addSoftware(String name, String serviceName, String resultType, String executeCommand)
-			throws CytomineException {
-		Software software = new Software();
-		software.set("name", name);
-		software.set("serviceName", serviceName);
-		software.set("resultName", resultType);
-		software.set("executeCommand", executeCommand);
-		return saveModel(software);
-	}*/
 
 	public void deleteSoftware(Long idSoftware) throws CytomineException {
 		Software software = new Software();
@@ -1684,44 +1674,43 @@ public class Cytomine {
 		return fetchCollection(queues);
 	}
 
-	public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
+	public SoftwareUserRepository getSoftwareUserRepository(Long id) throws CytomineException {
+        SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+        softwareUserRepository.set("id", id);
+        return fetchModel(softwareUserRepository);
+    }
+
+    public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
         DeleteCommandCollection commands = new DeleteCommandCollection(offset, max);
         commands.addParams("domain", "uploadedFile");
         commands.addParams("after", timestamp.toString());
         return fetchCollection(commands);
     }
 
-	public SoftwareRepository getSoftwareRepository(Long id) throws CytomineException {
-		SoftwareRepository softwareRepository = new SoftwareRepository();
-		softwareRepository.set("id", id);
-		return fetchModel(softwareRepository);
+
+	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String prefix) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+		softwareUserRepository.set("provider", provider);
+		softwareUserRepository.set("username", username);
+		softwareUserRepository.set("prefix", prefix);
+		return saveModel(softwareUserRepository);
 	}
 
-	public SoftwareRepository addSoftwareRepository(String provider, String repositoryUser, String prefix, String installerName) throws CytomineException {
-		SoftwareRepository softwareRepository = new SoftwareRepository();
-		softwareRepository.set("provider", provider);
-		softwareRepository.set("repositoryUser", repositoryUser);
-		softwareRepository.set("prefix", prefix);
-		softwareRepository.set("installerName", installerName);
-		return saveModel(softwareRepository);
+	public SoftwareUserRepositoryCollection getSoftwareUserRepositories() throws CytomineException {
+		SoftwareUserRepositoryCollection softwareUserRepositoryCollection = new SoftwareUserRepositoryCollection(offset, max);
+		return fetchCollection(softwareUserRepositoryCollection);
 	}
 
-	public SoftwareRepositoryCollection getSoftwareRepositories() throws CytomineException {
-		SoftwareRepositoryCollection softwareRepositoryCollection = new SoftwareRepositoryCollection(offset, max);
-		return fetchCollection(softwareRepositoryCollection);
+	public void deleteSoftwareUserRepository(Long id) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+		softwareUserRepository.set("id", id);
+		deleteModel(softwareUserRepository);
 	}
 
-	public void deleteSoftwareRepository(Long id) throws CytomineException {
-		SoftwareRepository softwareRepository = new SoftwareRepository();
-		softwareRepository.set("id", id);
-		deleteModel(softwareRepository);
-	}
-
-	public SoftwareRepository editSoftwareRepository(Long id, String prefix, String installerName) throws CytomineException {
-		SoftwareRepository softwareRepository = getSoftwareRepository(id);
-		softwareRepository.set("prefix", prefix);
-		softwareRepository.set("installerName", installerName);
-		return updateModel(softwareRepository);
+	public SoftwareUserRepository editSoftwareUserRepository(Long id, String prefix) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = getSoftwareUserRepository(id);
+		softwareUserRepository.set("prefix", prefix);
+		return updateModel(softwareUserRepository);
 	}
 
 	public ProcessingServer getProcessingServer(Long id) throws CytomineException {
@@ -1730,14 +1719,15 @@ public class Cytomine {
 		return fetchModel(processingServer);
 	}
 
-	public ProcessingServer addProcessingServer(String name, String host, String type, String serviceName) {
-	    ProcessingServer processingServer = new ProcessingServer();
-	    processingServer.set("name", name);
-	    processingServer.set("host", host);
-	    processingServer.set("type", type);
-	    processingServer.set("serviceName", serviceName);
-	    return processingServer;
-    }
+	public ProcessingServer addProcessingServer(String name, String host, Integer port, String type, String processingMethodName) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("name", name);
+		processingServer.set("host", host);
+		processingServer.set("port", port);
+		processingServer.set("type", type);
+		processingServer.set("processingMethodName", processingMethodName);
+		return saveModel(processingServer);
+	}
 
 	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
 		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
