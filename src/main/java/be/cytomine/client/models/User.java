@@ -40,8 +40,6 @@ public class User extends Model<User> {
             return getJSONResourceURL(getStr("username get")); ???*/
         } else if (getStr("current") != null) {
             return "/api/user/current.json";
-        } else if (isFilterBy("publicKey")) {
-            return getJSONResourceURL() + "?publicKey=" + getFilter("publicKey");
         } else if (isFilterBy("publicKeyFilter")) {
             return "/api/userkey/" + getFilter("publicKeyFilter") + "/keys.json";
         } else if (isFilterBy("id") && isFilterBy("keys")) {

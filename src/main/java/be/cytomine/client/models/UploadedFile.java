@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 import java.io.File;
 import java.util.List;
 
@@ -26,8 +28,27 @@ import java.util.List;
  */
 public class UploadedFile extends Model<UploadedFile> {
 
+    public enum Status {
+
+        UPLOADED (0),
+        CONVERTED (1),
+        DEPLOYED (2),
+        ERROR_FORMAT (3),
+        ERROR_CONVERSION (4),
+        UNCOMPRESSED (5),
+        TO_DEPLOY (6),
+        TO_CONVERT (7),
+        ERROR_DEPLOYMENT (8);
+
+        private final int code;
+        Status(int code) {
+            this.code = code;
+        }
+        public double getCode() { return code; }
+    }
+
     public UploadedFile(){}
-    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent){
+    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
 
@@ -44,13 +65,18 @@ public class UploadedFile extends Model<UploadedFile> {
         this.set("user", idUser);
 
         this.set("parent", idParent);
-        if (status != -1l) {
-            this.set("status", status);
+        if (status != null) {
+            this.set("status", status.code);
         }
     }
 
     public String getAbsolutePath() {
         return this.get("path") + File.separator + this.get("filename");
+    }
+
+    public UploadedFile changeStatus(Status status) throws CytomineException {
+        this.set("status", status.code);
+        return this.update();
     }
 
 }

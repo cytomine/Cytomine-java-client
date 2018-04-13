@@ -65,17 +65,6 @@ public class Cytomine {
     }
 
 
-    public static class UploadStatus {
-        public static final int UPLOADED = 0;
-        public static final int CONVERTED = 1;
-        public static final int DEPLOYED = 2;
-        public static final int ERROR_FORMAT = 3;
-        public static final int ERROR_CONVERT = 4;
-        public static final int UNCOMPRESSED = 5;
-        public static final int TO_DEPLOY = 6;
-    }
-
-
     public enum Filter {ALL, PROJECT, ANNOTATION, IMAGE, ABSTRACTIMAGE} //TODO=> RENAME IMAGE TO IMAGEINSTANCE
 
     public enum Operator {OR, AND}
@@ -645,7 +634,7 @@ public class Cytomine {
 
     public User getUser(String publicKey) throws CytomineException {
         User user = new User();
-        user.addFilter("publicKey", publicKey);
+        user.addParams("publicKey", publicKey);
         return fetchModel(user);
     }
 
@@ -1600,7 +1589,10 @@ public class Cytomine {
 
     @Deprecated
     public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent) throws CytomineException {
-        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,status,idParent).save();
+        UploadedFile.Status state = Arrays.stream(UploadedFile.Status.values())
+                .filter(c -> c.getCode() == status)
+                .findFirst().get();
+        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
     }
 
     @Deprecated

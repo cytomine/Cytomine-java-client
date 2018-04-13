@@ -2,10 +2,7 @@ package be.cytomine.client.sample;
 
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
-import be.cytomine.client.models.AbstractImage;
-import be.cytomine.client.models.ImageGroup;
-import be.cytomine.client.models.ImageInstance;
-import be.cytomine.client.models.ImageSequence;
+import be.cytomine.client.models.*;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -56,7 +53,6 @@ public class ImageExample {
     public static void testUpload(Cytomine cytomine) throws Exception {
 
         try {
-            System.out.println(Cytomine.UploadStatus.DEPLOYED);
             String file = "/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
 //             //AUTOINTERSECT.png
             Long idProject = 92279388L;//21919089L;   // and storage 17763541

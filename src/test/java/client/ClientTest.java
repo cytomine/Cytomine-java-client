@@ -88,7 +88,7 @@ class ClientTest {
 
         UploadedFile uFile = new UploadedFile("originalFilename", "realFilename",
                 "path", 0L, "ext", "contentType", null, storagesId,
-                cytomine.getCurrentUser().getId(), 0L, null).save();
+                cytomine.getCurrentUser().getId(), UploadedFile.Status.UPLOADED, null).save();
         AbstractImage abstractImg = new AbstractImage(UUID.randomUUID().toString(), "tiff").save();
         //AbstractImage abstractImg = new AbstractImage("filename", "image/tiff").save();
         image = new ImageInstance(abstractImg.getId(), project.getId()).save();
