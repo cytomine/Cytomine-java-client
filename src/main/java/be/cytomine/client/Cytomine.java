@@ -1045,11 +1045,11 @@ public class Cytomine {
 												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
 			throws CytomineException {
 		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut,
-				uriPrintAttribut, false);
+				uriPrintAttribut, false, false);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer)
+												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter)
 			throws CytomineException {
 		SoftwareParameter softwareParameter = new SoftwareParameter();
 		softwareParameter.set("name", name);
@@ -1062,18 +1062,19 @@ public class Cytomine {
 		softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
 		softwareParameter.set("uriSortAttribut", uriSortAttribut);
 		softwareParameter.set("setByServer", setByServer);
+		softwareParameter.set("serverParameter", serverParameter);
 
 		return saveModel(softwareParameter);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
 												  boolean required, int index) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false, false);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-												  boolean required, int index, boolean setByServer) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
+												  boolean required, int index, boolean setByServer, boolean serverParameter) throws CytomineException {
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer, serverParameter);
 	}
 
 	public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
@@ -1719,10 +1720,11 @@ public class Cytomine {
 		return fetchModel(processingServer);
 	}
 
-	public ProcessingServer addProcessingServer(String name, String host, Integer port, String type, String processingMethodName) throws CytomineException {
+	public ProcessingServer addProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName) throws CytomineException {
 		ProcessingServer processingServer = new ProcessingServer();
 		processingServer.set("name", name);
 		processingServer.set("host", host);
+		processingServer.set("username", username);
 		processingServer.set("port", port);
 		processingServer.set("type", type);
 		processingServer.set("processingMethodName", processingMethodName);
@@ -1744,6 +1746,29 @@ public class Cytomine {
 		ProcessingServer processingServer = getProcessingServer(id);
 		processingServer.set("host", host);
 		return updateModel(processingServer);
+	}
+
+	public ParameterConstraint addParameterConstraint(String name, String expression, Integer argumentsNumber) throws CytomineException {
+		ParameterConstraint parameterConstraint = new ParameterConstraint();
+		parameterConstraint.set("name", name);
+		parameterConstraint.set("expression", expression);
+		parameterConstraint.set("argumentsNumber", argumentsNumber);
+		return saveModel(parameterConstraint);
+	}
+
+	public SoftwareParameterConstraint addSoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
+		SoftwareParameterConstraint softwareParameterConstraint = new SoftwareParameterConstraint();
+		softwareParameterConstraint.set("parameterConstraint", parameterConstraintId);
+		softwareParameterConstraint.set("softwareParameter", softwareParameterId);
+		softwareParameterConstraint.set("value", value);
+		return saveModel(softwareParameterConstraint);
+	}
+
+	public Job addJob(Long softwareId, Long projectId) throws CytomineException {
+		Job job = new Job();
+		job.set("software", softwareId);
+		job.set("project", projectId);
+		return saveModel(job);
 	}
 
 }
