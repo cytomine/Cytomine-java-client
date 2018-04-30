@@ -1017,13 +1017,15 @@ public class Cytomine {
 		return userFinal;
 	}
 
-	public Software addSoftware(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand) throws CytomineException {
+	public Software addSoftware(String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
 		Software software = new Software();
+		software.set("softwareVersion", softwareVersion);
 		software.set("name", name);
 		software.set("softwareUserRepository", idSoftwareUserRepository);
 		software.set("defaultProcessingServer", idDefaultProcessingServer);
 		software.set("resultName", resultType);
 		software.set("executeCommand", executeCommand);
+		software.set("pullingCommand", pullingCommand);
 		return saveModel(software);
 	}
 
@@ -1769,6 +1771,18 @@ public class Cytomine {
 		job.set("software", softwareId);
 		job.set("project", projectId);
 		return saveModel(job);
+	}
+
+	public Software getSoftware(Long id) throws CytomineException {
+		Software software = new Software();
+		software.set("id", id);
+		return fetchModel(software);
+	}
+
+	public Software deprecateSoftware(Long id) throws CytomineException {
+		Software software = getSoftware(id);
+		software.set("deprecated", true);
+		return saveModel(software);
 	}
 
 }
