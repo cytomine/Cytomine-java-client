@@ -1782,7 +1782,7 @@ public class Cytomine {
 	public Software deprecateSoftware(Long id) throws CytomineException {
 		Software software = getSoftware(id);
 		software.set("deprecated", true);
-		return saveModel(software);
+		return updateModel(software);
 	}
 
 }
