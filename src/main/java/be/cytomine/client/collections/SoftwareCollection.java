@@ -33,6 +33,8 @@ public class SoftwareCollection extends Collection {
     public String toURL() {
         if (isFilterBy("project")) {
             return getJSONResourceURLWithFilter("project");
+        } else if (isFilterBy("software_user_repository")) {
+            return getJSONResourceURLWithFilter("software_user_repository");
         } else {
             return getJSONResourceURL();
         }

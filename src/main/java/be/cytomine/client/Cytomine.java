@@ -1098,6 +1098,12 @@ public class Cytomine {
 		return fetchCollection(softwares);
 	}
 
+	public SoftwareCollection getSoftwaresBySoftwareUserRepository(Long idSoftwareUserRepository) throws CytomineException {
+		SoftwareCollection softwares = new SoftwareCollection(offset, max);
+		softwares.addFilter("software_user_repository", idSoftwareUserRepository + "");
+		return fetchCollection(softwares);
+	}
+
 	public SoftwareCollection getSoftwares() throws CytomineException {
 		SoftwareCollection softwares = new SoftwareCollection(offset, max);
 		return fetchCollection(softwares);
