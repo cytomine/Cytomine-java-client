@@ -1676,10 +1676,11 @@ public class Cytomine {
 		return fetchModel(softwareUserRepository);
 	}
 
-	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String prefix) throws CytomineException {
+	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String dockerUsername, String prefix) throws CytomineException {
 		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
 		softwareUserRepository.set("provider", provider);
 		softwareUserRepository.set("username", username);
+		softwareUserRepository.set("dockerUsername", dockerUsername);
 		softwareUserRepository.set("prefix", prefix);
 		return saveModel(softwareUserRepository);
 	}
@@ -1749,6 +1750,11 @@ public class Cytomine {
 		softwareParameterConstraint.set("softwareParameter", softwareParameterId);
 		softwareParameterConstraint.set("value", value);
 		return saveModel(softwareParameterConstraint);
+	}
+
+	public ParameterConstraintCollection getParameterConstraints() throws CytomineException {
+		ParameterConstraintCollection parameterConstraintCollection = new ParameterConstraintCollection(offset, max);
+		return fetchCollection(parameterConstraintCollection);
 	}
 
 	public Job addJob(Long softwareId, Long projectId) throws CytomineException {
