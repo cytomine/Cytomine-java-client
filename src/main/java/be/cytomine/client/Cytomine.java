@@ -333,7 +333,7 @@ public class Cytomine {
     public <T extends Model> T updateModel(T model) throws CytomineException {
         try {
             HttpClient client = null;
-    
+
             String prefixUrl = model.toURL().split("\\?")[0];
             client = new HttpClient(publicKey, privateKey, getHost());
             client.authorize("PUT", prefixUrl, "", "application/json,*/*");
@@ -387,7 +387,7 @@ public class Cytomine {
     }
 
     public void uploadFile(String url, byte[] data) throws CytomineException {
-        
+
         try {
             HttpClient client = null;
             MultipartEntity entity = new MultipartEntity();
@@ -670,8 +670,8 @@ public class Cytomine {
         return job.update();
     }
 
-    public User addUserJob(Long idSoftware, Long idUserParent) throws CytomineException {
-        return addUserJob(idSoftware, idUserParent, null, new Date(), null);
+    public User addUserJob(Long idSoftware, Long idProject, Long idUserParent) throws CytomineException {
+        return addUserJob(idSoftware, idUserParent, idProject, new Date(), null);
     }
 
     public User addUserJob(Long idSoftware, Long idUserParent, Long idProject, Date created, Long idJob) throws CytomineException {
@@ -876,9 +876,14 @@ public class Cytomine {
     }
 
     public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String mimeType) throws CytomineException {
+        return addNewImage(idUploadedFile, path, filename, null, mimeType);
+    }
+
+    public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String originalFilename, String mimeType) throws CytomineException {
         AbstractImage image = new AbstractImage();
         image.set("path",path);
         image.set("filename",filename);
+        if(originalFilename != null) image.set("originalFilename",originalFilename);
         image.set("mimeType",mimeType);
         image.addFilter("uploadedFile", idUploadedFile + "");
         return saveModel(image);
