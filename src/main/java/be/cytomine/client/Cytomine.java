@@ -1439,15 +1439,19 @@ public class Cytomine {
 		return saveModel(jobParam);
 	}
 
-	public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String mimeType)
-			throws CytomineException {
-		AbstractImage image = new AbstractImage();
-		image.set("path", path);
-		image.set("filename", filename);
-		image.set("mimeType", mimeType);
-		image.addFilter("uploadedFile", idUploadedFile + "");
-		return saveModel(image);
-	}
+    public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String mimeType) throws CytomineException {
+        return addNewImage(idUploadedFile, path, filename, null, mimeType);
+    }
+
+    public AbstractImage addNewImage(Long idUploadedFile, String path, String filename, String originalFilename, String mimeType) throws CytomineException {
+        AbstractImage image = new AbstractImage();
+        image.set("path", path);
+        image.set("filename", filename);
+        if (originalFilename != null) image.set("originalFilename", originalFilename);
+        image.set("mimeType", mimeType);
+        image.addFilter("uploadedFile", idUploadedFile + "");
+        return saveModel(image);
+    }
 
 	public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext,
 			String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
