@@ -1009,9 +1009,9 @@ public class Cytomine {
 		return this.editJob(id, job);
 	}
 
-	public User addUserJob(Long idSoftware, Long idUserParent) throws CytomineException {
-		return addUserJob(idSoftware, idUserParent, null, new Date(), null);
-	}
+    public User addUserJob(Long idSoftware, Long idProject, Long idUserParent) throws CytomineException {
+        return addUserJob(idSoftware, idUserParent, idProject, new Date(), null);
+    }
 
 	public User addUserJob(Long idSoftware, Long idUserParent, Long idProject, Date created, Long idJob)
 			throws CytomineException {
