@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: pierre
@@ -36,6 +38,26 @@ public class Property extends Model<Property> {
         addFilter(domain,idDomain.toString());
         addFilter("key",key);
         set("value", value);
+    }
+
+
+    @Override
+    public String getJSONResourceURL() {
+        Long id = getId();
+        String base = "/api/domain/";
+        base += getFilterPrefix();
+        base += getDomainName();
+        if(id!= null) {
+            base += "/" + id + ".json?";
+        } else {
+            base += ".json?";
+        }
+
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            base = base + param.getKey() + "=" + param.getValue() + "&";
+        }
+        base = base.substring(0, base.length() - 1);
+        return base;
     }
 
     /*public String toURL() {

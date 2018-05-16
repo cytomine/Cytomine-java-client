@@ -161,7 +161,7 @@ public class Collection<T extends Model> {
 
     public String toString() {
         try {
-            return getDomainName() + " collection";
+            return getDomainName() + " collection ("+size()+" elements)";
         } catch (CytomineException e) {
             return "collection";
         }
