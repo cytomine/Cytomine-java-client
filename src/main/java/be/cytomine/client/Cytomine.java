@@ -707,7 +707,7 @@ public class Cytomine {
     }
 
     public void downloadJobData(Long idJobData, String file) throws CytomineException {
-        downloadFile("/api/jobdata/" + idJobData + "download", file);
+        downloadFile("/api/jobdata/" + idJobData + "/download", file);
     }
 
     public void downloadAnnotation(Annotation annotation, String path) throws CytomineException {
