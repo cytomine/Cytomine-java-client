@@ -1,3 +1,5 @@
+package be.cytomine.client;
+
 /*
  * Copyright (c) 2009-2018. Authors: see NOTICE file.
  *
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.cytomine.client;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -21,19 +22,22 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Execute {
 
-	private static final Logger log = Logger.getLogger(Execute.class);
+    private static final Logger log = Logger.getLogger(Execute.class);
 
-	public static void main(String[] args) throws Exception {
-		BasicConfigurator.configure();
-		PropertyConfigurator.configure("log4j.properties");
-		log.info("Connection to cytomine...");
+    public static void main(String[] args) throws Exception {
+        BasicConfigurator.configure();
+        PropertyConfigurator.configure("log4j.properties");
+        log.info("Connection to cytomine...");
 
         Cytomine.connection(args[0], args[1], args[2]);
         Test.launch();
 
-	}
+//        SoftwareExample.testAddJobTemplate2(cytomine);
+//        SoftwareExample.testAddJobTemplate3(cytomine);
+//        SoftwareExample.testAddJobTemplate4(cytomine);
+    }
 
-	public static void ping(Cytomine cytomine) throws CytomineException {
-		log.info("Hello " + Cytomine.getInstance().getCurrentUser().get("username"));
-	}
+    public static void ping(Cytomine cytomine) throws CytomineException {
+        log.info("Hello " + cytomine.getCurrentUser().get("username"));
+    }
 }

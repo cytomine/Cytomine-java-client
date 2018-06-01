@@ -212,7 +212,7 @@ public class SoftwareExample {
         }
     }
 
-    public static void addSoftwareComputeTermArea(Cytomine cytomine) {
+    public static void addSoftwareComputeTermArea(Cytomine cytomine) throws Exception {
         try {
             Software software = cytomine.addSoftware("ComputeTermArea", "createRabbitJobService", "DownloadFiles",
                     "groovy -cp lib/jars/Cytomine-client-java.jar algo/computeTermArea.groovy ");
