@@ -65,10 +65,11 @@ public class Property extends Model<Property> {
         Long domainIdent = (Long) get("domainIdent");
         String domain = (String) get("domain");
         String key = (String) get("key");
+        String value = (String) get("value");
 
         if (id != null && domainIdent != null && domain != null) {
             return getJSONResourceURL(id, domainIdent, domain);
-        } else if (domainIdent != null && domain != null && key != null) {
+        } else if (domainIdent != null && domain != null && key != null && value == null) {
             return getJSONResourceURL(domainIdent, domain, key);
         } else if (domainIdent != null && domain != null) {
             return getJSONResourceURL(domainIdent, domain);
