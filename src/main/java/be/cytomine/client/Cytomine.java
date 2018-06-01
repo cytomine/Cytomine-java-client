@@ -814,7 +814,7 @@ public class Cytomine {
     }
 
     public String resetPassword(Long idUser, String newPassword) throws CytomineException {
-        return doPut("/api/user/" + idUser + "/password.json?password=" + newPassword, "");
+		return doPut("/api/user/" + idUser + "/password.json", "{password: "+newPassword+"}");
     }
 
     public Description getDescription(Long domainIdent, String domainClassName) throws CytomineException {
