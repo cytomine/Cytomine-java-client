@@ -44,7 +44,7 @@ public class Collection<T extends Model> {
     protected Collection(Class<T> type) {
         this(type, 0,0);
     }
-    protected Collection(Class<T> type, int max, int offset) {
+    public Collection(Class<T> type, int max, int offset) {
         this.max = max;
         this.offset = offset;
         this.type = type;
@@ -73,6 +73,14 @@ public class Collection<T extends Model> {
             e.printStackTrace();
         }
         return Cytomine.getInstance().fetchCollection(c);
+    }
+    public Collection<T> fetch() throws CytomineException {
+        Cytomine.getInstance().fetchCollection(this);
+        return fetch(type,0,0);
+    }
+    public Collection<T> fetch(int offset, int max) throws CytomineException {
+        Cytomine.getInstance().fetchCollection(this);
+        return fetch(type,offset, max);
     }
     public Collection<T> fetchNextPage() throws CytomineException {
         this.offset = this.offset + max;
