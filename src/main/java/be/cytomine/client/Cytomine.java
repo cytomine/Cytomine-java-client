@@ -1697,4 +1697,11 @@ public class Cytomine {
 		return fetchCollection(queues);
 	}
 
+	public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
+		DeleteCommandCollection commands = new DeleteCommandCollection(offset, max);
+		commands.addParams("domain","uploadedFile");
+		commands.addParams("after",timestamp.toString());
+		return fetchCollection(commands);
+	}
+
 }
