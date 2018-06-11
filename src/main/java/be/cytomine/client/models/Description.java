@@ -16,6 +16,11 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import org.json.simple.JSONObject;
+
 import java.util.Map;
 
 /**
@@ -23,14 +28,14 @@ import java.util.Map;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Description extends Model<Description> {
+public class Description extends Model<Description> implements ICompositePrimaryKey<Description> {
 
     public String getDomainName() {
         return "description";
     }
 
     public String toURL() {
-        Long domainIdent = (Long) get("domainIdent");
+        Long domainIdent = getLong("domainIdent");
         String domainClassName = getStr("domainClassName");
 
         return getJSONResourceURL(domainIdent, domainClassName);
@@ -49,4 +54,16 @@ public class Description extends Model<Description> {
         }
     }
 
+    @Override
+    public Description fetch(String domainClassName, String domainIdent) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),domainIdent, domainClassName);
+    }
+    @Override
+    public Description fetch(CytomineConnection connection, String domainClassName, String domainIdent) throws CytomineException {
+        this.set("domainIdent", domainIdent);
+        this.set("domainClassName", domainClassName);
+        JSONObject json = connection.doGet(this.toURL());
+        this.setAttr(json);
+        return this;
+    }
 }

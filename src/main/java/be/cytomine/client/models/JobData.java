@@ -16,6 +16,10 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -28,4 +32,18 @@ public class JobData extends Model<JobData> {
         this.set("job", idJob);
         this.set("filename", filename);
     }
+
+    public void uploadJobData(byte[] data) throws CytomineException {
+        uploadJobData(Cytomine.getInstance().getDefaultCytomineConnection(), data);
+    }
+    public void uploadJobData(CytomineConnection connection, byte[] data) throws CytomineException {
+        connection.uploadFile("/api/jobdata/" + this.getId() + "/upload", data);
+    }
+    public void downloadJobData(String file) throws CytomineException {
+        downloadJobData(Cytomine.getInstance().getDefaultCytomineConnection(), file);
+    }
+    public void downloadJobData(CytomineConnection connection, String file) throws CytomineException {
+        connection.downloadFile("/api/jobdata/" + this.getId() + "/download", file);
+    }
+
 }

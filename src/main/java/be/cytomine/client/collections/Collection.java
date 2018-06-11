@@ -17,6 +17,7 @@ package be.cytomine.client.collections;
  */
 
 import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Model;
 import org.json.simple.JSONArray;
@@ -38,7 +39,7 @@ public class Collection<T extends Model> {
 
     protected int max;
     protected int offset;
-    private Class<T> type;
+    //private Class<T> type;
     private T modelInstance;
 
     protected Collection(Class<T> type) {
@@ -47,7 +48,7 @@ public class Collection<T extends Model> {
     public Collection(Class<T> type, int max, int offset) {
         this.max = max;
         this.offset = offset;
-        this.type = type;
+        //this.type = type;
         try {
             modelInstance = type.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
@@ -55,43 +56,7 @@ public class Collection<T extends Model> {
         }
     }
 
-    public static <T extends Model> Collection<T> fetch(Class<T> clazz) throws CytomineException {
-        return fetch(clazz,0,0);
-    }
-    public static <T extends Model> Collection<T> fetch(Class<T> clazz, int offset, int max) throws CytomineException {
-        Collection<T> c = new Collection<>(clazz, max, offset);
-        return Cytomine.getInstance().fetchCollection(c);
-    }
-    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter) throws CytomineException {
-        return fetchWithFilter(clazz, filter, idFilter, 0,0);
-    }
-    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
-        Collection<T> c = new Collection<>(clazz, max, offset);
-        try {
-            c.addFilter(filter.newInstance().getDomainName(), idFilter.toString());
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return Cytomine.getInstance().fetchCollection(c);
-    }
-    public Collection<T> fetch() throws CytomineException {
-        Cytomine.getInstance().fetchCollection(this);
-        return fetch(type,0,0);
-    }
-    public Collection<T> fetch(int offset, int max) throws CytomineException {
-        Cytomine.getInstance().fetchCollection(this);
-        return fetch(type,offset, max);
-    }
-    public Collection<T> fetchNextPage() throws CytomineException {
-        this.offset = this.offset + max;
-        return Cytomine.getInstance().fetchCollection(this);
-    }
-
-    public T get(int i) {
-        modelInstance.setAttr((JSONObject) list.get(i));
-        return modelInstance;
-    }
-
+    // ####################### URL #######################
 
     public String toURL() throws CytomineException {
         String url = getJSONResourceURL()+"?";
@@ -103,10 +68,98 @@ public class Collection<T extends Model> {
         return url;
     }
 
-    public String getDomainName() throws CytomineException {
-        if(type == null) throw new CytomineException(400,"Collection not typed. Not possible to get URL.");
-        return type.getSimpleName().toLowerCase();
+    protected String getJSONResourceURL() throws CytomineException {
+        if(map.size() > 1) {
+            throw new CytomineException(400, "Only one filter is allowed by default");
+        }
+        final StringBuilder urlB = new StringBuilder("/api");
+        map.forEach((k, v) -> {
+            urlB.append("/"+k+"/"+v);
+        });
+        urlB.append("/"+ getDomainName() + ".json");
+
+        return urlB.toString();
     }
+
+    private String getPaginatorURLParams() {
+        return "&max=" + this.max + "&offset=" + this.offset;
+    }
+
+    public String getDomainName() throws CytomineException {
+        if(modelInstance == null) throw new CytomineException(400,"Collection not typed. Not possible to get URL.");
+        return modelInstance.getClass().getSimpleName().toLowerCase();
+    }
+
+    // ####################### REST METHODS #######################
+
+    public static <T extends Model> Collection<T> fetch(Class<T> clazz) throws CytomineException {
+        return fetch(clazz,0,0);
+    }
+    public static <T extends Model> Collection<T> fetch(CytomineConnection connection, Class<T> clazz) throws CytomineException {
+        return fetch(connection, clazz,0,0);
+    }
+    public static <T extends Model> Collection<T> fetch(Class<T> clazz, int offset, int max) throws CytomineException {
+        return fetch(Cytomine.getInstance().getDefaultCytomineConnection(), clazz, offset, max);
+    }
+    public static <T extends Model> Collection<T> fetch(CytomineConnection connection, Class<T> clazz, int offset, int max) throws CytomineException {
+        Collection<T> c = new Collection<>(clazz, max, offset);
+        return c.fetch(connection);
+    }
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter) throws CytomineException {
+        return fetchWithFilter(Cytomine.getInstance().getDefaultCytomineConnection(), clazz, filter, idFilter, 0,0);
+    }
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(CytomineConnection connection, Class<T> clazz, Class<U> filter, Long idFilter) throws CytomineException {
+        return fetchWithFilter(connection, clazz, filter, idFilter, 0,0);
+    }
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(Class<T> clazz, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
+        return fetchWithFilter(Cytomine.getInstance().getDefaultCytomineConnection(), clazz, filter, idFilter, offset, max);
+    }
+
+    public static <T extends Model, U extends Model> Collection<T> fetchWithFilter(CytomineConnection connection, Class<T> clazz, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
+        Collection<T> c = new Collection<>(clazz, max, offset);
+        try {
+            c.addFilter(filter.newInstance().getDomainName(), idFilter.toString());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return c.fetch(connection,offset,max);
+    }
+
+
+    public Collection<T> fetch() throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+
+    public Collection<T> fetch(CytomineConnection connection) throws CytomineException {
+        return this.fetch(connection,this.offset ,this.max );
+    }
+
+    public Collection<T> fetch(int offset, int max) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(), offset, max);
+    }
+
+    public Collection<T> fetch(CytomineConnection connection, int offset, int max) throws CytomineException {
+        this.offset =offset;
+        this.max = max;
+        JSONObject json = connection.doGet(this.toURL());
+        this.setList((JSONArray) json.get("collection"));
+        return this;
+    }
+    public Collection<T> fetchNextPage() throws CytomineException {
+        return this.fetchNextPage(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public Collection<T> fetchNextPage(CytomineConnection connection) throws CytomineException {
+        this.offset = this.offset + max;
+        return this.fetch(connection);
+    }
+
+    // ####################### Getters/Setters #######################
+
+    public T get(int i) {
+        modelInstance.setAttr((JSONObject) list.get(i));
+        return modelInstance;
+    }
+
 
     public JSONArray getList() {
         return list;
@@ -148,23 +201,6 @@ public class Collection<T extends Model> {
 
     public void addParams(String name, String value) {
         params.put(name, value);
-    }
-
-    protected String getJSONResourceURL() throws CytomineException {
-        if(map.size() > 1) {
-            throw new CytomineException(400, "Only one filter is allowed by default");
-        }
-        final StringBuilder urlB = new StringBuilder("/api");
-        map.forEach((k, v) -> {
-            urlB.append("/"+k+"/"+v);
-        });
-        urlB.append("/"+ getDomainName() + ".json");
-
-        return urlB.toString();
-    }
-
-    private String getPaginatorURLParams() {
-        return "&max=" + this.max + "&offset=" + this.offset;
     }
 
     public String toString() {

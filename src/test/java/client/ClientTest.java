@@ -83,7 +83,7 @@ class ClientTest {
         //Term term2 = new Term("term2","#ffffff",ontology.getId()).save();
         //project = new Project("project",ontology.getId()).save();
         project = new Project(UUID.randomUUID().toString(),ontology.getId()).save();
-        StorageCollection storages = cytomine.fetchCollection(new StorageCollection(0, 1));
+        StorageCollection storages = (StorageCollection) new StorageCollection(0, 1).fetch();
         ArrayList<Long> storagesId = new ArrayList<Long>(); storagesId.add(storages.get(0).getId());
 
         UploadedFile uFile = new UploadedFile("originalFilename", "realFilename",

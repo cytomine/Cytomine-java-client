@@ -16,6 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -40,4 +43,17 @@ public class AbstractImage extends Model<AbstractImage> {
             return getJSONResourceURL();
         }
     }
+
+    public String clearProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/clear.json", "").toString();
+    }
+
+    public String populateProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/populate.json", "").toString();
+    }
+
+    public String extractUsefulProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/extract.json", "").toString();
+    }
+
 }

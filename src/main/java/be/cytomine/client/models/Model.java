@@ -17,6 +17,7 @@ package be.cytomine.client.models;
  */
 
 import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import org.json.simple.JSONObject;
 
@@ -47,25 +48,6 @@ public abstract class Model<T extends Model> {
      */
     LinkedHashMap<String, String> filters = new LinkedHashMap<>();
 
-    //public Model() {}
-
-    /**
-     * Build model REST url
-     *
-     * @return
-     */
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    /**
-     * Direct method to accessto the id
-     *
-     * @return Model id
-     */
-    public Long getId() {
-        return getLong("id");
-    }
 
     /**
      * Generate JSON from Model
@@ -74,6 +56,16 @@ public abstract class Model<T extends Model> {
      */
     public String toJSON() {
         return attr.toString();
+    }
+
+    // ####################### CREATE URL #######################
+    /**
+     * Build model REST url
+     *
+     * @return
+     */
+    public String toURL() {
+        return getJSONResourceURL();
     }
 
     /**
@@ -114,65 +106,77 @@ public abstract class Model<T extends Model> {
         return prefix.toString();//throw new RuntimeException("Error of the java client. "+getClass().getName()+" does not support filters");
     }
 
+    // ####################### REST METHODS #######################
+
     public T fetch(Long id) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    public T fetch(CytomineConnection connection, Long id) throws CytomineException {
         this.set("id", id);
-        return Cytomine.getInstance().fetchModel((T)this);
+        JSONObject json = connection.doGet(this.toURL());
+        this.setAttr(json);
+        return (T)this;
     }
 
     public T save() throws CytomineException {
-        return Cytomine.getInstance().saveModel((T)this);
+        return this.save(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public T save(CytomineConnection connection) throws CytomineException {
+        JSONObject json = connection.doPost(this.toURL(),this.toJSON());
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return (T)this;
     }
 
     public void delete() throws CytomineException {
-        this.delete((T) this);
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public void delete(CytomineConnection connection) throws CytomineException {
+        this.delete(connection, (T) this);
     }
     public void delete(Long id) throws CytomineException {
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    public void delete(CytomineConnection connection,Long id) throws CytomineException {
         this.set("id", id);
-        this.delete((T) this);
+        this.delete(connection, (T) this);
     }
     private void delete(T model) throws CytomineException {
-        Cytomine.getInstance().deleteModel(model);
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection(), model);
+    }
+    private void delete(CytomineConnection connection,T model) throws CytomineException {
+        connection.doDelete(model.toURL());
     }
 
     public T update() throws CytomineException {
-        return Cytomine.getInstance().updateModel((T) this);
+        return this.update(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public T update(CytomineConnection connection) throws CytomineException {
+        JSONObject json = connection.doPut(this.toURL(),this.toJSON());
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return (T) this;
     }
 
     public T update(HashMap<String, Object> attributes) throws CytomineException {
+        return this.update(Cytomine.getInstance().getDefaultCytomineConnection(), attributes);
+    }
+
+    public T update(CytomineConnection connection, HashMap<String, Object> attributes) throws CytomineException {
         attributes.forEach((k, v) -> {
             this.set(k,v);
         });
-        return Cytomine.getInstance().updateModel((T)this);
+        return this.update(connection);
     }
 
-    public void addParams(String name, String value) {
-        params.put(name, value);
+    // ####################### Getters/Setters #######################
+
+    public Long getId() {
+        return getLong("id");
     }
 
     public JSONObject getAttr() {
         return attr;
     }
 
-    public void setAttr(JSONObject attr) {
-        this.attr = attr;
-    }
-
-    /**
-     * Add value for attribute 'name'
-     *
-     * @param name  attribute name
-     * @param value value for this attribute
-     */
-    public void set(String name, Object value) {
-        attr.put(name, value);
-    }
-
-    /**
-     * Get value for attribute 'name'
-     *
-     * @param name attribute name
-     * @return value value for this attribute
-     */
     public Object get(String name) {
         try {
             return attr.get(name);
@@ -227,18 +231,46 @@ public abstract class Model<T extends Model> {
         return (List) get(name);
     }
 
-    boolean isFilterBy(String name) {
-        return filters.containsKey(name);
-    }
-
     public String getFilter(String name) {
         return filters.get(name);
     }
 
+    boolean isFilterBy(String name) {
+        return filters.containsKey(name);
+    }
+
+    public void addParams(String name, String value) {
+        params.put(name, value);
+    }
+
+    public void setAttr(JSONObject attr) {
+        this.attr = attr;
+    }
+
+    /**
+     * Add value for attribute 'name'
+     *
+     * @param name  attribute name
+     * @param value value for this attribute
+     */
+    public void set(String name, Object value) {
+        attr.put(name, value);
+    }
+
+    /**
+     * Get value for attribute 'name'
+     *
+     * @param name attribute name
+     * @return value value for this attribute
+     */
     public /*protected */void addFilter(String name, String value) {
         if(value != null) filters.put(name, value);
     }
 
+
+    // ####################### Object override #######################
+
+    @Override
     public String toString() {
         return getDomainName() + getId();
     }

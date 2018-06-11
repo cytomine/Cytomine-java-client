@@ -16,13 +16,16 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
 
-public class AnnotationTerm extends Model<AnnotationTerm> {
+public class AnnotationTerm extends Model<AnnotationTerm> implements ICompositePrimaryKey<AnnotationTerm> {
 
     public AnnotationTerm() {}
     public AnnotationTerm(Long idAnnotation, Long idTerm, Long idExpectedTerm, Long idUser, double rate) {
@@ -52,5 +55,15 @@ public class AnnotationTerm extends Model<AnnotationTerm> {
 
     public String toURL() {
         return "/api/annotation/" + getStr("userannotation") + "/term/" + getStr("term") + ".json?annotationIdent=" + getStr("userannotation");
+    }
+
+    @Override
+    public AnnotationTerm fetch(String idAnnotation, String idTerm) throws CytomineException {
+        return null;
+    }
+
+    @Override
+    public AnnotationTerm fetch(CytomineConnection connection, String idAnnotation, String idTerm) throws CytomineException {
+        return null;
     }
 }
