@@ -16,38 +16,30 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.Software;
+import be.cytomine.client.models.SoftwareUserRepository;
 import org.json.simple.JSONObject;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class SoftwareCollection extends Collection {
+public class SoftwareUserRepositoryCollection extends Collection {
 
-    public SoftwareCollection(int offset, int max) {
-        super(max, offset);
+    public SoftwareUserRepositoryCollection(int offset, int max) {
+        super(offset, max);
     }
 
+    @Override
     public String toURL() {
-        if (isFilterBy("project")) {
-            return getJSONResourceURLWithFilter("project");
-        } else if (isFilterBy("software_user_repository")) {
-            return getJSONResourceURLWithFilter("software_user_repository");
-        } else {
-            return getJSONResourceURL();
-        }
+        return getJSONResourceURL();
     }
 
+    @Override
     public String getDomainName() {
-        return "software";
+        return "software_user_repository";
     }
 
-    public Software get(int i) {
-        Software software = new Software();
+    public SoftwareUserRepository get(int i) {
+        SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
         Object item = list.get(i);
-        software.setAttr((JSONObject) item);
-        return software;
+        softwareUserRepository.setAttr((JSONObject) item);
+        return softwareUserRepository;
     }
+
 }

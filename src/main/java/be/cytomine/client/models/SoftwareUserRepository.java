@@ -16,12 +16,11 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-
-public class ProcessingServer extends Model {
+public class SoftwareUserRepository extends Model {
 
     @Override
     public String getDomainName() {
-        return "processing_server";
+        return "software_user_repository";
     }
 
 }
