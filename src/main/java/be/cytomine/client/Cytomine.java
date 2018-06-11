@@ -43,34 +43,34 @@ public class Cytomine {
 
 	private static final Logger log = Logger.getLogger(Cytomine.class);
 
-	private String	host;
-	private String	login;
-	private String	pass;
-	private String	publicKey;
-	private String	privateKey;
-	private String	charEncoding	= "UTF-8";
+	private String host;
+	private String login;
+	private String pass;
+	private String publicKey;
+	private String privateKey;
+	private String charEncoding = "UTF-8";
 
-	private int	max			= 0;
-	private int	offset	= 0;
+	private int max = 0;
+	private int offset = 0;
 
 	public static class JobStatus {
-		public static final int	NOTLAUNCH			= 0;
-		public static final int	INQUEUE				= 1;
-		public static final int	RUNNING				= 2;
-		public static final int	SUCCESS				= 3;
-		public static final int	FAILED				= 4;
-		public static final int	INDETERMINATE	= 5;
-		public static final int	WAIT					= 6;
+		public static final int NOTLAUNCH = 0;
+		public static final int INQUEUE = 1;
+		public static final int RUNNING = 2;
+		public static final int SUCCESS = 3;
+		public static final int FAILED = 4;
+		public static final int INDETERMINATE = 5;
+		public static final int WAIT = 6;
 	}
 
 	public static class UploadStatus {
-		public static final int	UPLOADED			= 0;
-		public static final int	CONVERTED			= 1;
-		public static final int	DEPLOYED			= 2;
-		public static final int	ERROR_FORMAT	= 3;
-		public static final int	ERROR_CONVERT	= 4;
-		public static final int	UNCOMPRESSED	= 5;
-		public static final int	TO_DEPLOY			= 6;
+		public static final int UPLOADED = 0;
+		public static final int CONVERTED = 1;
+		public static final int DEPLOYED = 2;
+		public static final int ERROR_FORMAT = 3;
+		public static final int ERROR_CONVERT = 4;
+		public static final int UNCOMPRESSED = 5;
+		public static final int TO_DEPLOY = 6;
 	}
 
 	public enum Filter {
@@ -84,12 +84,9 @@ public class Cytomine {
 	/**
 	 * Init a Cytomine object
 	 *
-	 * @param host
-	 *          Full url of the Cytomine instance (e.g. 'http://...')
-	 * @param publicKey
-	 *          Your cytomine public key
-	 * @param privateKey
-	 *          Your cytomine private key
+	 * @param host       Full url of the Cytomine instance (e.g. 'http://...')
+	 * @param publicKey  Your cytomine public key
+	 * @param privateKey Your cytomine private key
 	 */
 	public Cytomine(String host, String publicKey, String privateKey) {
 		this.host = host;
@@ -102,14 +99,10 @@ public class Cytomine {
 	/**
 	 * Legacy constructor (kept for downward compatibility).
 	 *
-	 * @param host
-	 *          Full url of the Cytomine instance (e.g. 'http://...')
-	 * @param publicKey
-	 *          Your cytomine public key
-	 * @param privateKey
-	 *          Your cytomine private key
-	 * @param basePath
-	 *          the base path (will be ignored)
+	 * @param host       Full url of the Cytomine instance (e.g. 'http://...')
+	 * @param publicKey  Your cytomine public key
+	 * @param privateKey Your cytomine private key
+	 * @param basePath   the base path (will be ignored)
 	 */
 	@Deprecated
 	public Cytomine(String host, String publicKey, String privateKey, String basePath) {
@@ -143,9 +136,9 @@ public class Cytomine {
 	/**
 	 * Get the public key of this connection.
 	 *
+	 * @return
 	 * @author Philipp Kainz
 	 * @since
-	 * @return
 	 */
 	public String getPublicKey() {
 		return this.publicKey;
@@ -154,9 +147,9 @@ public class Cytomine {
 	/**
 	 * Get the private key of this connection.
 	 *
+	 * @return
 	 * @author Philipp Kainz
 	 * @since
-	 * @return
 	 */
 	public String getPrivateKey() {
 		return this.privateKey;
@@ -168,9 +161,8 @@ public class Cytomine {
 	 * availability of the Cytomine-Core.
 	 *
 	 * @return true, if HTTP response code (200, 201, 304), i.e. the host is
-	 *         available
-	 * @throws Exception
-	 *           if the host is not available
+	 * available
+	 * @throws Exception if the host is not available
 	 */
 	boolean testHostConnection() throws Exception {
 		HttpClient client = new HttpClient();
@@ -188,8 +180,7 @@ public class Cytomine {
 	/**
 	 * Go to the next page of a collection
 	 *
-	 * @param collection
-	 *          Collection
+	 * @param collection Collection
 	 * @return False if end of collection (previous was last page)
 	 * @throws Exception
 	 */
@@ -689,7 +680,7 @@ public class Cytomine {
 	public AnnotationCollection getAnnotations(Map<String, String> filters) throws CytomineException {
 		AnnotationCollection annotations = new AnnotationCollection(offset, max);
 		// http://beta.cytomine.be/api/annotation.json?user=14794107&image=14391346&term=8171841
-		for (Map.Entry<String, String> entry: filters.entrySet()) {
+		for (Map.Entry<String, String> entry : filters.entrySet()) {
 			annotations.addFilter(entry.getKey(), entry.getValue());
 		}
 		return fetchCollection(annotations);
@@ -810,8 +801,7 @@ public class Cytomine {
 	 * @param idAnnotation
 	 * @param idTerm
 	 * @return the AnnotationTerm instance
-	 * @throws CytomineException
-	 *           if the term cannot be set
+	 * @throws CytomineException if the term cannot be set
 	 * @author Philipp Kainz
 	 * @since 2015-01-06
 	 */
@@ -914,7 +904,7 @@ public class Cytomine {
 	}
 
 	public void addUserProject(Long idUser, Long idProject, boolean admin) throws CytomineException {
-		doPost("/api/project/" + idProject + "/user/" + idUser + (admin? "/admin": "") + ".json", "");
+		doPost("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin" : "") + ".json", "");
 	}
 
 	public void deleteUserProject(Long idUser, Long idProject) throws CytomineException {
@@ -922,7 +912,7 @@ public class Cytomine {
 	}
 
 	public void deleteUserProject(Long idUser, Long idProject, boolean admin) throws CytomineException {
-		doDelete("/api/project/" + idProject + "/user/" + idUser + (admin? "/admin": "") + ".json");
+		doDelete("/api/project/" + idProject + "/user/" + idUser + (admin ? "/admin" : "") + ".json");
 	}
 
 	public UserCollection getProjectUsers(Long idProject) throws CytomineException {
@@ -945,7 +935,7 @@ public class Cytomine {
 	}
 
 	public void doUserPosition(Long idImage, Long zoom, Long bottomLeftX, Long bottomLeftY, Long bottomRightX,
-			Long bottomRightY, Long topLeftX, Long topLeftY, Long topRightX, Long topRightY) throws CytomineException {
+							   Long bottomRightY, Long topLeftX, Long topLeftY, Long topRightX, Long topRightY) throws CytomineException {
 		// image, coord.x, coord.y, coord.zoom
 		String data = "{image : " + idImage + ", zoom : " + zoom + ", bottomLeftX : " + bottomLeftX + ", bottomLeftY : "
 				+ bottomLeftY + ", bottomRightX : " + bottomRightX + ", bottomRightY : " + bottomRightY + ", topLeftX : "
@@ -1033,13 +1023,15 @@ public class Cytomine {
 		return userFinal;
 	}
 
-	public Software addSoftware(String name, String serviceName, String resultType, String executeCommand)
-			throws CytomineException {
+	public Software addSoftware(String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
 		Software software = new Software();
+		software.set("softwareVersion", softwareVersion);
 		software.set("name", name);
-		software.set("serviceName", serviceName);
+		software.set("softwareUserRepository", idSoftwareUserRepository);
+		software.set("defaultProcessingServer", idDefaultProcessingServer);
 		software.set("resultName", resultType);
 		software.set("executeCommand", executeCommand);
+		software.set("pullingCommand", pullingCommand);
 		return saveModel(software);
 	}
 
@@ -1058,14 +1050,14 @@ public class Cytomine {
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-			boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
+												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
 			throws CytomineException {
 		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut,
-				uriPrintAttribut, false);
+				uriPrintAttribut, false, false);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-			boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer)
+												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter)
 			throws CytomineException {
 		SoftwareParameter softwareParameter = new SoftwareParameter();
 		softwareParameter.set("name", name);
@@ -1078,18 +1070,19 @@ public class Cytomine {
 		softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
 		softwareParameter.set("uriSortAttribut", uriSortAttribut);
 		softwareParameter.set("setByServer", setByServer);
+		softwareParameter.set("serverParameter", serverParameter);
 
 		return saveModel(softwareParameter);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-			boolean required, int index) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
+												  boolean required, int index) throws CytomineException {
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false, false);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-			boolean required, int index, boolean setByServer) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
+												  boolean required, int index, boolean setByServer, boolean serverParameter) throws CytomineException {
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer, serverParameter);
 	}
 
 	public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
@@ -1105,22 +1098,28 @@ public class Cytomine {
 		return fetchCollection(softwares);
 	}
 
+	public SoftwareCollection getSoftwaresBySoftwareUserRepository(Long idSoftwareUserRepository) throws CytomineException {
+		SoftwareCollection softwares = new SoftwareCollection(offset, max);
+		softwares.addFilter("software_user_repository", idSoftwareUserRepository + "");
+		return fetchCollection(softwares);
+	}
+
 	public SoftwareCollection getSoftwares() throws CytomineException {
 		SoftwareCollection softwares = new SoftwareCollection(offset, max);
 		return fetchCollection(softwares);
 	}
 
-	public ProcessingServer addProcessingServer(String url) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("url", url);
-		return saveModel(processingServer);
+	public ImagingServer addImagingServer(String url) throws CytomineException {
+		ImagingServer imagingServer = new ImagingServer();
+		imagingServer.set("url", url);
+		return saveModel(imagingServer);
 	}
 
-	public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
+	public ImageFilter addImageFilter(String name, String baseUrl, String imagingServer) throws CytomineException {
 		ImageFilter imageFilter = new ImageFilter();
 		imageFilter.set("name", name);
 		imageFilter.set("baseUrl", baseUrl);
-		imageFilter.set("processingServer", processingServer);
+		imageFilter.set("imagingServer", imagingServer);
 		return saveModel(imageFilter);
 	}
 
@@ -1332,7 +1331,7 @@ public class Cytomine {
 	}
 
 	public ImageSequence addImageSequence(Long idImageGroup, Long idImage, Integer zStack, Integer slice, Integer time,
-			Integer channel) throws CytomineException {
+										  Integer channel) throws CytomineException {
 		ImageSequence imageSequence = new ImageSequence();
 		imageSequence.set("imageGroup", idImageGroup + "");
 		imageSequence.set("image", idImage + "");
@@ -1346,27 +1345,27 @@ public class Cytomine {
 	}
 
 
-    public ImageGroupHDF5 getImageGroupHDF5(Long id) throws CytomineException {
-        ImageGroupHDF5 groupHDF5 = new ImageGroupHDF5();
-        groupHDF5.set("id", id);
-        return fetchModel(groupHDF5);
-    }
+	public ImageGroupHDF5 getImageGroupHDF5(Long id) throws CytomineException {
+		ImageGroupHDF5 groupHDF5 = new ImageGroupHDF5();
+		groupHDF5.set("id", id);
+		return fetchModel(groupHDF5);
+	}
 
 
-    public ImageGroupHDF5 editImageGroupHDF5(Long id, Integer status, Integer progress) throws CytomineException {
-        ImageGroupHDF5 groupHDF5 = getImageGroupHDF5(id);
-        groupHDF5.set("status", status);
-        groupHDF5.set("progress", progress);
-        return updateModel(groupHDF5);
-    }
+	public ImageGroupHDF5 editImageGroupHDF5(Long id, Integer status, Integer progress) throws CytomineException {
+		ImageGroupHDF5 groupHDF5 = getImageGroupHDF5(id);
+		groupHDF5.set("status", status);
+		groupHDF5.set("progress", progress);
+		return updateModel(groupHDF5);
+	}
 
 
-    public Description getDescription(Long domainIdent, String domainClassName) throws CytomineException {
-        Description description = new Description();
-        description.set("domainIdent", domainIdent);
-        description.set("domainClassName", domainClassName);
-        return fetchModel(description);
-    }
+	public Description getDescription(Long domainIdent, String domainClassName) throws CytomineException {
+		Description description = new Description();
+		description.set("domainIdent", domainIdent);
+		description.set("domainClassName", domainClassName);
+		return fetchModel(description);
+	}
 
 	public Description addDescription(Long domainIdent, String domainClassName, String text) throws CytomineException {
 		Description description = new Description();
@@ -1450,13 +1449,13 @@ public class Cytomine {
 	}
 
 	public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext,
-			String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
+										String contentType, List idProjects, List idStorages, Long idUser, Long idParent) throws CytomineException {
 		return addUploadedFile(originalFilename, realFilename, path, size, ext, contentType, idProjects, idStorages, idUser,
 				-1l, idParent);
 	}
 
 	public UploadedFile addUploadedFile(String originalFilename, String realFilename, String path, Long size, String ext,
-			String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent)
+										String contentType, List idProjects, List idStorages, Long idUser, Long status, Long idParent)
 			throws CytomineException {
 		UploadedFile uploadedFile = new UploadedFile();
 		uploadedFile.set("originalFilename", originalFilename);
@@ -1482,21 +1481,21 @@ public class Cytomine {
 		return saveModel(uploadedFile);
 	}
 
-    public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
-        UploadedFileCollection files = new UploadedFileCollection(offset, max);
-        files.addParams("deleted", "true");
-        return fetchCollection(files);
-    }
+	public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
+		UploadedFileCollection files = new UploadedFileCollection(offset, max);
+		files.addParams("deleted", "true");
+		return fetchCollection(files);
+	}
 
-    public void deleteUploadedFile(Long idUploadedFile) throws CytomineException {
-        UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.set("id", idUploadedFile);
-        deleteModel(uploadedFile);
-    }
+	public void deleteUploadedFile(Long idUploadedFile) throws CytomineException {
+		UploadedFile uploadedFile = new UploadedFile();
+		uploadedFile.set("id", idUploadedFile);
+		deleteModel(uploadedFile);
+	}
 
-    public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-        return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
-    }
+	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
+		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
+	}
 
 	public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
 		UploadedFile uploadedFile = getUploadedFile(id);
@@ -1522,17 +1521,12 @@ public class Cytomine {
 	/**
 	 * Get the uploaded file
 	 *
-	 * @param id
-	 *          Uploaded file id
+	 * @param id Uploaded file id
 	 */
 	public UploadedFile getUploadedFile(Long id) throws CytomineException {
 		UploadedFile uploadedFile = new UploadedFile();
 		uploadedFile.set("id", id);
 		return fetchModel(uploadedFile);
-	}
-
-	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
 	}
 
 	public String populateAbstractImageProperties(Long idImage) throws CytomineException {
@@ -1585,18 +1579,13 @@ public class Cytomine {
 	/**
 	 * Upload and create an abstract image on the plateform (use async upload)
 	 *
-	 * @param file
-	 *          The image file path
-	 * @param idProject
-	 *          If not null, add the image in this project
-	 * @param idStorage
-	 *          The storage where the image will be copied
-	 * @param cytomineHost
-	 *          The URL of the Core
+	 * @param file         The image file path
+	 * @param idProject    If not null, add the image in this project
+	 * @param idStorage    The storage where the image will be copied
+	 * @param cytomineHost The URL of the Core
 	 * @return A response with the status, the uploadedFile and the AbstractImage
-	 *         list
-	 * @throws Exception
-	 *           Error during upload
+	 * list
+	 * @throws Exception Error during upload
 	 */
 	public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost)
 			throws CytomineException {
@@ -1607,29 +1596,22 @@ public class Cytomine {
 	 * Upload and create an abstract image on the plateform (use async or sync
 	 * upload depending on synchrone parameter)
 	 *
-	 * @param file
-	 *          The image file path
-	 * @param idProject
-	 *          If not null, add the image in this project
-	 * @param idStorage
-	 *          The storage where the image will be copied
-	 * @param cytomineHost
-	 *          The URL of the Core
-	 * @param properties
-	 *          These key-value will be add to the AbstractImage as Property
-	 *          domain instance
-	 * @param synchrone
-	 *          If true, the response will be send from server when the image will
-	 *          be converted, transfered, created,...(May take a long time)
-	 *          Otherwise the server response directly after getting the image and
-	 *          the parameters
+	 * @param file         The image file path
+	 * @param idProject    If not null, add the image in this project
+	 * @param idStorage    The storage where the image will be copied
+	 * @param cytomineHost The URL of the Core
+	 * @param properties   These key-value will be add to the AbstractImage as Property
+	 *                     domain instance
+	 * @param synchrone    If true, the response will be send from server when the image will
+	 *                     be converted, transfered, created,...(May take a long time)
+	 *                     Otherwise the server response directly after getting the image and
+	 *                     the parameters
 	 * @return A response with the status, the uploadedFile and the AbstractImage
-	 *         list (only if synchrone!=true)
-	 * @throws Exception
-	 *           Error during upload
+	 * list (only if synchrone!=true)
+	 * @throws Exception Error during upload
 	 */
 	public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost,
-			Map<String, String> properties, boolean synchrone) throws CytomineException {
+								 Map<String, String> properties, boolean synchrone) throws CytomineException {
 		try {
 			HttpClient client = null;
 			// String url = "/api/uploadedfile";
@@ -1645,7 +1627,7 @@ public class Cytomine {
 
 				List<String> keys = new ArrayList<String>();
 				List<String> values = new ArrayList<String>();
-				for (Map.Entry<String, String> entry: properties.entrySet()) {
+				for (Map.Entry<String, String> entry : properties.entrySet()) {
 					keys.add(entry.getKey());
 					values.add(entry.getValue());
 				}
@@ -1686,6 +1668,112 @@ public class Cytomine {
 	public AmqpQueueCollection getAmqpQueue() throws CytomineException {
 		AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
 		return fetchCollection(queues);
+	}
+
+	public SoftwareUserRepository getSoftwareUserRepository(Long id) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+		softwareUserRepository.set("id", id);
+		return fetchModel(softwareUserRepository);
+	}
+
+	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String dockerUsername, String prefix) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+		softwareUserRepository.set("provider", provider);
+		softwareUserRepository.set("username", username);
+		softwareUserRepository.set("dockerUsername", dockerUsername);
+		softwareUserRepository.set("prefix", prefix);
+		return saveModel(softwareUserRepository);
+	}
+
+	public SoftwareUserRepositoryCollection getSoftwareUserRepositories() throws CytomineException {
+		SoftwareUserRepositoryCollection softwareUserRepositoryCollection = new SoftwareUserRepositoryCollection(offset, max);
+		return fetchCollection(softwareUserRepositoryCollection);
+	}
+
+	public void deleteSoftwareUserRepository(Long id) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+		softwareUserRepository.set("id", id);
+		deleteModel(softwareUserRepository);
+	}
+
+	public SoftwareUserRepository editSoftwareUserRepository(Long id, String prefix) throws CytomineException {
+		SoftwareUserRepository softwareUserRepository = getSoftwareUserRepository(id);
+		softwareUserRepository.set("prefix", prefix);
+		return updateModel(softwareUserRepository);
+	}
+
+	public ProcessingServer getProcessingServer(Long id) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("id", id);
+		return fetchModel(processingServer);
+	}
+
+	public ProcessingServer addProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("name", name);
+		processingServer.set("host", host);
+		processingServer.set("username", username);
+		processingServer.set("port", port);
+		processingServer.set("type", type);
+		processingServer.set("processingMethodName", processingMethodName);
+		return saveModel(processingServer);
+	}
+
+	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
+		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
+		return fetchCollection(processingServerCollection);
+	}
+
+	public void deleteProcessingServer(Long id) throws CytomineException {
+		ProcessingServer processingServer = new ProcessingServer();
+		processingServer.set("id", id);
+		deleteModel(processingServer);
+	}
+
+	public ProcessingServer editProcessingServer(Long id, String host) throws CytomineException {
+		ProcessingServer processingServer = getProcessingServer(id);
+		processingServer.set("host", host);
+		return updateModel(processingServer);
+	}
+
+	public ParameterConstraint addParameterConstraint(String name, String expression, Integer argumentsNumber) throws CytomineException {
+		ParameterConstraint parameterConstraint = new ParameterConstraint();
+		parameterConstraint.set("name", name);
+		parameterConstraint.set("expression", expression);
+		parameterConstraint.set("argumentsNumber", argumentsNumber);
+		return saveModel(parameterConstraint);
+	}
+
+	public SoftwareParameterConstraint addSoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
+		SoftwareParameterConstraint softwareParameterConstraint = new SoftwareParameterConstraint();
+		softwareParameterConstraint.set("parameterConstraint", parameterConstraintId);
+		softwareParameterConstraint.set("softwareParameter", softwareParameterId);
+		softwareParameterConstraint.set("value", value);
+		return saveModel(softwareParameterConstraint);
+	}
+
+	public ParameterConstraintCollection getParameterConstraints() throws CytomineException {
+		ParameterConstraintCollection parameterConstraintCollection = new ParameterConstraintCollection(offset, max);
+		return fetchCollection(parameterConstraintCollection);
+	}
+
+	public Job addJob(Long softwareId, Long projectId) throws CytomineException {
+		Job job = new Job();
+		job.set("software", softwareId);
+		job.set("project", projectId);
+		return saveModel(job);
+	}
+
+	public Software getSoftware(Long id) throws CytomineException {
+		Software software = new Software();
+		software.set("id", id);
+		return fetchModel(software);
+	}
+
+	public Software deprecateSoftware(Long id) throws CytomineException {
+		Software software = getSoftware(id);
+		software.set("deprecated", true);
+		return updateModel(software);
 	}
 
 }

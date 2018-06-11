@@ -1,10 +1,10 @@
 package be.cytomine.client.models;
 
-public class ProcessingServer extends Model {
+public class ParameterConstraint extends Model {
 
     @Override
     public String getDomainName() {
-        return "processing_server";
+        return "parameter_constraint";
     }
 
 }
