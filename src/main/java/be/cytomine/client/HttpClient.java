@@ -171,7 +171,9 @@ public class HttpClient {
         }
         HttpEntity entity = response.getEntity();
         if (entity != null) {
-            entity.writeTo(new FileOutputStream(dest));
+            FileOutputStream fos = new FileOutputStream(dest);
+            entity.writeTo(fos);
+            fos.close();
         }
         return code;
     }
