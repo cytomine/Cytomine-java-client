@@ -61,6 +61,8 @@ public class Cytomine {
 		public static final int FAILED = 4;
 		public static final int INDETERMINATE = 5;
 		public static final int WAIT = 6;
+		public static final int PREVIEWED = 7;
+		public static final int KILLED = 8;
 	}
 
 	public static class UploadStatus {
@@ -1054,11 +1056,12 @@ public class Cytomine {
 												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
 			throws CytomineException {
 		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut,
-				uriPrintAttribut, false, false);
+				uriPrintAttribut, false, false, name, null, null);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter)
+												  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
+												  String humanName, String valueKey, String commandLineFlag)
 			throws CytomineException {
 		SoftwareParameter softwareParameter = new SoftwareParameter();
 		softwareParameter.set("name", name);
@@ -1072,18 +1075,22 @@ public class Cytomine {
 		softwareParameter.set("uriSortAttribut", uriSortAttribut);
 		softwareParameter.set("setByServer", setByServer);
 		softwareParameter.set("serverParameter", serverParameter);
+		softwareParameter.set("humanName", humanName);
+		softwareParameter.set("valueKey", valueKey);
+		softwareParameter.set("commandLineFlag", commandLineFlag);
 
 		return saveModel(softwareParameter);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
 												  boolean required, int index) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false, false);
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false,
+				false, name, null, null);
 	}
 
 	public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
 												  boolean required, int index, boolean setByServer, boolean serverParameter) throws CytomineException {
-		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer, serverParameter);
+		return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer, serverParameter, name, null, null);
 	}
 
 	public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
