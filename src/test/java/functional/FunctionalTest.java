@@ -23,7 +23,6 @@ import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.SoftwareCollection;
 import be.cytomine.client.models.*;
-import be.cytomine.client.sample.SoftwareExample;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -141,56 +140,56 @@ class FunctionalTest {
         assertEquals(((JSONObject)((JSONArray) response.get("term")).get(0)).get("id"), term.getId(), "Term is not returned by retrieval");
     }
 
-    @Test
-    void runExistingSoftware() throws CytomineException {
-        if(image == null) upload();
-
-        log.info("runSoftware");
-
-        SoftwareExample.addSoftwareComputeTermArea(cytomine);
-
-        SoftwareCollection softwares = cytomine.getSoftwares();
-
-        Long computeTermAreaId = null;
-        Long termsParamId = null;
-        Long imagesParamId = null;
-        for(int i=0;i<softwares.size();i++){
-            if(softwares.get(i).get("name").equals("ComputeTermArea")){
-                computeTermAreaId = softwares.get(i).getId();
-            }
-        }
-        Software software = cytomine.getSoftware(computeTermAreaId);
-        JSONArray parameters = (JSONArray) software.get("parameters");
-        for(int i= 0; i<parameters.size(); i++){
-            JSONObject param = (JSONObject) parameters.get(i);
-            if(param.get("name").equals("terms")){
-                termsParamId = Long.parseLong(param.get("id").toString());
-            } else if(param.get("name").equals("images")){
-                imagesParamId = Long.parseLong(param.get("id").toString());
-            }
-        }
-
-        cytomine.addSoftwareProject(computeTermAreaId,project.getId());
-        User userJob = cytomine.addUserJob(computeTermAreaId, cytomine.getCurrentUser().getId(), project.getId(), new Date(), null);
-        Job job = cytomine.getJob((Long) userJob.get("job"));
-
-        cytomine.addJobParameter(job.getId(), termsParamId, ""+term.getId()+"");
-        cytomine.addJobParameter(job.getId(), imagesParamId, ""+image.getId()+"");
-
-        assertEquals(0L,job.get("status"),"job must not be launched yet");
-
-        log.info("run ComputeTermArea");
-        cytomine.executeJob(job.getId());
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        job = cytomine.getJob((Long) userJob.get("job"));
-
-        assertEquals(3L,job.get("status"),"job must be successful");
-    }
+//    @Test
+//    void runExistingSoftware() throws CytomineException {
+//        if(image == null) upload();
+//
+//        log.info("runSoftware");
+//
+//        SoftwareExample.addSoftwareComputeTermArea(cytomine);
+//
+//        SoftwareCollection softwares = cytomine.getSoftwares();
+//
+//        Long computeTermAreaId = null;
+//        Long termsParamId = null;
+//        Long imagesParamId = null;
+//        for(int i=0;i<softwares.size();i++){
+//            if(softwares.get(i).get("name").equals("ComputeTermArea")){
+//                computeTermAreaId = softwares.get(i).getId();
+//            }
+//        }
+//        Software software = cytomine.getSoftware(computeTermAreaId);
+//        JSONArray parameters = (JSONArray) software.get("parameters");
+//        for(int i= 0; i<parameters.size(); i++){
+//            JSONObject param = (JSONObject) parameters.get(i);
+//            if(param.get("name").equals("terms")){
+//                termsParamId = Long.parseLong(param.get("id").toString());
+//            } else if(param.get("name").equals("images")){
+//                imagesParamId = Long.parseLong(param.get("id").toString());
+//            }
+//        }
+//
+//        cytomine.addSoftwareProject(computeTermAreaId,project.getId());
+//        User userJob = cytomine.addUserJob(computeTermAreaId, cytomine.getCurrentUser().getId(), project.getId(), new Date(), null);
+//        Job job = cytomine.getJob((Long) userJob.get("job"));
+//
+//        cytomine.addJobParameter(job.getId(), termsParamId, ""+term.getId()+"");
+//        cytomine.addJobParameter(job.getId(), imagesParamId, ""+image.getId()+"");
+//
+//        assertEquals(0L,job.get("status"),"job must not be launched yet");
+//
+//        log.info("run ComputeTermArea");
+//        cytomine.executeJob(job.getId());
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        job = cytomine.getJob((Long) userJob.get("job"));
+//
+//        assertEquals(3L,job.get("status"),"job must be successful");
+//    }
 
     @AfterEach
     void tearDown() {
