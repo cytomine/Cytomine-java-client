@@ -713,6 +713,28 @@ public class Cytomine {
 		return saveModel(annotation);
 	}
 
+	public Annotation addAnnotationWithTermsAndProperties(String locationWKT, Long image, List<Long> terms, List<HashMap<String,String>> properties) throws CytomineException {
+		Annotation annotation = new Annotation();
+		annotation.set("location", locationWKT);
+		annotation.set("image", image);
+		annotation.set("name", "");
+		annotation.set("term", terms);
+		annotation.set("property", properties);
+		return saveModel(annotation);
+	}
+
+	public String addMultipleAnnotations(List<Annotation> annotations) throws CytomineException {
+		StringBuilder data = new StringBuilder("[");
+		String prefix = "";
+		for (Annotation a : annotations) {
+			data.append(prefix);
+			prefix = ", ";
+			data.append(a.toJSON());
+		}
+		data.append("]");
+		return doPost("/api/annotation.json", data.toString());
+	}
+
 	public Annotation addAnnotation(String locationWKT, Long image, Long project) throws CytomineException {
 		Annotation annotation = new Annotation();
 		annotation.set("location", locationWKT);
@@ -1230,6 +1252,18 @@ public class Cytomine {
 		property.set("key", key);
 		property.set("value", value);
 		return saveModel(property);
+	}
+
+	public String addMultipleDomainProperties(List<Property> properties) throws CytomineException {
+		StringBuilder data = new StringBuilder("[");
+		String prefix = "";
+		for (Property p : properties) {
+			data.append(prefix);
+			prefix = ", ";
+			data.append(p.toJSON());
+		}
+		data.append("]");
+		return doPost("/api/property.json", data.toString());
 	}
 
 	public Property editDomainProperty(String domain, Long id, Long domainIdent, String key, String value)
