@@ -78,7 +78,7 @@ public class CropExample {
             if (!file.exists()) {
                 try {
                     System.out.println("Try downloading...");
-                    cytomine.downloadPictureWithRedirect("http://beta.cytomine.be/api/annotation/" + id + "/crop." + format + "?maxSize=256", outputFile, format);
+                    cytomine.getDefaultCytomineConnection().downloadPictureWithRedirect("http://beta.cytomine.be/api/annotation/" + id + "/crop." + format + "?maxSize=256", outputFile, format);
                     testNumber = 0;
                 } catch (Exception e) {
                     testNumber++;
