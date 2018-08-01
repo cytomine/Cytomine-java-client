@@ -23,9 +23,10 @@ package be.cytomine.client.models;
  */
 public class Software extends Model<Software> {
     public Software(){}
-    public Software(String name, String serviceName, String resultType, String executeCommand){
+    public Software(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand){
         this.set("name", name);
-        this.set("serviceName", serviceName);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
         this.set("resultName", resultType);
         this.set("executeCommand", executeCommand);
     }

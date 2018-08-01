@@ -1153,8 +1153,8 @@ public class Cytomine {
     }
 
     @Deprecated
-    public Software addSoftware(String name, String serviceName, String resultType, String executeCommand) throws CytomineException {
-        return new Software(name, serviceName, resultType, executeCommand).save();
+    public Software addSoftware(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand) throws CytomineException {
+        return new Software(name, idSoftwareUserRepository, idDefaultProcessingServer, resultType, executeCommand).save();
     }
 
     @Deprecated
