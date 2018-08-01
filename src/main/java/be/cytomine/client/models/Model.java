@@ -97,7 +97,10 @@ public abstract class Model<T extends Model> {
      * @return Domain name
      */
     public String getDomainName(){
-        return getClass().getSimpleName().toLowerCase();
+        String regex = "([a-z])([A-Z]+)";
+        String replacement = "$1-$2";
+
+        return getClass().getSimpleName().replaceAll(regex, replacement).toLowerCase();
     }
 
     protected String getFilterPrefix() {

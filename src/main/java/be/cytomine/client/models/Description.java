@@ -30,29 +30,17 @@ import java.util.Map;
  */
 public class Description extends Model<Description> implements ICompositePrimaryKey<Description> {
 
-    public String getDomainName() {
-        return "description";
+    public Description(){}
+    public Description(String domainClassName, Long domainIdent){
+        this.set("domainIdent", domainIdent);
+        this.set("domainClassName", domainClassName);
+        this.addFilter(domainClassName, domainIdent.toString());
+    }
+    public Description(String domainClassName, Long domainIdent, String text) {
+        this(domainClassName, domainIdent);
+        this.set("data", text);
     }
 
-    public String toURL() {
-        Long domainIdent = getLong("domainIdent");
-        String domainClassName = getStr("domainClassName");
-
-        return getJSONResourceURL(domainIdent, domainClassName);
-    }
-
-    public String getJSONResourceURL(Long domainIdent, String domainClassName) {
-        if (params.isEmpty()) {
-            return "/api/domain/" + domainClassName + "/" + domainIdent + "/description.json";
-        } else {
-            String base = "/api/domain/" + domainClassName + "/" + domainIdent + "/description.json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-        }
-    }
 
     @Override
     public Description fetch(String domainClassName, String domainIdent) throws CytomineException {
