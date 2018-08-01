@@ -29,10 +29,4 @@ public class UserJob extends Model<UserJob> {
             return getJSONResourceURL();
         }
     }
-
-    @Override
-    public String getDomainName() {
-        return "userJob";
-    }
-
 }

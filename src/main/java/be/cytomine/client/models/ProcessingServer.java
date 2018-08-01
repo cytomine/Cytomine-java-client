@@ -26,10 +26,4 @@ public class ProcessingServer extends Model<ProcessingServer> {
     public ProcessingServer(String url){
         this.set("url", url);
     }
-
-    @Override
-    public String getDomainName() {
-        return "processing_server";
-    }
-
 }

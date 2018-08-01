@@ -29,10 +29,4 @@ public class StorageAbstractImage extends Model<StorageAbstractImage> {
         this.set("storage", idStorage);
         this.set("abstractimage", idAbstractImage);
     }
-
-    @Override
-    public String getDomainName() {
-        return "storage_abstract_image";
-    }
-
 }

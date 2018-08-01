@@ -41,9 +41,6 @@ public class AnnotationTerm extends Model<AnnotationTerm> implements ICompositeP
         this.set("userannotation", idAnnotation);
         this.set("term", idTerm);
     }
-    public String getDomainName() {
-        return "annotationterm";
-    }
 
     public String getEntity1() {
         return "annotation";
