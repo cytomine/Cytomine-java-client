@@ -87,7 +87,7 @@ public class Collection<T extends Model> {
 
     public String getDomainName() throws CytomineException {
         if(modelInstance == null) throw new CytomineException(400,"Collection not typed. Not possible to get URL.");
-        return modelInstance.getClass().getSimpleName().toLowerCase();
+        return modelInstance.getDomainName();
     }
 
     // ####################### REST METHODS #######################
