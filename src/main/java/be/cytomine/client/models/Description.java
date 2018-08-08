@@ -30,28 +30,46 @@ import java.util.Map;
  */
 public class Description extends Model<Description> implements ICompositePrimaryKey<Description> {
 
-    public Description(){}
-    public Description(String domainClassName, Long domainIdent){
-        this.set("domainIdent", domainIdent);
-        this.set("domainClassName", domainClassName);
-        this.addFilter(domainClassName, domainIdent.toString());
+    public Description() {
     }
-    public Description(String domainClassName, Long domainIdent, String text) {
-        this(domainClassName, domainIdent);
+
+    public Description(String domainName, Long domainIdent) {
+        this.set("domainIdent", domainIdent);
+        this.set("domainClassName", domainName);
+        this.addFilter(domainName, domainIdent.toString());
+    }
+
+    public Description(Model model) {
+        this(model.getDomainName(), model.getId());
+    }
+
+    public Description(String domainName, Long domainIdent, String text) {
+        this(domainName, domainIdent);
         this.set("data", text);
     }
 
+    public Description(Model model, String text) {
+        this(model.getDomainName(), model.getId(), text);
+    }
+
 
     @Override
-    public Description fetch(String domainClassName, String domainIdent) throws CytomineException {
-        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),domainIdent, domainClassName);
+    public Description fetch(String domainName, String domainIdent) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(), domainIdent, domainName);
     }
+
     @Override
-    public Description fetch(CytomineConnection connection, String domainClassName, String domainIdent) throws CytomineException {
+    public Description fetch(CytomineConnection connection, String domainName, String domainIdent) throws CytomineException {
         this.set("domainIdent", domainIdent);
-        this.set("domainClassName", domainClassName);
+        this.set("domainClassName", domainName);
         JSONObject json = connection.doGet(this.toURL());
         this.setAttr(json);
         return this;
+    }
+
+    @Override
+    public String getJSONResourceURL() {
+        set("id", null);
+        return super.getJSONResourceURL();
     }
 }
