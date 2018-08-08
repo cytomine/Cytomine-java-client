@@ -16,9 +16,30 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+
+import java.util.ArrayList;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class ReviewedAnnotation extends Model<ReviewedAnnotation> {}
+public class ReviewedAnnotation extends Model<ReviewedAnnotation> {
+    public ReviewedAnnotation() {}
+    public ReviewedAnnotation(String locationWKT, ImageInstance image, Project project, ArrayList<Term> terms, Long userId, Long reviewUserId, Annotation parent) {
+        this(locationWKT, image.getId(), project.getId(), (ArrayList) terms.stream().map(Model::getId).collect(Collectors.toList()), userId,reviewUserId, parent.getId(), parent.getClass().getName());
+    }
+    public ReviewedAnnotation(String locationWKT, Long imageId, Long projectId, ArrayList<Long> terms, Long userId, Long reviewUserId, Long parentId, String parentClass) {
+        this.set("project", projectId);
+        this.set("image", imageId);
+        this.set("location", locationWKT);
+        this.set("user", userId);
+        this.set("reviewUser", reviewUserId);
+        this.set("terms", terms);
+        this.set("parentIdent",parentId);
+        this.set("parentClassName",parentClass);
+    }
+}
