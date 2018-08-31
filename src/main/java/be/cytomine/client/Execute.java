@@ -16,6 +16,8 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
+import be.cytomine.client.collections.AmqpQueueCollection;
+import be.cytomine.client.models.SoftwareUserRepository;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;

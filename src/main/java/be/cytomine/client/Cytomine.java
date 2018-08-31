@@ -1208,10 +1208,10 @@ public class Cytomine {
         return (SoftwareCollection) softwares.fetch();
     }
 
-    @Deprecated
+    /*@Deprecated
     public ProcessingServer addProcessingServer(String url) throws CytomineException {
         return new ProcessingServer(url).save();
-    }
+    }*/
 
     @Deprecated
     public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
