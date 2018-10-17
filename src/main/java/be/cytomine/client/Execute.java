@@ -30,13 +30,19 @@ public class Execute {
         log.info("Connection to cytomine...");
 
         Cytomine.connection(args[0], args[1], args[2]);
-        Test.launch();
+
+        ping();
+
+//        Test.launch();
 
 //        SoftwareExample.testAddJobTemplate2(cytomine);
 //        SoftwareExample.testAddJobTemplate3(cytomine);
 //        SoftwareExample.testAddJobTemplate4(cytomine);
     }
 
+    public static void ping() throws CytomineException {
+        log.info("Hello " + Cytomine.getInstance().getCurrentUser().get("username"));
+    }
     public static void ping(Cytomine cytomine) throws CytomineException {
         log.info("Hello " + cytomine.getCurrentUser().get("username"));
     }
