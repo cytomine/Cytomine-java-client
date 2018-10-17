@@ -27,6 +27,7 @@ import java.util.Map;
  */
 public class Property extends Model<Property> {
 
+    public Property(){}
     public Property(String domain, Long idDomain){
         this(domain, idDomain, null);
     }
