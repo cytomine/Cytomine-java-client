@@ -16,11 +16,7 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: rhoyoux
- * Date: 19/08/15
- * GIGA-ULg
- */
+
 public class ProcessingServer extends Model {
 
     @Override

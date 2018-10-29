@@ -953,7 +953,7 @@ public class Cytomine {
 	}
 
 	public void doUserPosition(Long idImage, Long zoom, Long bottomLeftX, Long bottomLeftY, Long bottomRightX,
-							   Long bottomRightY, Long topLeftX, Long topLeftY, Long topRightX, Long topRightY) throws CytomineException {
+			Long bottomRightY, Long topLeftX, Long topLeftY, Long topRightX, Long topRightY) throws CytomineException {
 		// image, coord.x, coord.y, coord.zoom
 		String data = "{image : " + idImage + ", zoom : " + zoom + ", bottomLeftX : " + bottomLeftX + ", bottomLeftY : "
 				+ bottomLeftY + ", bottomRightX : " + bottomRightX + ", bottomRightY : " + bottomRightY + ", topLeftX : "
@@ -1539,9 +1539,6 @@ public class Cytomine {
 		deleteModel(uploadedFile);
 	}
 
-	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
-		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
-	}
 
 	public UploadedFile editUploadedFile(Long id, int status, boolean converted, Long idParent) throws CytomineException {
 		UploadedFile uploadedFile = getUploadedFile(id);
@@ -1573,6 +1570,10 @@ public class Cytomine {
 		UploadedFile uploadedFile = new UploadedFile();
 		uploadedFile.set("id", id);
 		return fetchModel(uploadedFile);
+	}
+
+	public String clearAbstractImageProperties(Long idImage) throws CytomineException {
+		return doPost("/api/abstractimage/" + idImage + "/properties/clear.json", "");
 	}
 
 	public String populateAbstractImageProperties(Long idImage) throws CytomineException {
