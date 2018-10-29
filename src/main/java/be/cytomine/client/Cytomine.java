@@ -1132,12 +1132,6 @@ public class Cytomine {
 		return fetchCollection(softwares);
 	}
 
-	public Software getSoftware(Long id) throws CytomineException {
-		Software software = new Software();
-		software.set("id",id);
-		return fetchModel(software);
-	}
-
 	public ImagingServer addImagingServer(String url) throws CytomineException {
 		ImagingServer imagingServer = new ImagingServer();
 		imagingServer.set("url", url);
@@ -1371,6 +1365,13 @@ public class Cytomine {
 		return saveModel(imageGroup);
 	}
 
+	public ImageGroup addImageGroup(Long idProject, String name) throws CytomineException {
+		ImageGroup imageGroup = new ImageGroup();
+		imageGroup.set("project", idProject + "");
+		imageGroup.set("name", name);
+		return saveModel(imageGroup);
+	}
+
 	public ImageSequence addImageSequence(Long idImageGroup, Long idImage, Integer zStack, Integer slice, Integer time,
 										  Integer channel) throws CytomineException {
 		ImageSequence imageSequence = new ImageSequence();
@@ -1528,7 +1529,7 @@ public class Cytomine {
 
 	public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
 		UploadedFileCollection files = new UploadedFileCollection(offset, max);
-		files.addParams("deleted", "true");
+		files.addParams("deleted", (deleted) ? "true" : "false");
 		return fetchCollection(files);
 	}
 
@@ -1724,11 +1725,11 @@ public class Cytomine {
 		return fetchCollection(queues);
 	}
 
-	public SoftwareUserRepository getSoftwareUserRepository(Long id) throws CytomineException {
-        SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
-        softwareUserRepository.set("id", id);
-        return fetchModel(softwareUserRepository);
-    }
+//	public SoftwareUserRepository getSoftwareUserRepository(Long id) throws CytomineException {
+//        SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+//        softwareUserRepository.set("id", id);
+//        return fetchModel(softwareUserRepository);
+//    }
 
     public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
         DeleteCommandCollection commands = new DeleteCommandCollection(offset, max);
@@ -1738,86 +1739,86 @@ public class Cytomine {
     }
 
 
-	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String dockerUsername, String prefix) throws CytomineException {
-		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
-		softwareUserRepository.set("provider", provider);
-		softwareUserRepository.set("username", username);
-		softwareUserRepository.set("dockerUsername", dockerUsername);
-		softwareUserRepository.set("prefix", prefix);
-		return saveModel(softwareUserRepository);
-	}
+//	public SoftwareUserRepository addSoftwareUserRepository(String provider, String username, String dockerUsername, String prefix) throws CytomineException {
+//		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+//		softwareUserRepository.set("provider", provider);
+//		softwareUserRepository.set("username", username);
+//		softwareUserRepository.set("dockerUsername", dockerUsername);
+//		softwareUserRepository.set("prefix", prefix);
+//		return saveModel(softwareUserRepository);
+//	}
+//
+//	public SoftwareUserRepositoryCollection getSoftwareUserRepositories() throws CytomineException {
+//		SoftwareUserRepositoryCollection softwareUserRepositoryCollection = new SoftwareUserRepositoryCollection(offset, max);
+//		return fetchCollection(softwareUserRepositoryCollection);
+//	}
+//
+//	public void deleteSoftwareUserRepository(Long id) throws CytomineException {
+//		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
+//		softwareUserRepository.set("id", id);
+//		deleteModel(softwareUserRepository);
+//	}
+//
+//	public SoftwareUserRepository editSoftwareUserRepository(Long id, String prefix) throws CytomineException {
+//		SoftwareUserRepository softwareUserRepository = getSoftwareUserRepository(id);
+//		softwareUserRepository.set("prefix", prefix);
+//		return updateModel(softwareUserRepository);
+//	}
 
-	public SoftwareUserRepositoryCollection getSoftwareUserRepositories() throws CytomineException {
-		SoftwareUserRepositoryCollection softwareUserRepositoryCollection = new SoftwareUserRepositoryCollection(offset, max);
-		return fetchCollection(softwareUserRepositoryCollection);
-	}
+//	public ProcessingServer getProcessingServer(Long id) throws CytomineException {
+//		ProcessingServer processingServer = new ProcessingServer();
+//		processingServer.set("id", id);
+//		return fetchModel(processingServer);
+//	}
+//
+//	public ProcessingServer addProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName) throws CytomineException {
+//		ProcessingServer processingServer = new ProcessingServer();
+//		processingServer.set("name", name);
+//		processingServer.set("host", host);
+//		processingServer.set("username", username);
+//		processingServer.set("port", port);
+//		processingServer.set("type", type);
+//		processingServer.set("processingMethodName", processingMethodName);
+//		return saveModel(processingServer);
+//	}
+//
+//	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
+//		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
+//		return fetchCollection(processingServerCollection);
+//	}
+//
+//	public void deleteProcessingServer(Long id) throws CytomineException {
+//		ProcessingServer processingServer = new ProcessingServer();
+//		processingServer.set("id", id);
+//		deleteModel(processingServer);
+//	}
+//
+//	public ProcessingServer editProcessingServer(Long id, String host) throws CytomineException {
+//		ProcessingServer processingServer = getProcessingServer(id);
+//		processingServer.set("host", host);
+//		return updateModel(processingServer);
+//	}
+//
+//	public ParameterConstraint addParameterConstraint(String name, String expression, Integer argumentsNumber) throws CytomineException {
+//		ParameterConstraint parameterConstraint = new ParameterConstraint();
+//		parameterConstraint.set("name", name);
+//		parameterConstraint.set("expression", expression);
+//		parameterConstraint.set("argumentsNumber", argumentsNumber);
+//		return saveModel(parameterConstraint);
+//	}
 
-	public void deleteSoftwareUserRepository(Long id) throws CytomineException {
-		SoftwareUserRepository softwareUserRepository = new SoftwareUserRepository();
-		softwareUserRepository.set("id", id);
-		deleteModel(softwareUserRepository);
-	}
+//	public SoftwareParameterConstraint addSoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
+//		SoftwareParameterConstraint softwareParameterConstraint = new SoftwareParameterConstraint();
+//		softwareParameterConstraint.set("parameterConstraint", parameterConstraintId);
+//		softwareParameterConstraint.set("softwareParameter", softwareParameterId);
+//		softwareParameterConstraint.set("value", value);
+//		return saveModel(softwareParameterConstraint);
+//	}
 
-	public SoftwareUserRepository editSoftwareUserRepository(Long id, String prefix) throws CytomineException {
-		SoftwareUserRepository softwareUserRepository = getSoftwareUserRepository(id);
-		softwareUserRepository.set("prefix", prefix);
-		return updateModel(softwareUserRepository);
-	}
-
-	public ProcessingServer getProcessingServer(Long id) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("id", id);
-		return fetchModel(processingServer);
-	}
-
-	public ProcessingServer addProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("name", name);
-		processingServer.set("host", host);
-		processingServer.set("username", username);
-		processingServer.set("port", port);
-		processingServer.set("type", type);
-		processingServer.set("processingMethodName", processingMethodName);
-		return saveModel(processingServer);
-	}
-
-	public ProcessingServerCollection getProcessingServerCollection() throws CytomineException {
-		ProcessingServerCollection processingServerCollection = new ProcessingServerCollection(offset, max);
-		return fetchCollection(processingServerCollection);
-	}
-
-	public void deleteProcessingServer(Long id) throws CytomineException {
-		ProcessingServer processingServer = new ProcessingServer();
-		processingServer.set("id", id);
-		deleteModel(processingServer);
-	}
-
-	public ProcessingServer editProcessingServer(Long id, String host) throws CytomineException {
-		ProcessingServer processingServer = getProcessingServer(id);
-		processingServer.set("host", host);
-		return updateModel(processingServer);
-	}
-
-	public ParameterConstraint addParameterConstraint(String name, String expression, Integer argumentsNumber) throws CytomineException {
-		ParameterConstraint parameterConstraint = new ParameterConstraint();
-		parameterConstraint.set("name", name);
-		parameterConstraint.set("expression", expression);
-		parameterConstraint.set("argumentsNumber", argumentsNumber);
-		return saveModel(parameterConstraint);
-	}
-
-	public SoftwareParameterConstraint addSoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
-		SoftwareParameterConstraint softwareParameterConstraint = new SoftwareParameterConstraint();
-		softwareParameterConstraint.set("parameterConstraint", parameterConstraintId);
-		softwareParameterConstraint.set("softwareParameter", softwareParameterId);
-		softwareParameterConstraint.set("value", value);
-		return saveModel(softwareParameterConstraint);
-	}
-
-	public ParameterConstraintCollection getParameterConstraints() throws CytomineException {
-		ParameterConstraintCollection parameterConstraintCollection = new ParameterConstraintCollection(offset, max);
-		return fetchCollection(parameterConstraintCollection);
-	}
+//	public ParameterConstraintCollection getParameterConstraints() throws CytomineException {
+//		ParameterConstraintCollection parameterConstraintCollection = new ParameterConstraintCollection(offset, max);
+//		return fetchCollection(parameterConstraintCollection);
+//	}
 
 	public Job addJob(Long softwareId, Long projectId) throws CytomineException {
 		Job job = new Job();
@@ -1832,10 +1833,10 @@ public class Cytomine {
 		return fetchModel(software);
 	}
 
-	public Software deprecateSoftware(Long id) throws CytomineException {
-		Software software = getSoftware(id);
-		software.set("deprecated", true);
-		return updateModel(software);
-	}
+//	public Software deprecateSoftware(Long id) throws CytomineException {
+//		Software software = getSoftware(id);
+//		software.set("deprecated", true);
+//		return updateModel(software);
+//	}
 
 }
