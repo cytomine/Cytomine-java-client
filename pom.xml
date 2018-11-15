@@ -7,7 +7,7 @@
     <name>Cytomine Java Client</name>
     <groupId>be.cytomine.client</groupId>
     <artifactId>cytomine-java-client</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
 
     <licenses>
         <license>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.1</version>
+            <version>4.3.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
