@@ -30,6 +30,16 @@ To download and install manually the package, see [manual installation procedure
 ### Automatic installation
 To retrieve package using Maven or Gradle, see [package repository](https://packagecloud.io/cytomine-uliege/Cytomine-java-client).
 
+### In a Docker container
+To ease development of new Cytomine software, the Cytomine-java-client package is available in Docker containers:
+* [cytomineuliege/software-java8-base](https://hub.docker.com/r/cytomineuliege/software-java8-base/) provides a Java 8 (OpenJDK) environment with client already installed.
+* [cytomineuliege/software-groovy-base](https://hub.docker.com/r/cytomineuliege/software-groovy-base/) provides a Groovy 2.5 (based on OpenJDK 8) environment with client already installed.
+
+These Docker images are tagged with the Python client version number. Two image variants are given for Java 8 version:
+* `cytomineuliege/software-java8-base:<version>` is the defacto image. If you are unsure about what your needs are, you probably want to use this one.
+* `cytomineuliege/software-java8-base:<version>-slim` is an image that does not contain all the common package contained in the default tag and only contains the minimal packages needed to run Java. If you are working in an environment where only the python image will be deployed and you have space constraints, we recommend to use this one.
+
+See [official OpenJDK Docker image](https://hub.docker.com/_/openjdk/) for more details.
 
 ## Usage
 
