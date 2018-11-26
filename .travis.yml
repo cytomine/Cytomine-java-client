@@ -28,7 +28,7 @@ after_success:
       cp target/*.jar docker;
       docker build --build-arg BASE_IMAGE=openjdk --build-arg BASE_TAG=8 --build-arg RELEASE_PATH="." --build-arg VERSION=$VERSION -t cytomineuliege/software-java8-base:v$VERSION docker/;
       docker build --build-arg BASE_IMAGE=openjdk --build-arg BASE_TAG=8-slim --build-arg RELEASE_PATH="." --build-arg VERSION=$VERSION -t cytomineuliege/software-java8-base:v$VERSION-slim docker/;
-      docker build --build-arg BASE_IMAGE=groovy --build-arg BASE_TAG=2.5-jdk --build-arg RELEASE_PATH="." --build-arg VERSION=$VERSION -t cytomineuliege/software-groovy-base:v$VERSION docker/;
+      docker build --build-arg BASE_IMAGE=urubens/groovy --build-arg BASE_TAG=2.5-jdk --build-arg RELEASE_PATH="." --build-arg VERSION=$VERSION -t cytomineuliege/software-groovy-base:v$VERSION docker/;
     fi;
 
 before_deploy: "mvn package"
