@@ -16,11 +16,9 @@ ARG BASE_IMAGE
 ARG BASE_TAG
 FROM $BASE_IMAGE:$BASE_TAG
 
-RUN mkdir -p lib
-
 ARG VERSION
 ARG NAMESPACE=Cytomine-ULiege
 ARG RELEASE_PATH=https://github.com/${NAMESPACE}/Cytomine-java-client/releases/download/v${VERSION}
-ADD ${RELEASE_PATH}/cytomine-java-client-${VERSION}-jar-with-dependencies.jar lib/cytomine-java-client.jar
+ADD ${RELEASE_PATH}/cytomine-java-client-${VERSION}-jar-with-dependencies.jar /lib/cytomine-java-client.jar
 USER root
-RUN chmod +x lib/*
+RUN chmod +x /lib/*
