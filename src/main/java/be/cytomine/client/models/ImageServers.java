@@ -1,5 +1,3 @@
-package be.cytomine.client.models;
-
 /*
  * Copyright (c) 2009-2018. Authors: see NOTICE file.
  *
@@ -15,16 +13,32 @@ package be.cytomine.client.models;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package be.cytomine.client.models;
+
+import java.util.List;
 
 /**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
+ * @author Daniel Felipe Gonzalez Obando
  */
-public class SoftwareParameter extends Model {
+public class ImageServers extends ModelAssociation {
 
-    public String getDomainName() {
-        return "softwareparameter";
-    }
+	@Override
+	public String getDomainName() {
+		return "imageservers";
+	}
 
+	@Override
+	public String getEntity1() {
+		return "abstractimage";
+	}
+
+	@Override
+	public String getEntity2() {
+		return getDomainName();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getServerList() {
+		return getList("imageServersURLs");
+	}
 }

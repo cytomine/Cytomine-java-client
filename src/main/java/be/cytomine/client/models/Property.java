@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2016. Authors: see NOTICE file.
+ * Copyright (c) 2009-2018. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,11 @@ public class Property extends Model {
         Long domainIdent = (Long) get("domainIdent");
         String domain = (String) get("domain");
         String key = (String) get("key");
+        String value = (String) get("value");
 
         if (id != null && domainIdent != null && domain != null) {
             return getJSONResourceURL(id, domainIdent, domain);
-        } else if (domainIdent != null && domain != null && key != null) {
+        } else if (domainIdent != null && domain != null && key != null && value == null) {
             return getJSONResourceURL(domainIdent, domain, key);
         } else if (domainIdent != null && domain != null) {
             return getJSONResourceURL(domainIdent, domain);

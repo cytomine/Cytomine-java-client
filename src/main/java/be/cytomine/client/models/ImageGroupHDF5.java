@@ -16,15 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class SoftwareParameter extends Model {
+public class ImageGroupHDF5 extends Model {
 
     public String getDomainName() {
-        return "softwareparameter";
+        return "imagegroupHDF5";
     }
-
 }
