@@ -17,6 +17,8 @@ package be.cytomine.client;
  */
 
 import be.cytomine.client.collections.AmqpQueueCollection;
+import be.cytomine.client.models.ImageFilter;
+import be.cytomine.client.models.ProcessingServer;
 import be.cytomine.client.models.SoftwareUserRepository;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -32,8 +34,12 @@ public class Execute {
         log.info("Connection to cytomine...");
 
         Cytomine.connection(args[0], args[1], args[2]);
-        Test.launch();
+        //Test.launch();
 
+        ping(Cytomine.getInstance());
+
+        SoftwareUserRepository sur = new SoftwareUserRepository("github", "Cytomine-ULiege", "S_", "cytomineuliege");
+        sur.save();
 //        SoftwareExample.testAddJobTemplate2(cytomine);
 //        SoftwareExample.testAddJobTemplate3(cytomine);
 //        SoftwareExample.testAddJobTemplate4(cytomine);
