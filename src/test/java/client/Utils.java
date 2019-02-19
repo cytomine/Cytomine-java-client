@@ -42,7 +42,7 @@ public class Utils {
     private static Project project;
 
 
-    static void connect(boolean adminSession) throws CytomineException {
+    static void connect() throws CytomineException {
         if(cytomine != null) return;
         BasicConfigurator.configure();
         PropertyConfigurator.configure("log4j.properties");
@@ -57,6 +57,9 @@ public class Utils {
         log.info("Connection to cytomine...");
         Cytomine.connection(host,publicKey,privateKey);
         cytomine = Cytomine.getInstance();
+    }
+    static String getPublicKey() {
+        return publicKey;
     }
 
     static String getRandomString(){

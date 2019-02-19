@@ -27,6 +27,9 @@ import org.json.simple.JSONObject;
  */
 public class UserCollection extends Collection<User> {
 
+    public UserCollection() {
+        this(0,0);
+    }
     public UserCollection(int offset, int max) {
         super(User.class, max, offset);
     }
@@ -35,6 +38,8 @@ public class UserCollection extends Collection<User> {
     protected String getJSONResourceURL() throws CytomineException {
         if (isFilterBy("project") && isFilterBy("admin")) {
             return "/api/project/" + getFilter("project") + "/admin.json";
+        } else if (isFilterBy("project") && isFilterBy("online")) {
+            return "/api/project/" + getFilter("project") + "/online/user.json";
         } else if (isFilterBy("project")) {
             return "/api/project/" + getFilter("project") + "/user.json";
         } else {

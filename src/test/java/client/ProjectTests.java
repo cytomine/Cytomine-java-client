@@ -33,7 +33,7 @@ public class ProjectTests {
 
     @BeforeAll
     static void init() throws CytomineException {
-        Utils.connect(true);
+        Utils.connect();
     }
 
     @Test
