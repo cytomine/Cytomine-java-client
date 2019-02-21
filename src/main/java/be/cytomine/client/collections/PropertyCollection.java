@@ -29,6 +29,9 @@ import org.json.simple.JSONObject;
  */
 public class PropertyCollection extends Collection {
 
+    public PropertyCollection() {
+        this(0,0);
+    }
     public PropertyCollection(int offset, int max) {
         super(Property.class, max, offset);
     }

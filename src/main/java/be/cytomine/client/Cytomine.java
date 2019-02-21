@@ -591,7 +591,7 @@ public class Cytomine {
     public Property getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws CytomineException {
         Property property = new Property(domain,domainIdent);
         property.set("key", key);
-        return property.fetch(null);
+        return property.fetch(key);
     }
 
     public Property addDomainProperties(String domain, Long domainIdent, String key, String value) throws CytomineException {
