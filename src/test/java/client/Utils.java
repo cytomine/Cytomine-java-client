@@ -20,6 +20,7 @@ import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Ontology;
 import be.cytomine.client.models.Project;
+import be.cytomine.client.models.Software;
 import be.cytomine.client.models.User;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -90,5 +91,9 @@ public class Utils {
     }
     static Project getNewProject() throws CytomineException {
         return new Project(getRandomString(),getOntology()).save();
+    }
+    static Software getSoftware() throws CytomineException {
+        String name = Utils.getRandomString();
+        return new Software(name, "createRabbitJobWithArgsService", name, name).save();
     }
 }

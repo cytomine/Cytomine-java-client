@@ -23,6 +23,9 @@ package be.cytomine.client.models;
  */
 public class SoftwareProject extends Model<SoftwareProject> {
     public SoftwareProject(){}
+    public SoftwareProject(Software software, Project project){
+        this(software.getId(), project.getId());
+    }
     public SoftwareProject(Long idSoftware, Long idProject){
         this.set("software", idSoftware);
         this.set("project", idProject);
