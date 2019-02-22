@@ -1354,4 +1354,22 @@ public class Cytomine {
         AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
         return (AmqpQueueCollection) queues.fetch();
     }
+
+    // TODO : remove this line when rest url of core are normalized
+    public static String convertDomainName(String input){
+        switch (input) {
+            case "project" :
+                return "be.cytomine.project.Project";
+            case "annotation" :
+                return "be.cytomine.project.Project";
+            default:
+                try {
+                    throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
+                } catch (CytomineException e) {
+                    e.printStackTrace();
+                    return "";
+                }
+        }
+    }
+
 }

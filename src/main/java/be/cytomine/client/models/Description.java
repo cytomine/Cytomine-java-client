@@ -38,7 +38,7 @@ public class Description extends Model<Description> implements ICompositePrimary
 
     public Description(String domain, Long idDomain, String description) {
         // TODO : remove the call to convertDomainName when rest url of core are normalized
-        set("domainClassName",convertDomainName(domain));
+        set("domainClassName",Cytomine.convertDomainName(domain));
         set("domainIdent",idDomain.toString());
         set("data", description);
     }
@@ -76,25 +76,9 @@ public class Description extends Model<Description> implements ICompositePrimary
     @Override
     public Description fetch(CytomineConnection connection, String domainClassName, String domainIdent) throws CytomineException {
         this.set("domainIdent", domainIdent);
-        this.set("domainClassName", convertDomainName(domainClassName));
+        this.set("domainClassName", Cytomine.convertDomainName(domainClassName));
         JSONObject json = connection.doGet(this.toURL());
         this.setAttr(json);
         return this;
-    }
-    // TODO : remove this line when rest url of core are normalized
-    private String convertDomainName(String input){
-        switch (input) {
-            case "project" :
-                return "be.cytomine.project.Project";
-            case "annotation" :
-                return "be.cytomine.project.Project";
-            default:
-                try {
-                    throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
-                } catch (CytomineException e) {
-                    e.printStackTrace();
-                    return "";
-                }
-        }
     }
 }
