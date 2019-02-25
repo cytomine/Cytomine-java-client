@@ -1245,7 +1245,7 @@ public class Cytomine {
 
     @Deprecated
     public JobData addJobData(String key, Long idJob, String filename) throws CytomineException {
-        return new JobData(key,idJob,filename).save();
+        return new JobData(idJob,key,filename).save();
     }
 
     public void deleteJobData(Long idJobData) throws CytomineException {

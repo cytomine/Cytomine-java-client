@@ -23,6 +23,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -62,6 +63,10 @@ public class Utils {
 
     static String getRandomString(){
         return UUID.randomUUID().toString();
+    }
+
+    static File getFile() {
+        return new File("src/test/java/client/samples/text.txt");
     }
 
     //Cytomine Object getters
