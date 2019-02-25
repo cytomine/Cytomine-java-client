@@ -23,9 +23,12 @@ package be.cytomine.client.models;
  */
 public class JobParameter extends Model<JobParameter> {
     public JobParameter(){}
-    public JobParameter(Long job, Long softwareParameter, String value){
-        this.set("job", job);
-        this.set("softwareParameter", softwareParameter);
+    public JobParameter(Job job, SoftwareParameter softwareParameter, String value){
+        this(job.getId(), softwareParameter.getId(), value);
+    }
+    public JobParameter(Long jobId, Long softwareParameterId, String value){
+        this.set("job", jobId);
+        this.set("softwareParameter", softwareParameterId);
         this.set("value", value);
     }
 }
