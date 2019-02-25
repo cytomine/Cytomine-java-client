@@ -44,10 +44,13 @@ public class UploadedFile extends Model<UploadedFile> {
         Status(int code) {
             this.code = code;
         }
-        public double getCode() { return code; }
+        public int getCode() { return code; }
     }
 
     public UploadedFile(){}
+    public UploadedFile(String originalFilename, String realFilename, File file, Long size, String ext, String contentType, List idProjects, List idStorages, User user, Status status, UploadedFile parent){
+        this(originalFilename, realFilename, file.getAbsolutePath(), size, ext, contentType, idProjects, idStorages, user.getId(), status, parent != null ? parent.getId() : null);
+    }
     public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
