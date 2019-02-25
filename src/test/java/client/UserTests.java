@@ -18,6 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.UserCollection;
 import be.cytomine.client.models.User;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -66,5 +67,11 @@ public class UserTests {
 
         log.info(c.size());
         assert c.size() > 0;
+
+        UserCollection uc = new UserCollection();
+        uc.fetch();
+
+        log.info(uc.size());
+        assert uc.size() > 0;
     }
 }

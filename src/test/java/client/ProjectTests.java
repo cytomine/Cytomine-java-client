@@ -41,6 +41,7 @@ public class ProjectTests {
         log.info("test create project");
         String name = Utils.getRandomString();
         Project p = new Project(name,Utils.getOntology()).save();
+        assertEquals(name, p.get("name"), "fetched name not the same used for the project creation");
 
         p = new Project().fetch(p.getId());
         assertEquals(name, p.get("name"), "fetched name not the same used for the project creation");
@@ -53,7 +54,9 @@ public class ProjectTests {
         try {
             new Project().fetch(p.getId());
             assert false;
-        } catch (CytomineException e) { }
+        } catch (CytomineException e) {
+            assertEquals(e.getHttpCode(), 404);
+        }
     }
 
     @Test

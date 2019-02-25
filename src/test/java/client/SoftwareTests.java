@@ -54,7 +54,7 @@ public class SoftwareTests {
 
         s.delete();
         try {
-            new Project().fetch(s.getId());
+            new Software().fetch(s.getId());
             assert false;
         } catch (CytomineException e) {
             assertEquals(e.getHttpCode(), 404);

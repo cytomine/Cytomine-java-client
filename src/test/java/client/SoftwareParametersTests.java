@@ -93,7 +93,7 @@ public class SoftwareParametersTests {
 
     @Test
     void testListSoftwareParametersOfSoftware() throws CytomineException {
-        log.info("test list software_parameters");
+        log.info("test list software_parameters of a software");
         Software software = Utils.getSoftware();
         SoftwareParameterCollection spc = new SoftwareParameterCollection();
         spc.addFilter("software", software.getId().toString());

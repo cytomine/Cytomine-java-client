@@ -18,11 +18,8 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
-import be.cytomine.client.collections.UserCollection;
 import be.cytomine.client.models.Description;
 import be.cytomine.client.models.Project;
-import be.cytomine.client.models.Property;
-import be.cytomine.client.models.User;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -64,7 +61,7 @@ public class DescriptionTests {
 
     @Test
     void testCreateDescriptionIncorrect() throws CytomineException {
-        log.info("test create description");
+        log.info("test create incorrect description");
 
         try{
             new Description().save();

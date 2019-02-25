@@ -43,11 +43,11 @@ public class AttachedFileTests {
     void testCreateAttachedFile() throws CytomineException {
         log.info("test create attached file");
         Project project = Utils.getProject();
-        AttachedFile af = new AttachedFile(project, new File("src/test/java/client/samples/text.txt")).save();
-        assertEquals("text.txt", af.get("filename"), "filename not the same used for the attached file creation");
+        AttachedFile af = new AttachedFile(project, Utils.getFile()).save();
+        assertEquals(Utils.getFile().getName(), af.get("filename"), "filename not the same used for the attached file creation");
 
         af = new AttachedFile().fetch(af.getId());
-        assertEquals("text.txt", af.get("filename"), "fetched filename not the same used for the attached file creation");
+        assertEquals(Utils.getFile().getName(), af.get("filename"), "fetched filename not the same used for the attached file creation");
 
         af.delete();
         try {
@@ -73,7 +73,7 @@ public class AttachedFileTests {
     void testCreateAttachedFileWithOtherName() throws CytomineException {
         log.info("test create attached file with another filename");
         Project project = Utils.getProject();
-        AttachedFile af = new AttachedFile(project, new File("src/test/java/client/samples/text.txt"));
+        AttachedFile af = new AttachedFile(project, Utils.getFile());
         af.set("filename", "newTest");
         af = af.save();
         assertEquals("newTest", af.get("filename"), "filename not the same used for the attached file creation");
