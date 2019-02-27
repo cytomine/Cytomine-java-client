@@ -1488,7 +1488,7 @@ public class Cytomine {
 
     public UploadedFileCollection getUploadedFiles(boolean deleted) throws CytomineException {
         UploadedFileCollection files = new UploadedFileCollection(offset, max);
-        files.addParams("deleted", "true");
+        files.addParams("deleted", ""+deleted);
         return fetchCollection(files);
     }
 
@@ -1528,6 +1528,11 @@ public class Cytomine {
 	public UploadedFile getUploadedFile(Long id) throws CytomineException {
 		UploadedFile uploadedFile = new UploadedFile();
 		uploadedFile.set("id", id);
+		return fetchModel(uploadedFile);
+	}
+	public UploadedFile getUploadedFileByAbstractImage(Long idAbstractImage) throws CytomineException {
+		UploadedFile uploadedFile = new UploadedFile();
+		uploadedFile.set("baseImage", idAbstractImage);
 		return fetchModel(uploadedFile);
 	}
 
