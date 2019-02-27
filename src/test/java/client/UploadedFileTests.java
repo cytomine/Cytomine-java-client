@@ -50,6 +50,9 @@ public class UploadedFileTests {
         uf.update();
         assertEquals(UploadedFile.Status.CONVERTED.getCode(), (int)uf.getInt("status"), "Not the same status used for the uploaded_file update");
 
+        uf.changeStatus(UploadedFile.Status.DEPLOYED);
+        assertEquals(UploadedFile.Status.DEPLOYED.getCode(), (int)uf.getInt("status"), "Not the same status used for the uploaded_file update");
+
         uf.delete();
         try {
             new UploadedFile().fetch(uf.getId());
