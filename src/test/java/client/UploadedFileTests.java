@@ -18,6 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.models.AbstractImage;
 import be.cytomine.client.models.UploadedFile;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -72,6 +73,25 @@ public class UploadedFileTests {
         } catch (CytomineException e) {
             assertEquals(400, e.getHttpCode());
         }
+    }
+
+    @Test
+    void testGetUploadedFileByAbstractImage() throws CytomineException {
+        log.info("test get an uploadedFile by its associated abstractImage");
+        String name = Utils.getRandomString();
+        AbstractImage ai = new AbstractImage(name, "image/tiff").save();
+        UploadedFile uf = new UploadedFile("originalFilename", "realFilename", Utils.getFile(), 0L, "ext", "contentType", new ArrayList(), new ArrayList(), Utils.getUser(), UploadedFile.Status.UPLOADED, null);
+        uf.set("image", ai.getId());
+        uf.save();
+
+        uf = new UploadedFile().fetch(uf.getId());
+        assertEquals(ai.getId(), uf.getLong("image"), "fetched image not the same used for the uploaded_file creation");
+
+        Long idUF = uf.getId();
+
+        uf = new UploadedFile();
+        uf.getByAbstractImage(ai);
+        assertEquals(idUF, uf.getId(), "not the expected uploaded file");
     }
 
     @Test
