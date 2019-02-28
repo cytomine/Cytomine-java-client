@@ -39,6 +39,10 @@ public class Utils {
 
     private static User user;
     private static Project project;
+    private static ImageInstance imageInstance;
+    private static Ontology ontology;
+    private static Term term;
+    private static Annotation annotation;
 
 
     static void connect() throws CytomineException {
@@ -79,7 +83,8 @@ public class Utils {
         return new User(username,Utils.getRandomString(),Utils.getRandomString(),"test@test.be",Utils.getRandomString()).save();
     }
     static Ontology getOntology() throws CytomineException {
-        return new Ontology(getRandomString()).save();
+        if(ontology == null) ontology = new Ontology(getRandomString()).save();
+        return ontology;
     }
     static Project getProject() throws CytomineException {
         if(project == null){
@@ -103,4 +108,37 @@ public class Utils {
         Project project = getProject();
         return new Job(software, project).save();
     }
+
+    static ImageInstance getImageInstance() throws CytomineException {
+        if(imageInstance == null) imageInstance = getNewImageInstance();
+        return imageInstance;
+    }
+    static ImageInstance getNewImageInstance() throws CytomineException {
+        String name = Utils.getRandomString();
+        AbstractImage ai = new AbstractImage(name, "image/tiff");
+        ai.set("width",3000);
+        ai.set("height",3000);
+        ai.save();
+        return new ImageInstance(ai, Utils.getProject()).save();
+    }
+
+    static Term getTerm() throws CytomineException {
+        if(term == null) term = getNewTerm();
+        return term;
+    }
+    static Term getNewTerm() throws CytomineException {
+        String name = Utils.getRandomString();
+        return new Term(name,"#FF0000", Utils.getOntology()).save();
+    }
+
+    static Annotation getAnnotation() throws CytomineException {
+        if(annotation == null) annotation = getNewAnnotation();
+        return annotation;
+    }
+    static Annotation getNewAnnotation() throws CytomineException {
+        ImageInstance image = Utils.getImageInstance();
+        return new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
+    }
+
+
 }

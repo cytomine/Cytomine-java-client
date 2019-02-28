@@ -23,6 +23,9 @@ package be.cytomine.client.models;
  */
 public class Term extends Model<Term> {
     public Term(){}
+    public Term(String name, String color, Ontology ontology){
+        this(name, color, ontology.getId());
+    }
     public Term(String name, String color, Long idOntology){
         this.set("name", name);
         this.set("color", color);
