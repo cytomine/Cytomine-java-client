@@ -99,6 +99,11 @@ public class PropertyTests {
         pc.addFilter("project", project.getId().toString());
         pc.fetch();
 
+        int size = pc.size();
+        log.info(pc.size());
+
+        pc = PropertyCollection.fetchByAssociatedDomain(project);
+        assertEquals(size, pc.size());
         log.info(pc.size());
     }
 

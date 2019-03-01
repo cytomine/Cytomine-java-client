@@ -19,10 +19,8 @@ package client;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.SoftwareParameterCollection;
-import be.cytomine.client.models.Project;
 import be.cytomine.client.models.Software;
 import be.cytomine.client.models.SoftwareParameter;
-import be.cytomine.client.models.SoftwareProject;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -99,6 +97,11 @@ public class SoftwareParametersTests {
         spc.addFilter("software", software.getId().toString());
         spc.fetch();
 
+        int size = spc.size();
+        log.info(spc.size());
+
+        spc = SoftwareParameterCollection.fetchBySoftware(software);
+        assertEquals(size, spc.size());
         log.info(spc.size());
     }
 }

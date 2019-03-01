@@ -18,6 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.ImageInstanceCollection;
 import be.cytomine.client.models.AbstractImage;
 import be.cytomine.client.models.ImageInstance;
 import org.apache.log4j.Logger;
@@ -88,6 +89,11 @@ public class ImageInstanceTests {
         Collection<ImageInstance> c = new Collection<>(ImageInstance.class, 0,0);
         c.addFilter("project", Utils.getProject().getId().toString());
 
+        int size = c.size();
+        log.info(c.size());
+
+        c = ImageInstanceCollection.fetchByProject(Utils.getProject());
+        assertEquals(size,c.size());
         log.info(c.size());
     }
 

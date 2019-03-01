@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -31,6 +33,13 @@ public class User extends Model<User> {
         this.set("email", email);
         this.set("password", password);
     }
+
+    public static User getCurrent() throws CytomineException {
+        User user = new User();
+        user.set("current", "current");
+        return user.fetch(null);
+    }
+
     @Override
     public String toURL() {
 

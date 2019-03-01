@@ -16,16 +16,34 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Software;
+import be.cytomine.client.models.SoftwareParameter;
 
-public class SoftwareParameterCollection extends Collection<Software> {
+public class SoftwareParameterCollection extends Collection<SoftwareParameter> {
 
     public SoftwareParameterCollection() {
         this(0,0);
     }
     public SoftwareParameterCollection(int offset, int max) {
-        super(Software.class, max, offset);
+        super(SoftwareParameter.class, max, offset);
+    }
+
+    public static SoftwareParameterCollection fetchBySoftware(Software software) throws CytomineException {
+        return fetchBySoftware(Cytomine.getInstance().getDefaultCytomineConnection(), software, 0,0);
+    }
+    public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Software software) throws CytomineException {
+        return fetchBySoftware(connection, software, 0,0);
+    }
+
+    public static SoftwareParameterCollection fetchBySoftware(Software software, int offset, int max) throws CytomineException {
+        return fetchBySoftware(Cytomine.getInstance().getDefaultCytomineConnection(), software, offset,max);
+    }
+
+    public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Software software, int offset, int max) throws CytomineException {
+        return (SoftwareParameterCollection) new SoftwareParameterCollection(max, offset).fetchWithFilter(connection, Software.class, software.getId(), offset, max);
     }
 
     //TODO remove this when rest url normalized

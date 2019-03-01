@@ -17,6 +17,8 @@ package be.cytomine.client.collections;
  */
 
 import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.AttachedFile;
 import be.cytomine.client.models.Model;
 
@@ -39,6 +41,21 @@ public class AttachedFileCollection extends Collection {
         this.addFilter("domainIdent", model.getId().toString());
     }
 
+    public static AttachedFileCollection fetchByAssociatedDomain(Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(domain,0,0);
+    }
+    public static AttachedFileCollection fetchByAssociatedDomain(Model domain, int offset, int max) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain,offset, max);
+    }
+    public static AttachedFileCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain,0,0);
+    }
+    public static AttachedFileCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain, int offset, int max) throws CytomineException {
+        AttachedFileCollection sc = new AttachedFileCollection(max, offset);
+        sc.addFilter("domainClassName", Cytomine.convertDomainName(domain.getClass().getSimpleName().toLowerCase()));
+        sc.addFilter("domainIdent", domain.getId().toString());
+        return (AttachedFileCollection)sc.fetch();
+    }
 
     @Override
     public String getJSONResourceURL() {

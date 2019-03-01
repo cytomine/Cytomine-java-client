@@ -18,6 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.TermCollection;
 import be.cytomine.client.models.*;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -96,7 +97,13 @@ public class TermTests {
         Collection<Term> c = new Collection<>(Term.class,0,0);
         c.addFilter("ontology", Utils.getOntology().getId().toString());
         c.fetch();
+
+        int size = c.size();
         log.info(c.size());
+
+        c = TermCollection.fetchByOntology(Utils.getOntology());
+
+        assertEquals(size, c.size());
     }
 
 }

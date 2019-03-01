@@ -18,6 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.JobDataCollection;
 import be.cytomine.client.collections.SoftwareParameterCollection;
 import be.cytomine.client.models.*;
 import org.apache.log4j.Logger;
@@ -121,6 +122,11 @@ public class JobDataTests {
         jdc.addFilter("job", job.getId().toString());
         jdc.fetch();
 
+        int size = jdc.size();
+        log.info(jdc.size());
+
+        jdc = JobDataCollection.fetchByJob(job);
+        assertEquals(size,jdc.size());
         log.info(jdc.size());
     }
 }

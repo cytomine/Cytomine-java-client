@@ -77,12 +77,13 @@ public class UploadedFile extends Model<UploadedFile> {
         return this.update();
     }
 
-    public UploadedFile getByAbstractImage(AbstractImage ai) throws CytomineException {
-        return this.getByAbstractImage(ai.getId());
+    public static UploadedFile getByAbstractImage(AbstractImage ai) throws CytomineException {
+        return getByAbstractImage(ai.getId());
     }
-    public UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
-        this.addFilter("image", idAbstractImage.toString());
-        return this.fetch(null);
+    public static UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
+        UploadedFile uf = new UploadedFile();
+        uf.addFilter("image", idAbstractImage.toString());
+        return uf.fetch(null);
     }
 
     @Override

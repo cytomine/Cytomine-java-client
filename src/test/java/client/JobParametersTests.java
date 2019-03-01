@@ -105,6 +105,11 @@ public class JobParametersTests {
         jpc.addFilter("job", job.getId().toString());
         jpc.fetch();
 
+        int size = jpc.size();
+        log.info(jpc.size());
+
+        jpc = JobParameterCollection.fetchByJob(job);
+        assertEquals(size,jpc.size());
         log.info(jpc.size());
     }
 }

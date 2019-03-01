@@ -89,8 +89,7 @@ public class UploadedFileTests {
 
         Long idUF = uf.getId();
 
-        uf = new UploadedFile();
-        uf.getByAbstractImage(ai);
+        uf = UploadedFile.getByAbstractImage(ai);
         assertEquals(idUF, uf.getId(), "not the expected uploaded file");
     }
 

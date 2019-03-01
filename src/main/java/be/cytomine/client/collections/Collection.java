@@ -124,6 +124,14 @@ public class Collection<T extends Model> {
         }
         return c.fetch(connection,offset,max);
     }
+    protected <U extends Model> Collection<T> fetchWithFilter(CytomineConnection connection, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
+        try {
+            this.addFilter(filter.newInstance().getDomainName(), idFilter.toString());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return this.fetch(connection,offset,max);
+    }
 
 
     public Collection<T> fetch() throws CytomineException {

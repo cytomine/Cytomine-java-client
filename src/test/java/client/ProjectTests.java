@@ -41,7 +41,7 @@ public class ProjectTests {
         log.info("test create project");
         String name = Utils.getRandomString();
         Project p = new Project(name,Utils.getOntology()).save();
-        assertEquals(name, p.get("name"), "fetched name not the same used for the project creation");
+        assertEquals(name, p.get("name"), "name not the same used for the project creation");
 
         p = new Project().fetch(p.getId());
         assertEquals(name, p.get("name"), "fetched name not the same used for the project creation");
@@ -55,6 +55,18 @@ public class ProjectTests {
             new Project().fetch(p.getId());
             assert false;
         } catch (CytomineException e) {
+            assertEquals(e.getHttpCode(), 404);
+        }
+    }
+
+    @Test
+    void testCreateProjectIncorrect() throws CytomineException {
+        log.info("test create incorrect project");
+        Project project = Utils.getProject();
+
+        try{
+            new Project().save();
+        } catch (CytomineException e){
             assertEquals(e.getHttpCode(), 404);
         }
     }
@@ -151,6 +163,9 @@ public class ProjectTests {
         c.fetch();
 
         assertEquals(4, c.size(), "not expected size");
+
+        c = UserCollection.fetchMembersOfAProject(Utils.getProject());
+        assertEquals(4, c.size(), "not expected size");
     }
 
     @Test
@@ -163,6 +178,9 @@ public class ProjectTests {
         c.fetch();
 
         assertEquals(2, c.size(), "not expected size");
+
+        c = UserCollection.fetchMembersOfAProject(Utils.getProject(), true);
+        assertEquals(2, c.size(), "not expected size");
     }
 
     @Test
@@ -174,6 +192,9 @@ public class ProjectTests {
         c.addFilter("online","true");
         c.fetch();
 
+        assertEquals(0, c.size(), "not expected size");
+
+        c = UserCollection.fetchMembersOfAProject(Utils.getProject(), false, true);
         assertEquals(0, c.size(), "not expected size");
     }
 }

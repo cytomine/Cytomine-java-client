@@ -100,6 +100,11 @@ public class AttachedFileTests {
 
         AttachedFileCollection atc = new AttachedFileCollection(project);
         atc.fetch();
-        log.info(atc.size());
+        int size = c.size();
+        log.info(c.size());
+
+        c = AttachedFileCollection.fetchByAssociatedDomain(Utils.getProject());
+        assertEquals(size,c.size());
+        log.info(c.size());
     }
 }

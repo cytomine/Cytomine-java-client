@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,12 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
+import be.cytomine.client.models.Model;
 import be.cytomine.client.models.Property;
-import org.json.simple.JSONObject;
 
-/**
- * Created with IntelliJ IDEA.
- * User: pierre
- * Date: 23/04/13
- * Time: 10:14
- * To change this template use File | Settings | File Templates.
- */
 public class PropertyCollection extends Collection {
 
     public PropertyCollection() {
@@ -34,6 +29,22 @@ public class PropertyCollection extends Collection {
     }
     public PropertyCollection(int offset, int max) {
         super(Property.class, max, offset);
+    }
+
+
+    public static PropertyCollection fetchByAssociatedDomain(Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain, 0,0);
+    }
+    public static PropertyCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(connection, domain, 0,0);
+    }
+
+    public static PropertyCollection fetchByAssociatedDomain(Model domain, int offset, int max) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain, offset,max);
+    }
+
+    public static PropertyCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain, int offset, int max) throws CytomineException {
+        return (PropertyCollection) new PropertyCollection(max, offset).fetchWithFilter(connection, domain.getClass(), domain.getId(), offset, max);
     }
 
     @Override

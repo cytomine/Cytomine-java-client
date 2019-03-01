@@ -53,9 +53,7 @@ public class UserTests {
     void testGetCurrentUser() throws CytomineException {
         log.info("test get current user");
 
-        User user = new User();
-        user.set("current", "current");
-        user.fetch(null);
+        User user = User.getCurrent();
 
         assertEquals(Utils.getPublicKey(), user.get("publicKey"));
     }

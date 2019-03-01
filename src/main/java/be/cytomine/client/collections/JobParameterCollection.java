@@ -16,17 +16,34 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Job;
+import be.cytomine.client.models.JobParameter;
 
-public class JobParameterCollection extends Collection<Job> {
+public class JobParameterCollection extends Collection<JobParameter> {
 
     public JobParameterCollection() {
         this(0,0);
     }
     public JobParameterCollection(int offset, int max) {
-        super(Job.class, max, offset);
+        super(JobParameter.class, max, offset);
     }
+
+    public static JobParameterCollection fetchByJob(Job job) throws CytomineException {
+        return fetchByJob(Cytomine.getInstance().getDefaultCytomineConnection(), job);
+    }
+    public static JobParameterCollection fetchByJob(CytomineConnection connection, Job job) throws CytomineException {
+        return fetchByJob(connection, job, 0,0);
+    }
+    public static JobParameterCollection fetchByJob(Job job, int offset, int max) throws CytomineException {
+        return fetchByJob(Cytomine.getInstance().getDefaultCytomineConnection(), job, offset,max);
+    }
+    public static JobParameterCollection fetchByJob(CytomineConnection connection, Job job, int offset, int max) throws CytomineException {
+        return (JobParameterCollection) new JobParameterCollection(max, offset).fetchWithFilter(connection, Job.class, job.getId(), offset, max);
+    }
+
 
     //TODO remove this when rest url normalized
     public String getDomainName() throws CytomineException {

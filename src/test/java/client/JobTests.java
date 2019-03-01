@@ -96,6 +96,11 @@ public class JobTests {
         jc.addFilter("software", software.getId().toString());
         jc.fetch();
 
+        int size = jc.size();
+        log.info(jc.size());
+
+        jc = JobCollection.fetchBySoftware(software);
+        assertEquals(size,jc.size());
         log.info(jc.size());
     }
 
@@ -107,6 +112,11 @@ public class JobTests {
         jc.addFilter("project", project.getId().toString());
         jc.fetch();
 
+        int size = jc.size();
+        log.info(jc.size());
+
+        jc = JobCollection.fetchByProject(project);
+        assertEquals(size,jc.size());
         log.info(jc.size());
     }
 
@@ -121,6 +131,11 @@ public class JobTests {
         jc.addFilter("project", project.getId().toString());
         jc.fetch();
 
+        int size = jc.size();
+        log.info(jc.size());
+
+        jc = JobCollection.fetchByProjectAndSoftware(project, software);
+        assertEquals(size,jc.size());
         log.info(jc.size());
     }
 
