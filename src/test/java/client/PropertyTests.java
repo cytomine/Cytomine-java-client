@@ -18,6 +18,8 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.PropertyCollection;
+import be.cytomine.client.models.Annotation;
+import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
 import be.cytomine.client.models.Property;
 import org.apache.log4j.Logger;
@@ -108,17 +110,43 @@ public class PropertyTests {
     }
 
     @Test
-    void testListAnnotationProperty() throws CytomineException {
-        assert false;
-    }
-
-    @Test
     void testListImageInstanceProperty() throws CytomineException {
-        assert false;
+        log.info("test list properties in an image");
+        ImageInstance image = Utils.getImageInstance();
+
+        PropertyCollection pc = new PropertyCollection();
+        pc.addFilter("imageinstance", image.getId().toString());
+        pc.fetch();
+
+        int size = pc.size();
+        log.info(pc.size());
+
+        pc = PropertyCollection.fetchByAssociatedDomain(image);
+        assertEquals(size, pc.size());
+        log.info(pc.size());
     }
 
     @Test
+    void testListAnnotationProperty() throws CytomineException {
+        log.info("test list properties of an annotation");
+        Annotation annotation = Utils.getAnnotation();
+
+        PropertyCollection pc = new PropertyCollection();
+        pc.addFilter("annotation", annotation.getId().toString());
+        pc.fetch();
+
+        int size = pc.size();
+        log.info(pc.size());
+
+        pc = PropertyCollection.fetchByAssociatedDomain(annotation);
+        assertEquals(size, pc.size());
+        log.info(pc.size());
+    }
+
+    /*@Test
     void testListOtherDomainProperty() throws CytomineException {
         assert false;
-    }
+    }*/
+
+
 }
