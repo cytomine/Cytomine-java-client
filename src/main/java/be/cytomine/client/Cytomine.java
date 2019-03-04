@@ -1357,11 +1357,11 @@ public class Cytomine {
 
     // TODO : remove this line when rest url of core are normalized
     public static String convertDomainName(String input){
-        switch (input) {
+        switch (input.toLowerCase()) {
             case "project" :
                 return "be.cytomine.project.Project";
-            case "annotation" :
-                return "be.cytomine.project.Project";
+            case "imageinstance" :
+                return "be.cytomine.image.ImageInstance";
             default:
                 try {
                     throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);

@@ -51,10 +51,10 @@ public class AttachedFileCollection extends Collection {
         return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain,0,0);
     }
     public static AttachedFileCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain, int offset, int max) throws CytomineException {
-        AttachedFileCollection sc = new AttachedFileCollection(max, offset);
-        sc.addFilter("domainClassName", Cytomine.convertDomainName(domain.getClass().getSimpleName().toLowerCase()));
-        sc.addFilter("domainIdent", domain.getId().toString());
-        return (AttachedFileCollection)sc.fetch();
+        AttachedFileCollection afc = new AttachedFileCollection(max, offset);
+        afc.addFilter("domainClassName", Cytomine.convertDomainName(domain.getClass().getSimpleName().toLowerCase()));
+        afc.addFilter("domainIdent", domain.getId().toString());
+        return (AttachedFileCollection)afc.fetch();
     }
 
     @Override

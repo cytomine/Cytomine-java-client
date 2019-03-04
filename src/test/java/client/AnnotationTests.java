@@ -26,7 +26,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -125,6 +127,11 @@ public class AnnotationTests {
 
         assertEquals(size+1, ac.size());
         log.info(ac.size());
+
+        size = ac.size();
+        ac = AnnotationCollection.fetchByProject(project);
+        assertEquals(size, ac.size());
+        log.info(ac.size());
     }
 
     @Test
@@ -144,6 +151,11 @@ public class AnnotationTests {
         ac.fetch();
 
         assertEquals(size+1, ac.size());
+        log.info(ac.size());
+
+        size = ac.size();
+        ac = AnnotationCollection.fetchByUserAndProject(user, project);
+        assertEquals(size, ac.size());
         log.info(ac.size());
     }
 
@@ -165,6 +177,14 @@ public class AnnotationTests {
 
         assertEquals(size+1, ac.size());
         log.info(ac.size());
+
+        size = ac.size();
+        Map<String, Object> params = new HashMap<>();
+        params.put("ontology", ontology.getId());
+        params.put("project", project.getId());
+        ac = AnnotationCollection.fetchWithParameters(params);
+        assertEquals(size, ac.size());
+        log.info(ac.size());
     }
 
     @Test
@@ -183,8 +203,12 @@ public class AnnotationTests {
 
         assertEquals(size+1, ac.size());
         log.info(ac.size());
-    }
 
+        size = ac.size();
+        ac = AnnotationCollection.fetchByImageInstance(image);
+        assertEquals(size, ac.size());
+        log.info(ac.size());
+    }
 
     @Test
     void testListAnnotationsByTermAndProject() throws CytomineException {
@@ -208,6 +232,11 @@ public class AnnotationTests {
 
         assertEquals(size+1, ac.size());
         log.info(ac.size());
+
+        size = ac.size();
+        ac = AnnotationCollection.fetchByTermAndProject(term, project);
+        assertEquals(size, ac.size());
+        log.info(ac.size());
     }
 
     @Test
@@ -230,6 +259,11 @@ public class AnnotationTests {
         ac.fetch();
 
         assertEquals(size+1, ac.size());
+        log.info(ac.size());
+
+        size = ac.size();
+        ac = AnnotationCollection.fetchByTermAndImageInstance(term, image);
+        assertEquals(size, ac.size());
         log.info(ac.size());
     }
 
