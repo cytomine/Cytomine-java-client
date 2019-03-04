@@ -18,7 +18,9 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.Description;
+import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -78,4 +80,30 @@ public class DescriptionTests {
 
         log.info(c.size());
     }
+
+    @Test
+    void testGetDescriptionOfADomain() throws CytomineException {
+        log.info("test get description by its associated domain");
+        String description = Utils.getRandomString();
+        Description d;
+
+        //project
+        Project project = Utils.getNewProject();
+        new Description(project, description).save();
+        d = new Description().fetch(project);
+        assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
+
+        //image
+        ImageInstance image = Utils.getNewImageInstance();
+        new Description(image, description).save();
+        d = new Description().fetch(image);
+        assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
+
+        //annotation
+        Annotation annotation = Utils.getNewAnnotation();
+        new Description(annotation, description).save();
+        d = new Description().fetch(annotation);
+        assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
+    }
+
 }
