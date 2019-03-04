@@ -1362,6 +1362,8 @@ public class Cytomine {
                 return "be.cytomine.project.Project";
             case "imageinstance" :
                 return "be.cytomine.image.ImageInstance";
+            case "annotation" :
+                return "be.cytomine.AnnotationDomain";
             default:
                 try {
                     throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);

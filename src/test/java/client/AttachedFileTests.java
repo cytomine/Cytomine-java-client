@@ -20,13 +20,13 @@ import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.AttachedFileCollection;
 import be.cytomine.client.collections.Collection;
+import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.AttachedFile;
+import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -98,12 +98,37 @@ public class AttachedFileTests {
 
         log.info(c.size());
 
+        //project
         AttachedFileCollection atc = new AttachedFileCollection(project);
         atc.fetch();
         int size = c.size();
         log.info(c.size());
 
-        c = AttachedFileCollection.fetchByAssociatedDomain(Utils.getProject());
+        atc = AttachedFileCollection.fetchByAssociatedDomain(Utils.getProject());
+        assertEquals(size,atc.size());
+        log.info(atc.size());
+
+
+        //image instance
+        ImageInstance image = Utils.getImageInstance();
+        atc = new AttachedFileCollection(image);
+        atc.fetch();
+        size = c.size();
+        log.info(c.size());
+
+        atc = AttachedFileCollection.fetchByAssociatedDomain(image);
+        assertEquals(size,c.size());
+        log.info(c.size());
+
+
+        //annotation
+        Annotation annotation = Utils.getAnnotation();
+        atc = new AttachedFileCollection(annotation);
+        atc.fetch();
+        size = c.size();
+        log.info(c.size());
+
+        atc = AttachedFileCollection.fetchByAssociatedDomain(annotation);
         assertEquals(size,c.size());
         log.info(c.size());
     }
