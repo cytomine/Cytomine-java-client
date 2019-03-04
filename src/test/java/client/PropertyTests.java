@@ -104,8 +104,13 @@ public class PropertyTests {
         int size = pc.size();
         log.info(pc.size());
 
+        String key = Utils.getRandomString();
+
+        Property p = new Property(project, key, "value").save();
+        assertEquals("value", p.get("value"), "fetched value not the same used for the property creation");
+
         pc = PropertyCollection.fetchByAssociatedDomain(project);
-        assertEquals(size, pc.size());
+        assertEquals(size+1, pc.size());
         log.info(pc.size());
     }
 
@@ -121,8 +126,13 @@ public class PropertyTests {
         int size = pc.size();
         log.info(pc.size());
 
+        String key = Utils.getRandomString();
+
+        Property p = new Property(image, key, "value").save();
+        assertEquals("value", p.get("value"), "fetched value not the same used for the property creation");
+
         pc = PropertyCollection.fetchByAssociatedDomain(image);
-        assertEquals(size, pc.size());
+        assertEquals(size+1, pc.size());
         log.info(pc.size());
     }
 
@@ -138,8 +148,13 @@ public class PropertyTests {
         int size = pc.size();
         log.info(pc.size());
 
+        String key = Utils.getRandomString();
+
+        Property p = new Property(annotation, key, "value").save();
+        assertEquals("value", p.get("value"), "fetched value not the same used for the property creation");
+
         pc = PropertyCollection.fetchByAssociatedDomain(annotation);
-        assertEquals(size, pc.size());
+        assertEquals(size+1, pc.size());
         log.info(pc.size());
     }
 
