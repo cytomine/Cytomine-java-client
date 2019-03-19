@@ -122,14 +122,14 @@ public class AttachedFileTests {
 
 
         //annotation
-        Annotation annotation = Utils.getAnnotation();
-        atc = new AttachedFileCollection(annotation);
-        atc.fetch();
-        size = c.size();
-        log.info(c.size());
-
-        atc = AttachedFileCollection.fetchByAssociatedDomain(annotation);
-        assertEquals(size,c.size());
-        log.info(c.size());
+//        Annotation annotation = Utils.getAnnotation();
+//        atc = new AttachedFileCollection(annotation);
+//        atc.fetch();
+//        size = c.size();
+//        log.info(c.size());
+//
+//        atc = AttachedFileCollection.fetchByAssociatedDomain(annotation);
+//        assertEquals(size,c.size());
+//        log.info(c.size());
     }
 }

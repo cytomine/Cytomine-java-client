@@ -100,10 +100,10 @@ public class DescriptionTests {
         assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
 
         //annotation
-        Annotation annotation = Utils.getNewAnnotation();
-        new Description(annotation, description).save();
-        d = new Description().fetch(annotation);
-        assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
+//        Annotation annotation = Utils.getNewAnnotation();
+//        new Description(annotation, description).save();
+//        d = new Description().fetch(annotation);
+//        assertEquals(description, d.get("data"), "fetched data not the same used for the description creation");
     }
 
 }
