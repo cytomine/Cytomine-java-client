@@ -17,8 +17,8 @@ package be.cytomine.client.models;
  */
 
 import be.cytomine.client.CytomineException;
+import be.cytomine.client.collections.Collection;
 
-import java.io.File;
 import java.util.List;
 
 public class UploadedFile extends Model<UploadedFile> {
@@ -43,24 +43,26 @@ public class UploadedFile extends Model<UploadedFile> {
     }
 
     public UploadedFile(){}
-    public UploadedFile(String originalFilename, String realFilename, File file, Long size, String ext, String contentType, List idProjects, List idStorages, User user, Status status, UploadedFile parent){
-        this(originalFilename, realFilename, file.getAbsolutePath(), size, ext, contentType, idProjects, idStorages, user.getId(), status, parent != null ? parent.getId() : null);
+    public UploadedFile(ImageServer server, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, Collection<Project> projects, Collection<Storage> storages, User user, Status status,
+                        UploadedFile parent){
+        this(server.getId(), originalFilename, realFilename, size, ext, contentType, projects.getListIds(), storages.getListIds(),
+                user.getId(), status, parent != null ? parent.getId() : null);
     }
-    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
+    public UploadedFile(Long idImageServer, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
-
-        this.set("path", path);
         this.set("size", size);
 
         this.set("ext", ext);
         this.set("contentType", contentType);
-        this.set("path", path);
 
         this.set("projects", idProjects);
         this.set("storages", idStorages);
 
         this.set("user", idUser);
+        this.set("imageServer", idImageServer);
 
         this.set("parent", idParent);
         if (status != null) {
@@ -68,30 +70,8 @@ public class UploadedFile extends Model<UploadedFile> {
         }
     }
 
-    public String getAbsolutePath() {
-        return this.get("path") + File.separator + this.get("filename");
-    }
-
     public UploadedFile changeStatus(Status status) throws CytomineException {
         this.set("status", status.code);
         return this.update();
     }
-
-    public static UploadedFile getByAbstractImage(AbstractImage ai) throws CytomineException {
-        return getByAbstractImage(ai.getId());
-    }
-    public static UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
-        UploadedFile uf = new UploadedFile();
-        uf.addFilter("image", idAbstractImage.toString());
-        return uf.fetch(null);
-    }
-
-    @Override
-    public String getJSONResourceURL() {
-        //TODO change when rest url are normalized
-        if(isFilterBy("image")) return "/api/" + getDomainName() + "/image/"+getFilter("image")+".json";
-
-        return super.getJSONResourceURL();
-    }
-
 }

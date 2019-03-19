@@ -26,6 +26,10 @@ import org.json.simple.JSONObject;
  */
 public class ProjectCollection extends Collection<Project> {
 
+    public ProjectCollection() {
+        super(Project.class);
+    }
+
     public ProjectCollection(int offset, int max) {
         super(Project.class, max, offset);
     }
