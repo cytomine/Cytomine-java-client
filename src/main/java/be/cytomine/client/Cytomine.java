@@ -929,7 +929,7 @@ public class Cytomine {
 
     @Deprecated
     public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
-        return new AbstractImage(filename,mime).save();
+        return new AbstractImage(0L, filename,mime).save();
     }
 
     @Deprecated
@@ -1330,7 +1330,7 @@ public class Cytomine {
         UploadedFile.Status state = Arrays.stream(UploadedFile.Status.values())
                 .filter(c -> c.getCode() == status)
                 .findFirst().get();
-        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
+        return new UploadedFile(0L, originalFilename,realFilename,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
     }
 
     @Deprecated
