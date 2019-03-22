@@ -88,7 +88,7 @@ public class ImageInstanceTests {
         log.info("test list image_instances in a project");
         Collection<ImageInstance> c = new Collection<>(ImageInstance.class, 0,0);
         c.addFilter("project", Utils.getProject().getId().toString());
-
+        c.fetch();
         int size = c.size();
         log.info(c.size());
 
