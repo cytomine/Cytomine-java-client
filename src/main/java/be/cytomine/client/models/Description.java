@@ -42,6 +42,14 @@ public class Description extends Model<Description> implements ICompositePrimary
         set("domainIdent",idDomain.toString());
         set("data", description);
     }
+    public Description addDescription(Long domainIdent, String domainClassName, String text) throws CytomineException
+    {
+        Description description = new Description();
+        description.set("domainIdent", domainIdent);
+        description.set("domainClassName", domainClassName);
+        description.set("data", text);
+        return description.save();
+    }
 
     public String getDomainName() {
         return "description";

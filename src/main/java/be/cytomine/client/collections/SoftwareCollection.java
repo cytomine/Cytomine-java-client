@@ -16,7 +16,11 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Software;
+import be.cytomine.client.models.SoftwareUserRepository;
 import org.json.simple.JSONObject;
 
 /**
@@ -28,5 +32,23 @@ public class SoftwareCollection extends Collection<Software> {
 
     public SoftwareCollection(int offset, int max) {
         super(Software.class, max, offset);
+    }
+
+
+    public static SoftwareCollection fetchBySoftwareUserRepository(Long idSoftwareUserRepository) throws CytomineException {
+
+        return fetchBySoftwareUserRepository((Cytomine.getInstance().getDefaultCytomineConnection()), idSoftwareUserRepository, 0,0);
+
+    }
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, Long idSoftwareUserRepository) throws CytomineException {
+        return fetchBySoftwareUserRepository(connection, idSoftwareUserRepository, 0,0);
+    }
+
+    public static SoftwareCollection fetchBySoftwareUserRepository(Long idSoftwareUserRepository, int offset, int max) throws CytomineException {
+        return fetchBySoftwareUserRepository(Cytomine.getInstance().getDefaultCytomineConnection(), idSoftwareUserRepository, offset,max);
+    }
+
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, Long idSoftwareUserRepository, int offset, int max) throws CytomineException {
+        return (SoftwareCollection) new SoftwareCollection(max, offset).fetchWithFilter(connection, SoftwareUserRepository.class, idSoftwareUserRepository, offset, max);
     }
 }

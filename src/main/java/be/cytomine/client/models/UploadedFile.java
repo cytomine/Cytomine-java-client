@@ -16,7 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
+import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.util.List;
@@ -66,6 +68,14 @@ public class UploadedFile extends Model<UploadedFile> {
         if (status != null) {
             this.set("status", status.code);
         }
+    }
+
+    public AttachedFile uploadAttachedFile(String file, String domainClassName, Long domainIdent) throws CytomineException {
+        String url = "/api/attachedfile.json?domainClassName=" + domainClassName + "&domainIdent=" + domainIdent;
+        JSONObject json = Cytomine.getInstance().getDefaultCytomineConnection().uploadFile(url, file);
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setAttr(json);
+        return attachedFile;
     }
 
     public String getAbsolutePath() {

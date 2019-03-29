@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -44,4 +46,42 @@ public class SoftwareParameter extends Model<SoftwareParameter> {
     public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer){
         this(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
     }
+
+
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
+                                                  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
+            throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut,
+                uriPrintAttribut, false, false, name, null, null);
+    }
+
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
+                                                  boolean required, int index) throws CytomineException {
+        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false,
+                false, name, null, null);
+    }
+
+    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
+                                                  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
+                                                  String humanName, String valueKey, String commandLineFlag)
+            throws CytomineException {
+        SoftwareParameter softwareParameter = new SoftwareParameter();
+        softwareParameter.set("name", name);
+        softwareParameter.set("type", type);
+        softwareParameter.set("software", idSoftware);
+        softwareParameter.set("defaultValue", defaultValue);
+        softwareParameter.set("required", required);
+        softwareParameter.set("index", index);
+        softwareParameter.set("uri", uri);
+        softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
+        softwareParameter.set("uriSortAttribut", uriSortAttribut);
+        softwareParameter.set("setByServer", setByServer);
+        softwareParameter.set("serverParameter", serverParameter);
+        softwareParameter.set("humanName", humanName);
+        softwareParameter.set("valueKey", valueKey);
+        softwareParameter.set("commandLineFlag", commandLineFlag);
+
+        return softwareParameter.save();
+    }
+
 }

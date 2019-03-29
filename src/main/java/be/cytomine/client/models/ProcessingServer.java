@@ -16,6 +16,10 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.ProcessingServerCollection;
+
 /**
  * User: rhoyoux
  * Date: 19/08/15
@@ -32,4 +36,9 @@ public class ProcessingServer extends Model<ProcessingServer> {
         return "processing_server";
     }
 
+    public void deleteProcessingServer(Long id) throws CytomineException {
+        ProcessingServer processingServer = new ProcessingServer();
+        processingServer.set("id", id);
+        delete(processingServer.getId());
+    }
 }
