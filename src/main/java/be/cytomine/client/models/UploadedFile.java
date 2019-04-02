@@ -70,14 +70,6 @@ public class UploadedFile extends Model<UploadedFile> {
         }
     }
 
-    public UploadedFile uploadAttachedFile(String file, String domainClassName, Long domainIdent) throws CytomineException {
-        String url = "/api/attachedfile.json?domainClassName=" + domainClassName + "&domainIdent=" + domainIdent;
-        JSONObject json = Cytomine.getInstance().getDefaultCytomineConnection().uploadFile(url, file);
-        UploadedFile uploadedFile = new UploadedFile();
-        uploadedFile.setAttr(json);
-        return uploadedFile;
-    }
-
     public String getAbsolutePath() {
         return this.get("path") + File.separator + this.get("filename");
     }

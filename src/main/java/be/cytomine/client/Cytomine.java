@@ -1334,9 +1334,9 @@ public class Cytomine {
                 return "be.cytomine.image.ImageInstance";
             case "annotation" :
                 return "be.cytomine.AnnotationDomain";
-            case "Software":
+            case "software":
                 return "be.cytomine.processing.Software";
-            case "SoftwareParameter":
+            case "softwareparameter":
                 return "be.cytomine.processing.SoftwareParameter";
             default:
                 try {
