@@ -35,10 +35,5 @@ public class ProcessingServer extends Model<ProcessingServer> {
     public String getDomainName() {
         return "processing_server";
     }
-
-    public void deleteProcessingServer(Long id) throws CytomineException {
-        ProcessingServer processingServer = new ProcessingServer();
-        processingServer.set("id", id);
-        delete(processingServer.getId());
-    }
+    
 }
