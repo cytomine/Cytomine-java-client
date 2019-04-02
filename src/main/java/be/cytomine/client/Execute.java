@@ -16,6 +16,7 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
+import be.cytomine.client.models.Description;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -33,9 +34,12 @@ public class Execute {
 
         ping();
 
+        Description description= new Description( "SoftwareParameter",new Long(2534645),
+                "fvezgevezgfezfezg");
 //        Test.launch();
 
     }
+
     public static void ping() throws CytomineException {
         log.info("Hello " + Cytomine.getInstance().getCurrentUser().get("username"));
     }
