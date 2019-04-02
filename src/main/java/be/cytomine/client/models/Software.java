@@ -31,10 +31,16 @@ public class Software extends Model<Software> {
         this.set("resultName", resultType);
         this.set("executeCommand", executeCommand);
     }
-    public Software deprecateSoftware(Long id) throws CytomineException {
-        Software software = this.fetch(id) ;
-        software.set("deprecated", true);
-        return update();
+    public Software(String serviceName, String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
+
+        this.set("serviceName", serviceName);
+        this.set("softwareVersion", softwareVersion);
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("pullingCommand", pullingCommand);
     }
 
     public Software addSoftware(String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
