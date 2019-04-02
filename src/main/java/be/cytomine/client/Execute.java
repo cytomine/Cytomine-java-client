@@ -36,7 +36,6 @@ public class Execute {
 //        Test.launch();
 
     }
-
     public static void ping() throws CytomineException {
         log.info("Hello " + Cytomine.getInstance().getCurrentUser().get("username"));
     }
