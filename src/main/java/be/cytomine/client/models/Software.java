@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -23,10 +25,16 @@ package be.cytomine.client.models;
  */
 public class Software extends Model<Software> {
     public Software(){}
-    public Software(String name, String serviceName, String resultType, String executeCommand){
+
+    public Software(Boolean deprecated , String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
+
+        this.set("softwareVersion", softwareVersion);
         this.set("name", name);
-        this.set("serviceName", serviceName);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
         this.set("resultName", resultType);
         this.set("executeCommand", executeCommand);
+        this.set("pullingCommand", pullingCommand);
+        this.set("deprecated", deprecated);
     }
 }
