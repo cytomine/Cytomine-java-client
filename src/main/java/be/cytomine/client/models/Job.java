@@ -55,13 +55,6 @@ public class Job extends Model<Job> {
         set("software", softwareId);
     }
 
-    public Job addJob(Long softwareId, Long projectId) throws CytomineException {
-		Job job = new Job();
-		job.set("software", softwareId);
-		job.set("project", projectId);
-		return save();
-	}
-
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
         return this.changeStatus(id, status, progress, null);
     }
