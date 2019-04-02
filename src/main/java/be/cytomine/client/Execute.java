@@ -35,9 +35,6 @@ public class Execute {
 
 //        Test.launch();
 
-//        SoftwareExample.testAddJobTemplate2(cytomine);
-//        SoftwareExample.testAddJobTemplate3(cytomine);
-//        SoftwareExample.testAddJobTemplate4(cytomine);
     }
 
     public static void ping() throws CytomineException {
