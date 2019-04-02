@@ -1153,33 +1153,8 @@ public class Cytomine {
     }
 
     @Deprecated
-    public Software addSoftware(String name, String serviceName, String resultType, String executeCommand) throws CytomineException {
-        return new Software(name, serviceName, resultType, executeCommand).save();
-    }
-
-    @Deprecated
     public void deleteSoftware(Long idSoftware) throws CytomineException {
         new Software().delete(idSoftware);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
-        return new SoftwareParameter(name,type,idSoftware,defaultValue,required,index,uri,uriSortAttribut,uriPrintAttribut,setByServer).save();
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
     }
 
     @Deprecated
@@ -1206,11 +1181,6 @@ public class Cytomine {
     public SoftwareCollection getSoftwares() throws CytomineException {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         return (SoftwareCollection) softwares.fetch();
-    }
-
-    @Deprecated
-    public ProcessingServer addProcessingServer(String url) throws CytomineException {
-        return new ProcessingServer(url).save();
     }
 
     @Deprecated
