@@ -25,15 +25,9 @@ import be.cytomine.client.CytomineException;
  */
 public class Software extends Model<Software> {
     public Software(){}
-    public Software(String name, String serviceName, String resultType, String executeCommand){
-        this.set("name", name);
-        this.set("serviceName", serviceName);
-        this.set("resultName", resultType);
-        this.set("executeCommand", executeCommand);
-    }
-    public Software(String serviceName, String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
 
-        this.set("serviceName", serviceName);
+    public Software(Boolean deprecated , String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
+
         this.set("softwareVersion", softwareVersion);
         this.set("name", name);
         this.set("softwareUserRepository", idSoftwareUserRepository);
@@ -41,17 +35,6 @@ public class Software extends Model<Software> {
         this.set("resultName", resultType);
         this.set("executeCommand", executeCommand);
         this.set("pullingCommand", pullingCommand);
-    }
-
-    public Software addSoftware(String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand) throws CytomineException {
-        Software software = new Software();
-        software.set("softwareVersion", softwareVersion);
-        software.set("name", name);
-        software.set("softwareUserRepository", idSoftwareUserRepository);
-        software.set("defaultProcessingServer", idDefaultProcessingServer);
-        software.set("resultName", resultType);
-        software.set("executeCommand", executeCommand);
-        software.set("pullingCommand", pullingCommand);
-        return software.save();
+        this.set("deprecated", deprecated);
     }
 }

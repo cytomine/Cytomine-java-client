@@ -25,7 +25,10 @@ import be.cytomine.client.CytomineException;
  */
 public class SoftwareParameter extends Model<SoftwareParameter> {
     public SoftwareParameter(){}
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer){
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
+                             boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
+                             String humanName, String valueKey, String commandLineFlag)
+            throws CytomineException {
         this.set("name", name);
         this.set("type", type);
         this.set("software", idSoftware);
@@ -36,52 +39,9 @@ public class SoftwareParameter extends Model<SoftwareParameter> {
         this.set("uriPrintAttribut", uriPrintAttribut);
         this.set("uriSortAttribut", uriSortAttribut);
         this.set("setByServer", setByServer);
+        this.set("serverParameter", serverParameter);
+        this.set("humanName", humanName);
+        this.set("valueKey", valueKey);
+        this.set("commandLineFlag", commandLineFlag);
     }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut){
-        this(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index){
-        this(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer){
-        this(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
-    }
-
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-                                                  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut)
-            throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut,
-                uriPrintAttribut, false, false, name, null, null);
-    }
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-                                                  boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false,
-                false, name, null, null);
-    }
-
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
-                                                  boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
-                                                  String humanName, String valueKey, String commandLineFlag)
-            throws CytomineException {
-        SoftwareParameter softwareParameter = new SoftwareParameter();
-        softwareParameter.set("name", name);
-        softwareParameter.set("type", type);
-        softwareParameter.set("software", idSoftware);
-        softwareParameter.set("defaultValue", defaultValue);
-        softwareParameter.set("required", required);
-        softwareParameter.set("index", index);
-        softwareParameter.set("uri", uri);
-        softwareParameter.set("uriPrintAttribut", uriPrintAttribut);
-        softwareParameter.set("uriSortAttribut", uriSortAttribut);
-        softwareParameter.set("setByServer", setByServer);
-        softwareParameter.set("serverParameter", serverParameter);
-        softwareParameter.set("humanName", humanName);
-        softwareParameter.set("valueKey", valueKey);
-        softwareParameter.set("commandLineFlag", commandLineFlag);
-
-        return softwareParameter.save();
-    }
-
 }
