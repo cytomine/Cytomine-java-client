@@ -24,16 +24,23 @@ import java.util.List;
 public class UploadedFile extends Model<UploadedFile> {
 
     public enum Status {
-
         UPLOADED (0),
-        CONVERTED (1),
-        DEPLOYED (2),
-        ERROR_FORMAT (3),
-        ERROR_CONVERSION (4),
-        UNCOMPRESSED (5),
-        TO_DEPLOY (6),
-        TO_CONVERT (7),
-        ERROR_DEPLOYMENT (8);
+
+        DETECTING_FORMAT (10),
+        ERROR_FORMAT (11), // 3
+
+        EXTRACTING_DATA (20),
+        ERROR_EXTRACTION (21),
+
+        CONVERTING (30),
+        ERROR_CONVERSION (31), // 4
+
+        DEPLOYING (40),
+        ERROR_DEPLOYMENT (41), // 8
+
+        DEPLOYED (100),
+        EXTRACTED (102),
+        CONVERTED (104);
 
         private final int code;
         Status(int code) {
