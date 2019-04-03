@@ -44,13 +44,13 @@ public class UploadedFile extends Model<UploadedFile> {
 
     public UploadedFile(){}
     public UploadedFile(ImageServer server, String originalFilename, String realFilename, Long size, String ext,
-                        String contentType, Collection<Project> projects, Collection<Storage> storages, User user, Status status,
+                        String contentType, Collection<Project> projects, Storage storage, User user, Status status,
                         UploadedFile parent){
-        this(server.getId(), originalFilename, realFilename, size, ext, contentType, projects.getListIds(), storages.getListIds(),
+        this(server.getId(), originalFilename, realFilename, size, ext, contentType, projects.getListIds(), storage.getId(),
                 user.getId(), status, parent != null ? parent.getId() : null);
     }
     public UploadedFile(Long idImageServer, String originalFilename, String realFilename, Long size, String ext,
-                        String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
+                        String contentType, List idProjects, Long idStorage, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
         this.set("size", size);
@@ -59,7 +59,7 @@ public class UploadedFile extends Model<UploadedFile> {
         this.set("contentType", contentType);
 
         this.set("projects", idProjects);
-        this.set("storages", idStorages);
+        this.set("storage", idStorage);
 
         this.set("user", idUser);
         this.set("imageServer", idImageServer);

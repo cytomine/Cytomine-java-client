@@ -41,7 +41,7 @@ public class UploadedFileTests {
     @Test
     void testCreateUploadedFile() throws CytomineException {
         log.info("test create uploaded_file");
-        UploadedFile uf = new UploadedFile(Utils.getImageServer(), "originalFilename", "realFilename", 0L, "ext", "contentType", new ProjectCollection(), Collection.fetch(Storage.class), Utils.getUser(), UploadedFile.Status.UPLOADED, null).save();
+        UploadedFile uf = new UploadedFile(Utils.getImageServer(), "originalFilename", "realFilename", 0L, "ext", "contentType", new ProjectCollection(), Collection.fetch(Storage.class).get(0), Utils.getUser(), UploadedFile.Status.UPLOADED, null).save();
         assertEquals(UploadedFile.Status.UPLOADED.getCode(), (int)uf.getInt("status"), "status not the same used for the uploaded_file creation");
 
         uf = new UploadedFile().fetch(uf.getId());

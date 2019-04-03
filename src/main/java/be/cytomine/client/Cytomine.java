@@ -1330,7 +1330,7 @@ public class Cytomine {
         UploadedFile.Status state = Arrays.stream(UploadedFile.Status.values())
                 .filter(c -> c.getCode() == status)
                 .findFirst().get();
-        return new UploadedFile(0L, originalFilename,realFilename,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
+        return new UploadedFile(0L, originalFilename,realFilename,size,ext,contentType,idProjects,(Long) idStorages.get(0),idUser,state,idParent).save();
     }
 
     @Deprecated

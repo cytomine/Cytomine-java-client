@@ -158,7 +158,7 @@ public class Utils {
         String originalFilename = Utils.getRandomString();
         String filename = Utils.getRandomString();
         return new UploadedFile(Utils.getImageServer(), originalFilename, filename, 0L, "ext", "contentType",
-                new ProjectCollection(), new StorageCollection().fetch(), Utils.getUser(),
+                new ProjectCollection(), new StorageCollection().fetch().get(0), Utils.getUser(),
                 UploadedFile.Status.DEPLOYED, null).save();
     }
 
@@ -168,7 +168,7 @@ public class Utils {
     }
     static AbstractImage getNewAbstractImage() throws CytomineException {
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(Utils.getUploadedFile(), name, "image/tiff");
+        AbstractImage ai = new AbstractImage(Utils.getUploadedFile(), name, "image/pyrtiff");
         ai.set("width",3000);
         ai.set("height",3000);
         ai.save();
