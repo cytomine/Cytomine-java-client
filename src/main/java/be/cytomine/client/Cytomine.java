@@ -929,7 +929,7 @@ public class Cytomine {
 
     @Deprecated
     public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
-        return new AbstractImage(0L, filename,mime).save();
+        return new AbstractImage(0L, filename).save();
     }
 
     @Deprecated
