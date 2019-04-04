@@ -168,7 +168,7 @@ public class Utils {
     }
     static AbstractImage getNewAbstractImage() throws CytomineException {
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(Utils.getUploadedFile(), name, "image/pyrtiff");
+        AbstractImage ai = new AbstractImage(Utils.getUploadedFile(), name);
         ai.set("width",3000);
         ai.set("height",3000);
         ai.save();

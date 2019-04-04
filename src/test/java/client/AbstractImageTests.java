@@ -41,11 +41,11 @@ public class AbstractImageTests {
     void testCreateAbstractImage() throws CytomineException {
         log.info("test create abstract_image");
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(Utils.getNewUploadedFile(), name, "image/tiff").save();
-        assertEquals("image/tiff", ai.getStr("mime"), "mime not the same used for the abstract_image creation");
+        AbstractImage ai = new AbstractImage(Utils.getNewUploadedFile(), name).save();
+        assertEquals(name, ai.getStr("originalFilename"), "originalFilename not the same used for the abstract_image creation");
 
         ai = new AbstractImage().fetch(ai.getId());
-        assertEquals("image/tiff", ai.getStr("mime"), "fetched mime not the same used for the abstract_image creation");
+        assertEquals(name, ai.getStr("originalFilename"), "fetched originalFilename not the same used for the abstract_image creation");
 
         /* TODO permissions
         ai.set("width", 1000);

@@ -28,14 +28,13 @@ public class AbstractImage extends Model<AbstractImage> {
 
     public AbstractImage(){}
 
-    public AbstractImage(UploadedFile uploadedFile, String filename, String mime) {
-        this(uploadedFile.getId(), filename, mime);
+    public AbstractImage(UploadedFile uploadedFile, String filename) {
+        this(uploadedFile.getId(), filename);
     }
 
-    public AbstractImage(Long uploadedFileId, String filename, String mime){
+    public AbstractImage(Long uploadedFileId, String filename){
         this.set("uploadedFile", uploadedFileId);
-        this.set("filename",filename);
-        this.set("mime",mime);
+        this.set("originalFilename",filename);
     }
 
     public String clearProperties() throws CytomineException {
