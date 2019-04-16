@@ -272,7 +272,7 @@ public abstract class Model<T extends Model> {
 
     @Override
     public String toString() {
-        return getDomainName() + getId();
+        return getDomainName() + " " + getId();
     }
 
     @Override

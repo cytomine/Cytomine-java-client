@@ -30,7 +30,10 @@ public class Property extends Model<Property> {
         this(model, null, null);
     }
     public Property(Model model, String key, String value) {
-        this(model.getClass().getSimpleName().toLowerCase(),model.getId(), key, value);
+        addFilter("domain/" + model.getStr("class"), model.getId().toString());
+        addFilter("key",key);
+        set("key", key);
+        set("value", value);
     }
     public Property(String domain, Long idDomain){
         this(domain, idDomain, null);
