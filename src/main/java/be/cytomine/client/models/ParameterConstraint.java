@@ -8,4 +8,9 @@ public class ParameterConstraint extends Model<ParameterConstraint>{
         this.set("expression",expression);
         this.set("dataType",dataType);
     }
+
+    @Override
+    public String getDomainName() {
+        return "parameter_constraint";
+    }
 }
