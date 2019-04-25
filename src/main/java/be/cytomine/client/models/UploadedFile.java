@@ -16,9 +16,7 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.util.List;

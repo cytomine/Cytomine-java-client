@@ -33,11 +33,6 @@ public class Execute {
         Cytomine.connection(args[0], args[1], args[2]);
 
         ping();
-
-        Description description= new Description( "SoftwareParameter",new Long(2534645),
-                "fvezgevezgfezfezg");
-//        Test.launch();
-
     }
 
     public static void ping() throws CytomineException {
