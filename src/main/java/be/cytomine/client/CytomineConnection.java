@@ -16,6 +16,7 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
+import be.cytomine.client.models.User;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -41,6 +42,8 @@ public class CytomineConnection {
     private String pass;
     private String publicKey;
     private String privateKey;
+
+    private User currentUser;
     //private String charEncoding = "UTF-8";
 
     /*
@@ -50,7 +53,7 @@ public class CytomineConnection {
 
     private enum Method {GET, PUT, POST, DELETE}
 
-    CytomineConnection(String host, String publicKey, String privateKey) {
+    public CytomineConnection(String host, String publicKey, String privateKey) {
         this.host = host;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
@@ -91,6 +94,19 @@ public class CytomineConnection {
      */
     public String getPrivateKey() { return this.privateKey; }
 
+    public User getCurrentUser() throws CytomineException {
+        return getCurrentUser(false);
+    }
+
+    public User getCurrentUser(boolean forceRefresh) throws CytomineException {
+        if (forceRefresh || this.currentUser == null) {
+            User user = new User();
+            user.set("current", "current");
+            currentUser = user.fetch(null);
+        }
+
+        return currentUser;
+    }
 
     private void analyzeCode(int code, JSONObject json) throws CytomineException {
 

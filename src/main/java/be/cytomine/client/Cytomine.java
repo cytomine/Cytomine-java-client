@@ -432,9 +432,7 @@ public class Cytomine {
     }
 
     public User getCurrentUser() throws CytomineException {
-        User user = new User();
-        user.set("current", "current");
-        return user.fetch(null);
+        return defaultCytomineConnection.getCurrentUser();
     }
 
     /*public User getUserByUsername(String username) throws CytomineException {
