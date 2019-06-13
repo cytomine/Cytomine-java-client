@@ -34,4 +34,16 @@ public class UploadedFile extends Model {
         return this.get("path") + File.separator + this.get("filename");
     }
 
+
+    public String toURL() {
+
+        Long id = (Long) get("id");
+        Long baseImage = (Long) get("baseImage");
+        if (id ==null && baseImage != null) {
+            return "/api/uploadedfile/image/"+baseImage+".json";
+        }
+
+        return super.toURL();
+    }
+
 }
