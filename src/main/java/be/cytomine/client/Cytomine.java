@@ -598,6 +598,40 @@ public class Cytomine {
 		return fetchModel(image);
 	}
 
+	public String getImageServersOfAbstractImage(Long abstractImageID) {
+
+		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
+
+		    HttpClient client = null;
+            client = new HttpClient(publicKey, privateKey, getHost());
+
+
+			try {
+	            client.authorize("GET", subUrl, "", "application/json,*/*");
+	            client.connect(getHost() + subUrl);
+	            int code = client.get();
+
+	            String response = client.getResponseData();
+	            client.disconnect();
+	            JSONObject json = createJSONResponse(code, response);
+            	analyzeCode(code, json);
+
+            	JSONArray servers = (JSONArray) json.get("imageServersURLs");
+
+            	return (String) servers.get(0);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CytomineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return null;
+	}
+	
+
 	public ImageServers getImageInstanceServers(ImageInstance image) throws CytomineException {
 		AbstractImage abstractImage = new AbstractImage();
 		abstractImage.set("id", image.get("baseImage"));
