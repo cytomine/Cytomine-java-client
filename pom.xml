@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.1</version>
+            <version>4.3.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -175,27 +175,30 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.4</version>
+            </extension>
+        </extensions>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>packagecloud-travis</id>
+            <url>
+                packagecloud+https://packagecloud.io/cytomine-uliege/Cytomine-java-client
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>packagecloud-travis</id>
+            <url>
+                packagecloud+https://packagecloud.io/cytomine-uliege/Cytomine-java-client
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
-        <sonar.sources>src</sonar.sources>
-        <sonar.language>java</sonar.language>
-        <sonar.exclusions>src/main/java/be/cytomine/client/sample/*.java</sonar.exclusions>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-
-        <sonar.surefire.reportsPath>build/test/results</sonar.surefire.reportsPath>
-
-        <!--<sonar.jdbc.url>jdbc:postgresql://localhost/sonar</sonar.jdbc.url>
-        <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
-        <sonar.jdbc.username>postgres</sonar.jdbc.username>
-        <sonar.jdbc.password></sonar.jdbc.password>-->
-
-        <sonar.jdbc.url>jdbc:postgresql://localhost/sonar</sonar.jdbc.url>
-        <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
-        <sonar.jdbc.username>postgres</sonar.jdbc.username>
-        <sonar.jdbc.password></sonar.jdbc.password>
-        <!-- test -->
-        <sonar.host.url>http://sonar.cytomine.be</sonar.host.url>
-
     </properties>
 </project>
