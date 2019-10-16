@@ -1,10 +1,14 @@
 package be.cytomine.client.models;
 
-public class SoftwareParameterConstraint extends Model {
+import be.cytomine.client.CytomineException;
 
-    @Override
-    public String getDomainName() {
-        return "software_parameter_constraint";
-    }
+public class SoftwareParameterConstraint extends Model<SoftwareParameterConstraint> {
 
+    public SoftwareParameterConstraint(){}
+
+    public SoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
+		this.set("parameterConstraint", parameterConstraintId);
+		this.set("softwareParameter", softwareParameterId);
+		this.set("value", value);
+	}
 }

@@ -16,6 +16,8 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
@@ -23,7 +25,10 @@ package be.cytomine.client.models;
  */
 public class SoftwareParameter extends Model<SoftwareParameter> {
     public SoftwareParameter(){}
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer){
+    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
+                             boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
+                             String humanName, String valueKey, String commandLineFlag)
+            throws CytomineException {
         this.set("name", name);
         this.set("type", type);
         this.set("software", idSoftware);
@@ -34,14 +39,9 @@ public class SoftwareParameter extends Model<SoftwareParameter> {
         this.set("uriPrintAttribut", uriPrintAttribut);
         this.set("uriSortAttribut", uriSortAttribut);
         this.set("setByServer", setByServer);
-    }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut){
-        this(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index){
-        this(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-    public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer){
-        this(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
+        this.set("serverParameter", serverParameter);
+        this.set("humanName", humanName);
+        this.set("valueKey", valueKey);
+        this.set("commandLineFlag", commandLineFlag);
     }
 }

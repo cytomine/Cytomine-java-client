@@ -1,29 +1,14 @@
 package be.cytomine.client.collections;
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.models.Model;
 import be.cytomine.client.models.ProcessingServer;
-import org.json.simple.JSONObject;
 
-public class ProcessingServerCollection extends Collection {
+public class ProcessingServerCollection extends Collection<ProcessingServer> {
 
     public ProcessingServerCollection(int offset, int max) {
-        super(max, offset);
+        super(ProcessingServer.class, max, offset);
     }
-
-    @Override
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    @Override
-    public String getDomainName() {
-        return "processing_server";
-    }
-
-    public ProcessingServer get(int i) {
-        ProcessingServer processingServer = new ProcessingServer();
-        Object item = list.get(i);
-        processingServer.setAttr((JSONObject) item);
-        return processingServer;
-    }
-
 }

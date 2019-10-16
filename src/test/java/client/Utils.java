@@ -107,7 +107,10 @@ public class Utils {
     }
     static Software getSoftware() throws CytomineException {
         String name = Utils.getRandomString();
-        return new Software(name, "createRabbitJobWithArgsService", name, name).save();
+        //TODO: clean that! update software test with new software architecture!
+
+        SoftwareParameter sp = new SoftwareParameter("", "", new Long(0), "", true, 0, "", "","", true, true, "", "","");
+        return new Software(true , "", "", new Long(0), new Long(0), "", "", "").save();
     }
     static Job getJob() throws CytomineException {
         Software software = getSoftware();

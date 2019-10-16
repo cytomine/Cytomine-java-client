@@ -41,7 +41,9 @@ public class SoftwareParametersTests {
         log.info("test create software_parameter");
         String name = Utils.getRandomString();
         Software software = Utils.getSoftware();
-        SoftwareParameter sp = new SoftwareParameter(name, "", software.getId(), "", true, 0).save();
+        //TODO: clean that! update software test with new software architecture!
+
+        SoftwareParameter sp = new SoftwareParameter("", "", new Long(0), "", true, 0, "", "","", true, true, "", "","").save();
         assertEquals(name, sp.get("name"), "name not the same used for the software_parameter creation");
 
         sp = new SoftwareParameter().fetch(sp.getId());

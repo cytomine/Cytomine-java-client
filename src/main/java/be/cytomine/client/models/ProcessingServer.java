@@ -16,6 +16,10 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.ProcessingServerCollection;
+
 /**
  * User: rhoyoux
  * Date: 19/08/15
@@ -23,8 +27,18 @@ package be.cytomine.client.models;
  */
 public class ProcessingServer extends Model<ProcessingServer> {
     public ProcessingServer(){}
-    public ProcessingServer(String url){
-        this.set("url", url);
+    public ProcessingServer(String name,String host,String username,Integer port,String type,String processingMethodName,AmqpQueue amqpQueue,String persistentDirectory, String workingDirectory,Integer index){
+
+        this.set("name", name);
+        this.set("host", host);
+        this.set("username", username);
+        this.set("port", port);
+        this.set("type", type);
+        this.set("processingMethodName", processingMethodName);
+        this.set("amqpQueue", amqpQueue);
+        this.set("persistentDirectory", persistentDirectory);
+        this.set("workingDirectory", workingDirectory);
+        this.set("index", index);
     }
 
     @Override
