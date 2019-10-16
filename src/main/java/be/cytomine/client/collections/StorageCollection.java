@@ -23,24 +23,13 @@ import org.json.simple.JSONObject;
 /**
  * Created by hoyoux on 02.04.15.
  */
-public class StorageCollection extends Collection {
+public class StorageCollection extends Collection<Storage> {
+
+    public StorageCollection() {
+        super(Storage.class);
+    }
 
     public StorageCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    public String getDomainName() {
-        return "storage";
-    }
-
-    public Storage get(int i) {
-        Storage storage = new Storage();
-        Object item = list.get(i);
-        storage.setAttr((JSONObject) item);
-        return storage;
+        super(Storage.class, max, offset);
     }
 }

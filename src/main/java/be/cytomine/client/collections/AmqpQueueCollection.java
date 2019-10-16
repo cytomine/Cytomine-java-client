@@ -25,24 +25,13 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AmqpQueueCollection extends Collection {
+public class AmqpQueueCollection extends Collection<AmqpQueue> {
 
     public AmqpQueueCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-          return getJSONResourceURL();
+        super(AmqpQueue.class, max, offset);
     }
 
     public String getDomainName() {
         return "amqp_queue";
-    }
-
-    public AmqpQueue get(int i) {
-        AmqpQueue amqpQueue = new AmqpQueue();
-        Object item = list.get(i);
-        amqpQueue.setAttr((JSONObject) item);
-        return amqpQueue;
     }
 }

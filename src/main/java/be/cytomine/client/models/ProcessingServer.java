@@ -16,8 +16,16 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-
-public class ProcessingServer extends Model {
+/**
+ * User: rhoyoux
+ * Date: 19/08/15
+ * GIGA-ULg
+ */
+public class ProcessingServer extends Model<ProcessingServer> {
+    public ProcessingServer(){}
+    public ProcessingServer(String url){
+        this.set("url", url);
+    }
 
     @Override
     public String getDomainName() {

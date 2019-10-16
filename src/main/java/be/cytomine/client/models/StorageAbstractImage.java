@@ -22,8 +22,15 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class StorageAbstractImage extends Model {
+public class StorageAbstractImage extends Model<StorageAbstractImage> {
 
+    public StorageAbstractImage(){}
+    public StorageAbstractImage(Long idStorage, Long idAbstractImage){
+        this.set("storage", idStorage);
+        this.set("abstractimage", idAbstractImage);
+    }
+
+    @Override
     public String getDomainName() {
         return "storage_abstract_image";
     }

@@ -26,7 +26,7 @@ package be.cytomine.client.collections;
 public class SearchCollection extends Collection {
 
     public SearchCollection(int offset, int max) {
-        super(max, offset);
+        super(null, max, offset);
     }
 
     public String toURL() {

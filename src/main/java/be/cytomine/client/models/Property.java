@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,91 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import org.json.simple.JSONObject;
+
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: pierre
- * Date: 23/04/13
- * Time: 10:09
- * To change this template use File | Settings | File Templates.
- */
-public class Property extends Model {
+public class Property extends Model<Property> {
 
-    public String getDomainName() {
-        return "property";
+    public Property() {}
+    public Property(Model model) {
+        this(model, null, null);
+    }
+    public Property(Model model, String key, String value) {
+        addFilter("domain/" + model.getStr("class"), model.getId().toString());
+        addFilter("key",key);
+        set("key", key);
+        set("value", value);
+    }
+    public Property(String domain, Long idDomain){
+        this(domain, idDomain, null);
     }
 
-    public String toURL() {
+    public Property(String domain, Long idDomain, String key) {
+        this(domain, idDomain, key, null);
+    }
+    public Property(String domain, Long idDomain, String key, String value) {
+        addFilter(domain,idDomain.toString());
+        addFilter("key",key);
+        set("key", key);
+        set("value", value);
+    }
+
+    @Override
+    public Property fetch(Long id) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    public Property fetch(String id) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    @Override
+    public Property fetch(CytomineConnection connection, Long id) throws CytomineException {
+        throw new CytomineException(400,"Cannot fetch property with an id, fetch it with its key");
+    }
+    public Property fetch(CytomineConnection connection, String id) throws CytomineException {
+        this.set("key", id);
+        addFilter("key",id);
+        JSONObject json = connection.doGet(this.toURL());
+        this.setAttr(json);
+        return this;
+    }
+
+    @Override
+    public String getJSONResourceURL() {
+        Long id = getId();
+        String base = "/api/";
+        //base += "domain/";
+
+        //hack to fit url until refactoring of urls
+        if(getFilter("key")!=null && get("value") != null) filters.remove("key");
+
+        base += getFilterPrefix();
+        base += getDomainName();
+        if(id!= null) {
+            base += "/" + id + ".json?";
+        } else {
+            base += ".json?";
+        }
+
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            base = base + param.getKey() + "=" + param.getValue() + "&";
+        }
+        base = base.substring(0, base.length() - 1);
+        return base;
+    }
+
+    /*public String toURL() {
         Long id = (Long) get("id");
         Long domainIdent = (Long) get("domainIdent");
         String domain = (String) get("domain");
         String key = (String) get("key");
-        String value = (String) get("value");
 
         if (id != null && domainIdent != null && domain != null) {
             return getJSONResourceURL(id, domainIdent, domain);
-        } else if (domainIdent != null && domain != null && key != null && value == null) {
+        } else if (domainIdent != null && domain != null && key != null) {
             return getJSONResourceURL(domainIdent, domain, key);
         } else if (domainIdent != null && domain != null) {
             return getJSONResourceURL(domainIdent, domain);
@@ -91,5 +151,5 @@ public class Property extends Model {
         }
         String base = "/api/" + domainFix + "/" + domainIdent + "/key/"+key+"/property.json";
         return base;
-    }
+    }*/
 }

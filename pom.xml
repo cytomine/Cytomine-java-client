@@ -4,18 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Cytomine Java Client</name>
     <groupId>be.cytomine.client</groupId>
     <artifactId>cytomine-java-client</artifactId>
-    <version>1.4.2</version>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <version>2.0.3-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -61,10 +52,11 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.3.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.6</version>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -81,11 +73,13 @@
             <artifactId>httpmime</artifactId>
             <version>4.3.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -105,6 +99,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -142,6 +143,19 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!--<plugin>-->
+            <!--<artifactId>maven-assembly-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<archive>-->
+            <!--<manifest>-->
+            <!--<mainClass>fully.qualified.MainClass</mainClass>-->
+            <!--</manifest>-->
+            <!--</archive>-->
+            <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+            <!--</descriptorRefs>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2</version>
@@ -161,30 +175,27 @@
                 </executions>
             </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>io.packagecloud.maven.wagon</groupId>
-                <artifactId>maven-packagecloud-wagon</artifactId>
-                <version>0.0.4</version>
-            </extension>
-        </extensions>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>packagecloud-travis</id>
-            <url>
-                packagecloud+https://packagecloud.io/cytomine-uliege/Cytomine-java-client
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>packagecloud-travis</id>
-            <url>
-                packagecloud+https://packagecloud.io/cytomine-uliege/Cytomine-java-client
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <properties>
+        <sonar.sources>src</sonar.sources>
+        <sonar.language>java</sonar.language>
+        <sonar.exclusions>src/main/java/be/cytomine/client/sample/*.java</sonar.exclusions>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+
+        <sonar.surefire.reportsPath>build/test/results</sonar.surefire.reportsPath>
+
+        <!--<sonar.jdbc.url>jdbc:postgresql://localhost/sonar</sonar.jdbc.url>
+        <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
+        <sonar.jdbc.username>postgres</sonar.jdbc.username>
+        <sonar.jdbc.password></sonar.jdbc.password>-->
+
+        <sonar.jdbc.url>jdbc:postgresql://localhost/sonar</sonar.jdbc.url>
+        <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
+        <sonar.jdbc.username>postgres</sonar.jdbc.username>
+        <sonar.jdbc.password></sonar.jdbc.password>
+        <!-- test -->
+        <sonar.host.url>http://sonar.cytomine.be</sonar.host.url>
+
     </properties>
 </project>

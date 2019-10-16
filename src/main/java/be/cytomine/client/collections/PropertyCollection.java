@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,39 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.models.Model;
 import be.cytomine.client.models.Property;
-import org.json.simple.JSONObject;
 
-/**
- * Created with IntelliJ IDEA.
- * User: pierre
- * Date: 23/04/13
- * Time: 10:14
- * To change this template use File | Settings | File Templates.
- */
 public class PropertyCollection extends Collection {
 
+    public PropertyCollection() {
+        this(0,0);
+    }
     public PropertyCollection(int offset, int max) {
-        super(max, offset);
+        super(Property.class, max, offset);
     }
 
-    public String toURL() {
+
+    public static PropertyCollection fetchByAssociatedDomain(Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain, 0,0);
+    }
+    public static PropertyCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain) throws CytomineException {
+        return fetchByAssociatedDomain(connection, domain, 0,0);
+    }
+
+    public static PropertyCollection fetchByAssociatedDomain(Model domain, int offset, int max) throws CytomineException {
+        return fetchByAssociatedDomain(Cytomine.getInstance().getDefaultCytomineConnection(), domain, offset,max);
+    }
+
+    public static PropertyCollection fetchByAssociatedDomain(CytomineConnection connection, Model domain, int offset, int max) throws CytomineException {
+        return (PropertyCollection) new PropertyCollection(max, offset).fetchWithFilter(connection, domain.getClass(), domain.getId(), offset, max);
+    }
+
+    @Override
+    protected String getJSONResourceURL() throws CytomineException {
         if (isFilterBy("annotation") && isFilterBy("idDomain") && isFilterBy("nameIdDomain")) {
             return getJSONResourceURLWithFilter("annotation", "idDomain", "nameIdDomain");
         } else if (isFilterBy("imageinstance") && isFilterBy("idDomain") && isFilterBy("nameIdDomain")) {
@@ -44,7 +60,6 @@ public class PropertyCollection extends Collection {
             return getJSONResourceURLWithFilter("project", "key");
         } else if (isFilterBy("imageinstance") && isFilterBy("key")) {
             return getJSONResourceURLWithFilter("imageinstance", "key");
-
         } else if (isFilterBy("annotation")) {
             return getJSONResourceURLWithFilter("annotation");
         } else if (isFilterBy("project")) {
@@ -54,33 +69,18 @@ public class PropertyCollection extends Collection {
         } else if (isFilterBy("domainClassName")) {
             return getJSONResourceURLWithFilter(getFilter("domainClassName"));
         } else {
-            return getJSONResourceURL();
+            return super.getJSONResourceURL();
         }
     }
-
-    public String getDomainName() {
-        return "property";
+    private String getJSONResourceURLWithFilter(String filter1Name) throws CytomineException {
+        return "/api/" + filter1Name + "/" + getFilter(filter1Name) + "/" + getDomainName() + ".json";
     }
 
-    public Property get(int i) {
-        Property property = new Property();
-        Object item = list.get(i);
-        property.setAttr((JSONObject) item);
-        return property;
+    private String getJSONResourceURLWithFilter(String filter1Name, String filter2Name) throws CytomineException {
+        return "/api/" + filter1Name + "/" + getFilter(filter1Name) + "/" + filter2Name + "/" + getFilter(filter2Name) + "/" + getDomainName() + ".json";
     }
 
-
-    public String getJSONResourceURLWithFilter(String filter1Name) {
-        String domainFix = filter1Name;
-        if (filter1Name.contains(".")) {
-            domainFix = "domain/" + filter1Name;
-        }
-        return "/api/" + domainFix + "/" + getFilter(filter1Name) + "/" + getDomainName() + ".json";
-    }
-
-    public String getJSONResourceURLWithFilter(String domain, String idDomain, String nameIdDomain) {
-
+    private String getJSONResourceURLWithFilter(String domain, String idDomain, String nameIdDomain) throws CytomineException {
         return "/api/" + domain + "/" + getDomainName() + "/key.json?" + getFilter(nameIdDomain) + "=" + getFilter(idDomain);
-
     }
 }

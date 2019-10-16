@@ -16,9 +16,13 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +32,7 @@ import java.util.Map;
  * GIGA-ULg
  * A generic Model
  */
-public abstract class Model {
+public abstract class Model<T extends Model> {
     /**
      * Attribute for the current model
      */
@@ -37,42 +41,142 @@ public abstract class Model {
     /**
      * Params map (url params: ?param1=value&...
      */
-    HashMap<String, String> params = new HashMap<String, String>();
+    HashMap<String, String> params = new HashMap<>();
 
     /**
      * Filter maps (url params: /api/param1/value/model.json
      */
-    HashMap<String, String> map = new HashMap<String, String>();
+    LinkedHashMap<String, String> filters = new LinkedHashMap<>();
 
 
-    public void addParams(String name, String value) {
-        params.put(name, value);
+    /**
+     * Generate JSON from Model
+     *
+     * @return JSON
+     */
+    public String toJSON() {
+        return attr.toString();
+    }
+
+    // ####################### CREATE URL #######################
+    /**
+     * Build model REST url
+     *
+     * @return
+     */
+    public String toURL() {
+        return getJSONResourceURL();
+    }
+
+    /**
+     * Get Model URL
+     *
+     * @return URL
+     */
+    public String getJSONResourceURL() {
+        Long id = getId();
+        String base = "/api/";
+        base += getFilterPrefix();
+        base += getDomainName();
+        if(id!= null) {
+            base += "/" + id + ".json?";
+        } else {
+            base += ".json?";
+        }
+
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            base = base + param.getKey() + "=" + param.getValue() + "&";
+        }
+        base = base.substring(0, base.length() - 1);
+        return base;
+    }
+
+    /**
+     * Get the name of the domain for the domain
+     *
+     * @return Domain name
+     */
+    public String getDomainName(){
+        return getClass().getSimpleName().toLowerCase();
+    }
+
+    protected String getFilterPrefix() {
+        final StringBuilder prefix = new StringBuilder("");
+        filters.forEach((k,v) -> prefix.append(k+"/"+v+"/"));
+        return prefix.toString();//throw new RuntimeException("Error of the java client. "+getClass().getName()+" does not support filters");
+    }
+
+    // ####################### REST METHODS #######################
+
+    public T fetch(Long id) throws CytomineException {
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    public T fetch(CytomineConnection connection, Long id) throws CytomineException {
+        this.set("id", id);
+        JSONObject json = connection.doGet(this.toURL());
+        this.setAttr(json);
+        return (T)this;
+    }
+
+    public T save() throws CytomineException {
+        return this.save(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public T save(CytomineConnection connection) throws CytomineException {
+        JSONObject json = connection.doPost(this.toURL(),this.toJSON());
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return (T)this;
+    }
+
+    public void delete() throws CytomineException {
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public void delete(CytomineConnection connection) throws CytomineException {
+        this.delete(connection, (T) this);
+    }
+    public void delete(Long id) throws CytomineException {
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection(),id);
+    }
+    public void delete(CytomineConnection connection,Long id) throws CytomineException {
+        this.set("id", id);
+        this.delete(connection, (T) this);
+    }
+    private void delete(T model) throws CytomineException {
+        this.delete(Cytomine.getInstance().getDefaultCytomineConnection(), model);
+    }
+    private void delete(CytomineConnection connection,T model) throws CytomineException {
+        connection.doDelete(model.toURL());
+    }
+
+    public T update() throws CytomineException {
+        return this.update(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    public T update(CytomineConnection connection) throws CytomineException {
+        JSONObject json = connection.doPut(this.toURL(),this.toJSON());
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return (T) this;
+    }
+
+    public T update(HashMap<String, Object> attributes) throws CytomineException {
+        return this.update(Cytomine.getInstance().getDefaultCytomineConnection(), attributes);
+    }
+
+    public T update(CytomineConnection connection, HashMap<String, Object> attributes) throws CytomineException {
+        attributes.forEach((k, v) -> {
+            this.set(k,v);
+        });
+        return this.update(connection);
+    }
+
+    // ####################### Getters/Setters #######################
+
+    public Long getId() {
+        return getLong("id");
     }
 
     public JSONObject getAttr() {
         return attr;
     }
 
-    public void setAttr(JSONObject attr) {
-        this.attr = attr;
-    }
-
-    /**
-     * Add value for attribute 'name'
-     *
-     * @param name  attribute name
-     * @param value value for this attribute
-     */
-    public void set(String name, Object value) {
-        attr.put(name, value);
-    }
-
-    /**
-     * Get value for attribute 'name'
-     *
-     * @param name attribute name
-     * @return value value for this attribute
-     */
     public Object get(String name) {
         try {
             return attr.get(name);
@@ -117,8 +221,6 @@ public abstract class Model {
         } else {
             return (Double) get(name);
         }
-
-
     }
 
     public Boolean getBool(String name) {
@@ -129,64 +231,48 @@ public abstract class Model {
         return (List) get(name);
     }
 
-    /**
-     * Build model REST url
-     *
-     * @return
-     */
-    public String toURL() {
-        Long id = (Long) get("id");
-        if (id != null) {
-            return getJSONResourceURL(id);
-        } else {
-            return getJSONResourceURL();
-        }
+    public String getFilter(String name) {
+        return filters.get(name);
+    }
+
+    boolean isFilterBy(String name) {
+        return filters.containsKey(name);
+    }
+
+    public void addParams(String name, String value) {
+        params.put(name, value);
+    }
+
+    public void setAttr(JSONObject attr) {
+        this.attr = attr;
     }
 
     /**
-     * Direct method to accessto the id
+     * Add value for attribute 'name'
      *
-     * @return Model id
+     * @param name  attribute name
+     * @param value value for this attribute
      */
-    public Long getId() {
-        return getLong("id");
+    public void set(String name, Object value) {
+        attr.put(name, value);
     }
 
     /**
-     * Generate JSON from Model
+     * Get value for attribute 'name'
      *
-     * @return JSON
+     * @param name attribute name
+     * @return value value for this attribute
      */
-    public String toJSON() {
-        return attr.toString();
+    public /*protected */void addFilter(String name, String value) {
+        if(value != null) filters.put(name, value);
     }
 
-    /**
-     * Get Model URL for the collection
-     *
-     * @return URL
-     */
-    public String getJSONResourceURL() {
-        if (params.isEmpty()) {
-            return "/api/" + getDomainName() + ".json";
-        } else {
-            String base = "/api/" + getDomainName() + ".json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-        }
-    }
 
-    /**
-     * Get Model URL for the model id
-     *
-     * @param id Model id
-     * @return URL
-     */
-    public String getJSONResourceURL(Long id) {
-        return getJSONResourceURL(id + "");
+    // ####################### Object override #######################
+
+    @Override
+    public String toString() {
+        return getDomainName() + " " + getId();
     }
 
     @Override
@@ -198,44 +284,7 @@ public abstract class Model {
         }
     }
 
-    public String getJSONResourceURL(String id) {
-        if (params.isEmpty()) {
-            return "/api/" + getDomainName() + "/" + id + ".json";
-        } else {
-            String base = "/api/" + getDomainName() + "/" + id + ".json?";
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                base = base + param.getKey() + "=" + param.getValue() + "&";
-            }
-            base = base.substring(0, base.length() - 1);
-            return base;
-
-        }
-    }
-
-    /**
-     * Get the name of the domain for the domain
-     *
-     * @return Domain name
-     */
-    public abstract String getDomainName();
-
-
-    boolean isFilterBy(String name) {
-        return map.containsKey(name);
-    }
-
-    public String getFilter(String name) {
-        return map.get(name);
-    }
-
-    public void addFilter(String name, String value) {
-        map.put(name, value);
-    }
-
-    public String toString() {
-        return getDomainName() + getId();
-    }
-
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

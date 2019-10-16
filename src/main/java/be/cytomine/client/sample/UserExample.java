@@ -34,5 +34,4 @@ public class UserExample {
         cytomine.addRole(8579749L, roles.get("ROLE_USER"));
         cytomine.deleteRole(8579749L, roles.get("ROLE_USER"));
     }
-
 }

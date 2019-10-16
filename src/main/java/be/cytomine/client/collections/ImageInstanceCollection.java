@@ -16,7 +16,11 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.ImageInstance;
+import be.cytomine.client.models.Project;
 import org.json.simple.JSONObject;
 
 /**
@@ -27,25 +31,19 @@ import org.json.simple.JSONObject;
 public class ImageInstanceCollection extends Collection {
 
     public ImageInstanceCollection(int offset, int max) {
-        super(max, offset);
+        super(ImageInstance.class, max, offset);
     }
 
-    public String toURL() {
-        if (isFilterBy("project")) {
-            return getJSONResourceURLWithFilter("project");
-        } else {
-            return getJSONResourceURL();
-        }
+    public static ImageInstanceCollection fetchByProject(Project project) throws CytomineException {
+        return fetchByProject(Cytomine.getInstance().getDefaultCytomineConnection(), project);
     }
-
-    public String getDomainName() {
-        return "imageinstance";
+    public static ImageInstanceCollection fetchByProject(CytomineConnection connection, Project project) throws CytomineException {
+        return fetchByProject(connection, project, 0,0);
     }
-
-    public ImageInstance get(int i) {
-        ImageInstance image = new ImageInstance();
-        Object item = list.get(i);
-        image.setAttr((JSONObject) item);
-        return image;
+    public static ImageInstanceCollection fetchByProject(Project project, int offset, int max) throws CytomineException {
+        return fetchByProject(Cytomine.getInstance().getDefaultCytomineConnection(), project, offset,max);
+    }
+    public static ImageInstanceCollection fetchByProject(CytomineConnection connection, Project project, int offset, int max) throws CytomineException {
+        return (ImageInstanceCollection) new ImageInstanceCollection(max, offset).fetchWithFilter(connection, Project.class, project.getId(), offset, max);
     }
 }

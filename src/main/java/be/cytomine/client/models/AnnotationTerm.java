@@ -16,13 +16,31 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AnnotationTerm extends Model {
 
+public class AnnotationTerm extends Model<AnnotationTerm> implements ICompositePrimaryKey<AnnotationTerm> {
+
+    public AnnotationTerm() {}
+    public AnnotationTerm(Long idAnnotation, Long idTerm, Long idExpectedTerm, Long idUser, double rate) {
+        this.set("annotation", idAnnotation);
+        this.set("userannotation", idAnnotation);
+        this.set("term", idTerm);
+        this.set("expectedTerm", idExpectedTerm);
+        this.set("user", idUser);
+        this.set("rate", rate);
+    }
+    public AnnotationTerm(Long idAnnotation, Long idTerm) {
+        this.set("annotation", idAnnotation);
+        this.set("userannotation", idAnnotation);
+        this.set("term", idTerm);
+    }
     public String getDomainName() {
         return "annotationterm";
     }
@@ -39,4 +57,13 @@ public class AnnotationTerm extends Model {
         return "/api/annotation/" + getStr("userannotation") + "/term/" + getStr("term") + ".json?annotationIdent=" + getStr("userannotation");
     }
 
+    @Override
+    public AnnotationTerm fetch(String idAnnotation, String idTerm) throws CytomineException {
+        return null;
+    }
+
+    @Override
+    public AnnotationTerm fetch(CytomineConnection connection, String idAnnotation, String idTerm) throws CytomineException {
+        return null;
+    }
 }

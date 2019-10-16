@@ -16,26 +16,37 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AbstractImage extends Model {
+public class AbstractImage extends Model<AbstractImage> {
 
-    public String toURL() {
-        Long id = getLong("id");
-        if (id != null) {
-            return getJSONResourceURL(id);
-        } else if (isFilterBy("uploadedFile")) {
-            return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
-        } else {
-            return getJSONResourceURL();
-        }
+    public AbstractImage(){}
+
+    public AbstractImage(UploadedFile uploadedFile, String filename) {
+        this(uploadedFile.getId(), filename);
     }
 
-    public String getDomainName() {
-        return "abstractimage";
+    public AbstractImage(Long uploadedFileId, String filename){
+        this.set("uploadedFile", uploadedFileId);
+        this.set("originalFilename",filename);
+    }
+
+    public String clearProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/clear.json", "").toString();
+    }
+
+    public String populateProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/populate.json", "").toString();
+    }
+
+    public String extractUsefulProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/extract.json", "").toString();
     }
 
 }

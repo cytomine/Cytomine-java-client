@@ -23,24 +23,9 @@ import org.json.simple.JSONObject;
 /**
  * Created by hoyoux on 02.04.15.
  */
-public class UploadedFileCollection extends Collection {
+public class UploadedFileCollection extends Collection<UploadedFile> {
 
     public UploadedFileCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    public String getDomainName() {
-        return "uploadedfile";
-    }
-
-    public UploadedFile get(int i) {
-        UploadedFile uf = new UploadedFile();
-        Object item = list.get(i);
-        uf.setAttr((JSONObject) item);
-        return uf;
+        super(UploadedFile.class, max, offset);
     }
 }

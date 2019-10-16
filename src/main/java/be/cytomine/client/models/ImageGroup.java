@@ -16,15 +16,17 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class ImageGroup extends Model {
+public class ImageGroup extends Model<ImageGroup> {
 
-    public String getDomainName() {
-        return "imagegroup";
+    public ImageGroup(){}
+    public ImageGroup(Long idProject){
+        this.set("project", idProject);
     }
-
 }

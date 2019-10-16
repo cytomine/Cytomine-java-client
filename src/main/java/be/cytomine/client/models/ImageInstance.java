@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,13 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class ImageInstance extends Model {
-
-    public String getDomainName() {
-        return "imageinstance";
+public class ImageInstance extends Model<ImageInstance> {
+    public ImageInstance(){}
+    public ImageInstance(AbstractImage abstractImage, Project project){
+        this(abstractImage.getId(),project.getId());
     }
-
+    public ImageInstance(Long idAbstractImage, Long idProject){
+        this.set("baseImage", idAbstractImage);
+        this.set("project", idProject);
+    }
 }

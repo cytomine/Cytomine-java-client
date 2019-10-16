@@ -21,10 +21,9 @@ package be.cytomine.client.models;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Ontology extends Model {
-
-    public String getDomainName() {
-        return "ontology";
+public class Ontology extends Model<Ontology> {
+    public Ontology(){}
+    public Ontology(String name){
+        this.set("name", name);
     }
-
 }

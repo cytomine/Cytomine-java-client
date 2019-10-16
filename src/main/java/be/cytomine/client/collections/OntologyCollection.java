@@ -24,29 +24,10 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class OntologyCollection extends Collection {
+public class OntologyCollection extends Collection<Ontology> {
 
     public OntologyCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        if (isFilterBy("project")) {
-            return getJSONResourceURLWithFilter("project");
-        } else {
-            return getJSONResourceURL();
-        }
-    }
-
-    public String getDomainName() {
-        return "ontology";
-    }
-
-    public Ontology get(int i) {
-        Ontology ontology = new Ontology();
-        Object item = list.get(i);
-        ontology.setAttr((JSONObject) item);
-        return ontology;
+        super(Ontology.class, max, offset);
     }
 }
 
