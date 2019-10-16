@@ -1,14 +1,11 @@
 package be.cytomine.client.collections;
 
-public class DeleteCommandCollection extends Collection  {
+import be.cytomine.client.models.DeleteCommand;
+
+public class DeleteCommandCollection extends Collection<DeleteCommand>  {
 
     public DeleteCommandCollection(int max, int offset) {
-        super(max, offset);
-    }
-
-    @Override
-    public String toURL() {
-        return getJSONResourceURL();
+        super(DeleteCommand.class, max, offset);
     }
 
     @Override
