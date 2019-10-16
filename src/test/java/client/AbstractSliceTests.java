@@ -38,7 +38,7 @@ public class AbstractSliceTests {
     void testCreateAbstractSlice() throws CytomineException {
         log.info("test create abstract_image");
         String name = Utils.getRandomString();
-        AbstractSlice as = new AbstractSlice(Utils.getNewAbstractImage(), Utils.getNewUploadedFile(), "image/pyrtiff", 0., 0., 0.).save();
+        AbstractSlice as = new AbstractSlice(Utils.getNewAbstractImage(), Utils.getNewUploadedFile(), "image/pyrtiff", 0, 0, 0).save();
         assertEquals("image/pyrtiff", as.getStr("mime"), "mime not the same used for the abstract_slice creation");
 
         as = new AbstractSlice().fetch(as.getId());
