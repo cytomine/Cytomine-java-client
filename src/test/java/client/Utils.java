@@ -43,6 +43,7 @@ public class Utils {
     private static Ontology ontology;
     private static Term term;
     private static Annotation annotation;
+    private static Tag tag;
 
 
     static void connect() throws CytomineException {
@@ -140,5 +141,12 @@ public class Utils {
         return new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
     }
 
-
+    static Tag getTag() throws CytomineException {
+        if(tag == null) tag = getNewTag();
+        return tag;
+    }
+    static Tag getNewTag() throws CytomineException {
+        String name = Utils.getRandomString();
+        return new Tag(name).save();
+    }
 }
