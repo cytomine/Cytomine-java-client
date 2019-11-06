@@ -63,7 +63,7 @@ public class Collection<T extends Model> {
         for (Map.Entry<String, String> param : params.entrySet()) {
             url += param.getKey() + "=" + param.getValue() + "&";
         }
-        url = url.substring(0, url.length() - 1);
+        if(url.charAt(url.length()-1) != '?') url = url.substring(0, url.length() - 1);
         url += getPaginatorURLParams();
         return url;
     }
