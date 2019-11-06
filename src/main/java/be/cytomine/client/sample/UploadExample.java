@@ -17,52 +17,45 @@ package be.cytomine.client.sample;
 
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
-import be.cytomine.client.collections.ProjectCollection;
+import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.StorageCollection;
+import be.cytomine.client.models.UploadedFile;
 import org.apache.log4j.Logger;
 
 
-public class ProjectExample {
+public class UploadExample {
 
-    private static final Logger log = Logger.getLogger(ProjectExample.class);
+    private static final Logger log = Logger.getLogger(UploadExample.class);
 
 
-    public static void listProject(Cytomine cytomine) throws Exception {
+    // don't forget protocol into upload URL
+    public static void upload(String uploadURL) throws Exception {
 
         try {
-            log.info("Get project list...");
-            ProjectCollection projects = new ProjectCollection(0,0);
-            projects = (ProjectCollection) projects.fetch();
 
-            log.info("projects=" + projects.getList());
+            log.info("Get Core URL");
+            String coreURL = Cytomine.getInstance().getHost();
 
-            for (int i = 0; i < projects.size(); i++) {
-                log.info("projects=" + projects.get(i));
-            }
+            log.info("Get storage list...");
+            StorageCollection storages = new StorageCollection(0,0);
+            storages = (StorageCollection) storages.fetch();
 
-            log.info("############################################");
-            projects = (ProjectCollection) projects.fetch(0,5);
-            for (int i = 0; i < projects.size(); i++) {
-                log.info("projects=" + projects.get(i));
-            }
-            projects = (ProjectCollection) projects.fetchNextPage();
-            for (int i = 0; i < projects.size(); i++) {
-                log.info("projects=" + projects.get(i));
-            }
-            log.info("############################################");
+            Collection<UploadedFile> c = Collection.fetch(UploadedFile.class);
+            long size = c.size();
 
-            do {
+            Long idProject = null;
 
-                for (int i = 0; i < projects.size(); i++) {
-                    log.info("projects=" + projects.get(i));
-                }
+            Cytomine.connection(uploadURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
+            Cytomine.getInstance().uploadImage("./logo.png", idProject, storages.get(0).getId(), coreURL, null, false);
+            Cytomine.connection(coreURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
 
+            c = Collection.fetch(UploadedFile.class);
 
-            } while ((projects.fetchNextPage()).size() > 0);
+            assert c.size() > size;
 
         } catch (CytomineException e) {
             log.error(e);
             e.printStackTrace();
-
         }
     }
 }
