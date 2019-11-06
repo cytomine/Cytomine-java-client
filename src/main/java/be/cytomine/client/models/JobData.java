@@ -24,11 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class JobData extends Model<JobData> {
     public JobData(){}
     public JobData(Job job, String key, String filename){
