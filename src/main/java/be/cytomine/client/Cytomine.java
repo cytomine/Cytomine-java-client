@@ -507,6 +507,50 @@ public class Cytomine {
         return user.fetch(null);
     }
 
+	public String getImageServersOfAbstractImage(Long abstractImageID) {
+
+		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
+
+		    HttpClient client = null;
+            client = new HttpClient(publicKey, privateKey, getHost());
+
+
+			try {
+	            client.authorize("GET", subUrl, "", "application/json,*/*");
+	            client.connect(getHost() + subUrl);
+	            int code = client.get();
+
+	            String response = client.getResponseData();
+	            client.disconnect();
+	            JSONObject json = createJSONResponse(code, response);
+            	analyzeCode(code, json);
+
+            	JSONArray servers = (JSONArray) json.get("imageServersURLs");
+
+            	return (String) servers.get(0);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CytomineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return null;
+	}
+
+    public Collection<ImageServer> getAbstractImageServers(AbstractImage abstractImage) throws CytomineException {
+        Collection<ImageServer> imageServers = new Collection<>(ImageServer.class,0,0);
+        imageServers.addFilter("abstractimage", "" + abstractImage.getId());
+        return imageServers.fetch();
+    }
+	public Collection<ImageServer> getImageInstanceServers(ImageInstance image) throws CytomineException {
+		AbstractImage abstractImage = new AbstractImage();
+		abstractImage.set("id", image.get("baseImage"));
+		return getAbstractImageServers(abstractImage);
+	}
+
     public User getKeys(String publicKey) throws CytomineException {
         User user = new User();
         user.addFilter("publicKeyFilter", publicKey);
@@ -763,38 +807,6 @@ public class Cytomine {
     }
 
 
-    public String getImageServersOfAbstractImage(Long abstractImageID) {
-
-        String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
-
-        HttpClient client = null;
-        client = new HttpClient(publicKey, privateKey, getHost());
-
-
-        try {
-            client.authorize("GET", subUrl, "", "application/json,*/*");
-            client.connect(getHost() + subUrl);
-            int code = client.get();
-
-            String response = client.getResponseData();
-            client.disconnect();
-            JSONObject json = createJSONResponse(code, response);
-            analyzeCode(code, json);
-
-            JSONArray servers = (JSONArray) json.get("imageServersURLs");
-
-            return (String) servers.get(0);
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (CytomineException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
 
 
