@@ -517,7 +517,7 @@ public class Cytomine {
         User user = new User();
         user.addFilter("id", id + "");
         user.addFilter("keys", "keys");
-        return user.fetch(id);
+        return user.fetch(null);
     }
 
     /*public User getKeysByUsername(String username) throws CytomineException {
