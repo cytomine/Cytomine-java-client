@@ -102,7 +102,7 @@ public class CytomineConnection {
         if (forceRefresh || this.currentUser == null) {
             User user = new User();
             user.set("current", "current");
-            currentUser = user.fetch(null);
+            currentUser = user.fetch(this, null);
         }
 
         return currentUser;
