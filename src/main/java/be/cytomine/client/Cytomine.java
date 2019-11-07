@@ -763,11 +763,6 @@ public class Cytomine {
     }
 
 
-    public void indexToRetrieval(Long id, Long container, String url) throws CytomineException {
-        String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
-        defaultCytomineConnection.doPost("/retrieval-web/api/resource.json", data);
-    }
-
     public String getImageServersOfAbstractImage(Long abstractImageID) {
 
         String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
