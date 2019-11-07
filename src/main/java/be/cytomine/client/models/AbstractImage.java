@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,22 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class AbstractImage extends Model {
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
 
+public class AbstractImage extends Model<AbstractImage> {
+
+    public AbstractImage(){}
+    public AbstractImage(String filename, String mime){
+        this.set("filename",filename);
+        this.set("path",filename);
+        this.set("mime",mime);
+    }
+    @Override
     public String toURL() {
         Long id = getLong("id");
         if (id != null) {
-            return getJSONResourceURL(id);
+            return getJSONResourceURL();
         } else if (isFilterBy("uploadedFile")) {
             return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
         } else {
@@ -34,8 +39,16 @@ public class AbstractImage extends Model {
         }
     }
 
-    public String getDomainName() {
-        return "abstractimage";
+    public String clearProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/clear.json", "").toString();
+    }
+
+    public String populateProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/populate.json", "").toString();
+    }
+
+    public String extractUsefulProperties() throws CytomineException {
+        return Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/abstractimage/" + this.getId() + "/properties/extract.json", "").toString();
     }
 
 }

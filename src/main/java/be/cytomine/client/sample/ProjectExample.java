@@ -1,6 +1,6 @@
 package be.cytomine.client.sample;
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ public class ProjectExample {
 
         try {
             log.info("Get project list...");
-            ProjectCollection projects = cytomine.getProjects();
+            ProjectCollection projects = new ProjectCollection(0,0);
+            projects = (ProjectCollection) projects.fetch();
+
             log.info("projects=" + projects.getList());
 
             for (int i = 0; i < projects.size(); i++) {
@@ -38,19 +40,15 @@ public class ProjectExample {
             }
 
             log.info("############################################");
-            cytomine.setMax(5);
-            projects = cytomine.getProjects();
+            projects = (ProjectCollection) projects.fetch(0,5);
             for (int i = 0; i < projects.size(); i++) {
                 log.info("projects=" + projects.get(i));
             }
-            cytomine.nextPage(projects);
+            projects = (ProjectCollection) projects.fetchNextPage();
             for (int i = 0; i < projects.size(); i++) {
                 log.info("projects=" + projects.get(i));
             }
             log.info("############################################");
-
-
-            projects = cytomine.getProjects();
 
             do {
 
@@ -59,8 +57,7 @@ public class ProjectExample {
                 }
 
 
-            } while (cytomine.nextPage(projects));
-
+            } while ((projects.fetchNextPage()).size() > 0);
 
         } catch (CytomineException e) {
             log.error(e);
@@ -68,5 +65,4 @@ public class ProjectExample {
 
         }
     }
-
 }

@@ -2,16 +2,13 @@ package be.cytomine.client.sample;
 
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
-import be.cytomine.client.models.AbstractImage;
-import be.cytomine.client.models.ImageGroup;
-import be.cytomine.client.models.ImageInstance;
-import be.cytomine.client.models.ImageSequence;
+import be.cytomine.client.models.*;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +31,12 @@ public class ImageExample {
     public static void changeImageName(Cytomine cytomine, Long idImageInstance, String newName) throws Exception {
 
         System.out.println("Look for image instance " + idImageInstance);
-        ImageInstance ii = cytomine.getImageInstance(idImageInstance);
+        ImageInstance ii = new ImageInstance().fetch(idImageInstance);
         System.out.println("Look for abstract image " + ii.getLong("baseImage"));
-        AbstractImage ai = cytomine.editAbstractImage(ii.getLong("baseImage"), newName);
-        System.out.println("Edit name");
-        cytomine.editAbstractImage(ai.getId(), newName);
-        System.out.println("New name is " + cytomine.getAbstractImage(ai.getId()).getStr("originalFilename"));
+        AbstractImage ai = new AbstractImage().fetch(ii.getLong("baseImage"));
+        ai.set("originalFilename", newName);
+        ai.update();
+        System.out.println("New name is " + new AbstractImage().fetch(ai.getId()).getStr("originalFilename"));
     }
 
 
@@ -56,7 +53,6 @@ public class ImageExample {
     public static void testUpload(Cytomine cytomine) throws Exception {
 
         try {
-            System.out.println(Cytomine.UploadStatus.DEPLOYED);
             String file = "/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
 //             //AUTOINTERSECT.png
             Long idProject = 92279388L;//21919089L;   // and storage 17763541

@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class Role extends Model {
+public class Role extends Model<Role> {
 
+    @Override
     public String toURL() {
 
         if (isFilterBy("user") && isFilterBy("role")) {
@@ -32,9 +28,5 @@ public class Role extends Model {
         } else {
             return "/api/user/baduser/role.json";
         }
-    }
-
-    public String getDomainName() {
-        return "role";
     }
 }

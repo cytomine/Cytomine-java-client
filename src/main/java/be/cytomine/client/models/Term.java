@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class Term extends Model {
-
-    public String getDomainName() {
-        return "term";
+public class Term extends Model<Term> {
+    public Term(){}
+    public Term(String name, String color, Ontology ontology){
+        this(name, color, ontology.getId());
     }
-
+    public Term(String name, String color, Long idOntology){
+        this.set("name", name);
+        this.set("color", color);
+        this.set("ontology", idOntology);
+    }
 }

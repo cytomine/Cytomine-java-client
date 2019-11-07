@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,25 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class AnnotationTerm extends Model {
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 
+public class AnnotationTerm extends Model<AnnotationTerm> implements ICompositePrimaryKey<AnnotationTerm> {
+
+    public AnnotationTerm() {}
+    public AnnotationTerm(Long idAnnotation, Long idTerm, Long idExpectedTerm, Long idUser, double rate) {
+        this.set("annotation", idAnnotation);
+        this.set("userannotation", idAnnotation);
+        this.set("term", idTerm);
+        this.set("expectedTerm", idExpectedTerm);
+        this.set("user", idUser);
+        this.set("rate", rate);
+    }
+    public AnnotationTerm(Long idAnnotation, Long idTerm) {
+        this.set("annotation", idAnnotation);
+        this.set("userannotation", idAnnotation);
+        this.set("term", idTerm);
+    }
     public String getDomainName() {
         return "annotationterm";
     }
@@ -39,4 +51,13 @@ public class AnnotationTerm extends Model {
         return "/api/annotation/" + getStr("userannotation") + "/term/" + getStr("term") + ".json?annotationIdent=" + getStr("userannotation");
     }
 
+    @Override
+    public AnnotationTerm fetch(String idAnnotation, String idTerm) throws CytomineException {
+        return null;
+    }
+
+    @Override
+    public AnnotationTerm fetch(CytomineConnection connection, String idAnnotation, String idTerm) throws CytomineException {
+        return null;
+    }
 }

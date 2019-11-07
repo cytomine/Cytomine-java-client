@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,24 +25,13 @@ import org.json.simple.JSONObject;
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class AmqpQueueCollection extends Collection {
+public class AmqpQueueCollection extends Collection<AmqpQueue> {
 
     public AmqpQueueCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-          return getJSONResourceURL();
+        super(AmqpQueue.class, max, offset);
     }
 
     public String getDomainName() {
         return "amqp_queue";
-    }
-
-    public AmqpQueue get(int i) {
-        AmqpQueue amqpQueue = new AmqpQueue();
-        Object item = list.get(i);
-        amqpQueue.setAttr((JSONObject) item);
-        return amqpQueue;
     }
 }

@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,15 @@ package be.cytomine.client.models;
  */
 
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class StorageAbstractImage extends Model {
+public class StorageAbstractImage extends Model<StorageAbstractImage> {
 
+    public StorageAbstractImage(){}
+    public StorageAbstractImage(Long idStorage, Long idAbstractImage){
+        this.set("storage", idStorage);
+        this.set("abstractimage", idAbstractImage);
+    }
+
+    @Override
     public String getDomainName() {
         return "storage_abstract_image";
     }

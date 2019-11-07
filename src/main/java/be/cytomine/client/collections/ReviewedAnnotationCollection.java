@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,23 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.ReviewedAnnotation;
 import org.json.simple.JSONObject;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class ReviewedAnnotationCollection extends Collection {
+public class ReviewedAnnotationCollection extends Collection<ReviewedAnnotation> {
 
     public ReviewedAnnotationCollection(int offset, int max) {
-        super(max, offset);
+        super(ReviewedAnnotation.class, max, offset);
     }
 
-    public String toURL() {
+    @Override
+    protected String getJSONResourceURL() throws CytomineException {
         if (isFilterBy("term") && isFilterBy("imageinstance")) {
             return "/api/annotation?reviewed=true&term=" + getFilter("term") + "&image=" + getFilter("imageinstance") + "&showGIS=true&showMeta=true&showTerm=true";
         } else {
-            return getJSONResourceURL();
+            return super.getJSONResourceURL();
         }
-    }
-
-    public String getDomainName() {
-        return "reviewedannotation";
-    }
-
-    public ReviewedAnnotation get(int i) {
-        ReviewedAnnotation annotation = new ReviewedAnnotation();
-        Object item = list.get(i);
-        annotation.setAttr((JSONObject) item);
-        return annotation;
     }
 
 }

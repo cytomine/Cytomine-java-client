@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,24 +23,9 @@ import org.json.simple.JSONObject;
 /**
  * Created by hoyoux on 02.04.15.
  */
-public class UploadedFileCollection extends Collection {
+public class UploadedFileCollection extends Collection<UploadedFile> {
 
     public UploadedFileCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    public String getDomainName() {
-        return "uploadedfile";
-    }
-
-    public UploadedFile get(int i) {
-        UploadedFile uf = new UploadedFile();
-        Object item = list.get(i);
-        uf.setAttr((JSONObject) item);
-        return uf;
+        super(UploadedFile.class, max, offset);
     }
 }

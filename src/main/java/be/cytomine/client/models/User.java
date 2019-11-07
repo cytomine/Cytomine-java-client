@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,34 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class User extends Model {
+import be.cytomine.client.CytomineException;
 
+public class User extends Model<User> {
+
+    public User(){}
+    public User(String username, String firstname, String lastname, String email, String password){
+        this.set("username", username);
+        this.set("firstname", firstname);
+        this.set("lastname", lastname);
+        this.set("email", email);
+        this.set("password", password);
+    }
+
+    public static User getCurrent() throws CytomineException {
+        User user = new User();
+        user.set("current", "current");
+        return user.fetch(null);
+    }
+
+    @Override
     public String toURL() {
 
         if (getLong("id") != null) {
-            return getJSONResourceURL(getLong("id"));
-        } else if (getStr("username get") != null) {
-            return getJSONResourceURL(getStr("username get"));
+            return getJSONResourceURL();
+        /*} else if (getStr("username get") != null) {
+            return getJSONResourceURL(getStr("username get")); ???*/
         } else if (getStr("current") != null) {
             return "/api/user/current.json";
-        } else if (isFilterBy("publicKey")) {
-            return getJSONResourceURL() + "?publicKey=" + getFilter("publicKey");
         } else if (isFilterBy("publicKeyFilter")) {
             return "/api/userkey/" + getFilter("publicKeyFilter") + "/keys.json";
         } else if (isFilterBy("id") && isFilterBy("keys")) {
@@ -41,9 +52,4 @@ public class User extends Model {
             return getJSONResourceURL();
         }
     }
-
-    public String getDomainName() {
-        return "user";
-    }
-
 }

@@ -1,6 +1,6 @@
 package be.cytomine.client.sample;
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,5 +34,4 @@ public class UserExample {
         cytomine.addRole(8579749L, roles.get("ROLE_USER"));
         cytomine.deleteRole(8579749L, roles.get("ROLE_USER"));
     }
-
 }

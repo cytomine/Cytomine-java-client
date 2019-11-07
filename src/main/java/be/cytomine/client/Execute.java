@@ -1,3 +1,5 @@
+package be.cytomine.client;
+
 /*
  * Copyright (c) 2009-2018. Authors: see NOTICE file.
  *
@@ -13,38 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.cytomine.client;
-
-import be.cytomine.client.sample.ImageServersExample;
-import be.cytomine.client.sample.SoftwareExample;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.util.Date;
-
 public class Execute {
 
-	private static final Logger log = Logger.getLogger(Execute.class);
+    private static final Logger log = Logger.getLogger(Execute.class);
 
-	public static void main(String[] args) throws Exception {
-		BasicConfigurator.configure();
-		PropertyConfigurator.configure("log4j.properties");
-		log.info("Connection to cytomine...");
+    public static void main(String[] args) throws Exception {
+        BasicConfigurator.configure();
+        PropertyConfigurator.configure("log4j.properties");
+        log.info("Connection to cytomine...");
 
-		Cytomine cytomine = new Cytomine(args[0], args[1], args[2]);
-		ping(cytomine);
-		// cytomine.addUserJob(104606215l,16l,57l,new Date(),104606261l);
-		// cytomine.addUserJob(104606215l,16l,57l,new Date(),null);
+        Cytomine.connection(args[0], args[1], args[2]);
 
-		// SoftwareExample.testAddJobTemplate2(cytomine);
-		// SoftwareExample.testAddJobTemplate3(cytomine);
-		// SoftwareExample.testAddJobTemplate4(cytomine);
-		ImageServersExample.testGetImageServers(cytomine);
-	}
+        ping();
 
-	public static void ping(Cytomine cytomine) throws CytomineException {
-		log.info("Hello " + cytomine.getCurrentUser().get("username"));
-	}
+//        Test.launch();
+
+//        SoftwareExample.testAddJobTemplate2(cytomine);
+//        SoftwareExample.testAddJobTemplate3(cytomine);
+//        SoftwareExample.testAddJobTemplate4(cytomine);
+    }
+
+    public static void ping() throws CytomineException {
+        log.info("Hello " + Cytomine.getInstance().getCurrentUser().get("username"));
+    }
+    public static void ping(Cytomine cytomine) throws CytomineException {
+        log.info("Hello " + cytomine.getCurrentUser().get("username"));
+    }
 }

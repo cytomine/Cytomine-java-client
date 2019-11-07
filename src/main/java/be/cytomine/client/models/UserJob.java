@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,13 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class UserJob extends Model {
+public class UserJob extends Model<UserJob> {
 
+    @Override
     public String toURL() {
         Long id = getLong("id");
         if (id != null) {
-            return getJSONResourceURL(id);
+            return getJSONResourceURL();
         } else if (isFilterBy("publicKey")) {
             return getJSONResourceURL() + "?publicKey=" + getFilter("publicKey");
         } else {
@@ -29,6 +30,7 @@ public class UserJob extends Model {
         }
     }
 
+    @Override
     public String getDomainName() {
         return "userJob";
     }

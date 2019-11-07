@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@ package be.cytomine.client.models;
  * Date: 19/08/15
  * GIGA-ULg
  */
-public class ImageFilter extends Model {
-
-    public String getDomainName() {
-        return "imagefilter";
+public class ImageFilter extends Model<ImageFilter> {
+    public ImageFilter(){}
+    public ImageFilter(String name, String baseUrl, String processingServer){
+        this.set("name", name);
+        this.set("baseUrl", baseUrl);
+        this.set("processingServer", processingServer);
     }
-
 }

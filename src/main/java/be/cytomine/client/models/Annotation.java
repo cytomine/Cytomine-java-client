@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,41 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class Annotation extends Model {
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
 
-    public String getDomainName() {
-        return "annotation";
+import java.util.List;
+
+public class Annotation extends Model<Annotation> {
+    public Annotation() {
     }
 
+    public Annotation(String locationWKT, ImageInstance image) {
+        this(locationWKT, image.getId());
+    }
+
+    public Annotation(String locationWKT, ImageInstance image, Project project) {
+        this(locationWKT, image.getId(), project.getId());
+    }
+
+    public Annotation(String locationWKT, Long image) {
+        this.set("location", locationWKT);
+        this.set("image", image);
+    }
+
+    public Annotation(String locationWKT, Long image, List<Long> terms) {
+        this(locationWKT, image);
+        this.set("term", terms);
+    }
+
+    public Annotation(String locationWKT, Long image, Long project) {
+        this(locationWKT, image);
+        this.set("project", project);
+    }
+
+    //TODO rework when url rest normalized
+    public void simplify(Long minPoint, Long maxPoint) throws CytomineException {
+        String url = "/api/annotation/" + this.getId() + "/simplify.json?minPoint=" + minPoint + "&maxPoint=" + maxPoint;
+        Cytomine.getInstance().getDefaultCytomineConnection().doPut(url, "");
+    }
 }

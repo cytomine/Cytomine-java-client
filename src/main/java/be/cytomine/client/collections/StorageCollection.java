@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,27 +20,9 @@ package be.cytomine.client.collections;
 import be.cytomine.client.models.Storage;
 import org.json.simple.JSONObject;
 
-/**
- * Created by hoyoux on 02.04.15.
- */
-public class StorageCollection extends Collection {
+public class StorageCollection extends Collection<Storage> {
 
     public StorageCollection(int offset, int max) {
-        super(max, offset);
-    }
-
-    public String toURL() {
-        return getJSONResourceURL();
-    }
-
-    public String getDomainName() {
-        return "storage";
-    }
-
-    public Storage get(int i) {
-        Storage storage = new Storage();
-        Object item = list.get(i);
-        storage.setAttr((JSONObject) item);
-        return storage;
+        super(Storage.class, max, offset);
     }
 }
