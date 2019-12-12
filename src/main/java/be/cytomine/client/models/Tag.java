@@ -16,11 +16,10 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class JobTemplate extends Model<JobTemplate> {
-    public JobTemplate(){}
-    public JobTemplate(String name, Long iProject, Long idSoftware){
+
+public class Tag extends Model<Tag> {
+    public Tag(){}
+    public Tag(String name){
         this.set("name", name);
-        this.set("project", iProject);
-        this.set("software", idSoftware);
     }
 }

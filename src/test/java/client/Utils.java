@@ -49,6 +49,7 @@ public class Utils {
     private static ImageServer imageServer;
     private static UploadedFile uploadedFile;
     private static AbstractImage abstractImage;
+    private static Tag tag;
 
 
     static void connect() throws CytomineException {
@@ -178,4 +179,12 @@ public class Utils {
         return ai;
     }
 
+    static Tag getTag() throws CytomineException {
+        if(tag == null) tag = getNewTag();
+        return tag;
+    }
+    static Tag getNewTag() throws CytomineException {
+        String name = Utils.getRandomString();
+        return new Tag(name).save();
+    }
 }
