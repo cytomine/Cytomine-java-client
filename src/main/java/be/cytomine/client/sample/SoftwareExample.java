@@ -1,6 +1,6 @@
 package be.cytomine.client.sample;
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@ package be.cytomine.client.sample;
  */
 
 import be.cytomine.client.Cytomine;
-import be.cytomine.client.CytomineException;
-import be.cytomine.client.models.JobParameter;
-import be.cytomine.client.models.JobTemplate;
-import be.cytomine.client.models.Software;
+import be.cytomine.client.models.SoftwareUserRepository;
 import org.apache.log4j.Logger;
 
 public class SoftwareExample {
 
     private static final Logger log = Logger.getLogger(SoftwareExample.class);
+    public static void addSampleSoftwareUserRepository(Cytomine cytomine) throws Exception {
+        SoftwareUserRepository sur = new SoftwareUserRepository("github", "geektortoise", "S_", "cytomineuliege");
+        sur.save();
+    }
 
 }

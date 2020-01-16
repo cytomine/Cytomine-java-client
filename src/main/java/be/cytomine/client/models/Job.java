@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,36 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
+
 /**
  * User: lrollus
  * Date: 9/01/13
  * GIGA-ULg
  */
-public class Job extends Model<Job> {}
+public class Job extends Model<Job> {
+    public Job(){}
+    public Job(Software software, Project project){
+        this(software.getId(), project.getId());
+    }
+    public Job(Long softwareId, Long projectId){
+        set("project", projectId);
+        set("software", softwareId);
+    }
+
+    public void execute() throws CytomineException {
+        Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/job/"+get("id")+"/execute.json", "");
+    }
+
+    public Job changeStatus(int status, int progress) throws CytomineException {
+        return this.changeStatus(status, progress, null);
+    }
+
+    public Job changeStatus(int status, int progress, String comment) throws CytomineException {
+        this.set("progress", progress);
+        this.set("status", status);
+        this.set("statusComment", comment);
+        return this.update();
+    }
+}

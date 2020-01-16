@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,29 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Software;
+import be.cytomine.client.models.SoftwareUserRepository;
 import org.json.simple.JSONObject;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class SoftwareCollection extends Collection<Software> {
 
     public SoftwareCollection(int offset, int max) {
         super(Software.class, max, offset);
+    }
+
+    public static SoftwareCollection fetchBySoftwareUserRepository(SoftwareUserRepository sur) throws CytomineException {
+        return fetchBySoftwareUserRepository(Cytomine.getInstance().getDefaultCytomineConnection(), sur);
+    }
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, SoftwareUserRepository sur) throws CytomineException {
+        return fetchBySoftwareUserRepository(connection, sur, 0, 0);
+    }
+    public static SoftwareCollection fetchBySoftwareUserRepository(SoftwareUserRepository sur, int offset, int max) throws CytomineException {
+        return fetchBySoftwareUserRepository(Cytomine.getInstance().getDefaultCytomineConnection(), sur, offset, max);
+    }
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, SoftwareUserRepository sur, int offset, int max) throws CytomineException {
+        return (SoftwareCollection) new SoftwareCollection(max, offset).fetchWithFilter(connection, SoftwareUserRepository.class, sur.getId(), offset, max);
     }
 }

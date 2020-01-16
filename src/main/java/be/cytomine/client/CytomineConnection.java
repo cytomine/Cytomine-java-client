@@ -1,7 +1,7 @@
 package be.cytomine.client;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
+import be.cytomine.client.models.User;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -31,10 +31,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CytomineConnection {
 
@@ -45,6 +42,8 @@ public class CytomineConnection {
     private String pass;
     private String publicKey;
     private String privateKey;
+
+    private User currentUser;
     //private String charEncoding = "UTF-8";
 
     /*
@@ -95,6 +94,20 @@ public class CytomineConnection {
      */
     public String getPrivateKey() { return this.privateKey; }
 
+
+    public User getCurrentUser() throws CytomineException {
+        return getCurrentUser(false);
+    }
+
+    public User getCurrentUser(boolean forceRefresh) throws CytomineException {
+        if (forceRefresh || this.currentUser == null) {
+            User user = new User();
+            user.set("current", "current");
+            currentUser = user.fetch(null);
+        }
+
+        return currentUser;
+    }
 
     private void analyzeCode(int code, JSONObject json) throws CytomineException {
 
@@ -168,13 +181,19 @@ public class CytomineConnection {
     }
 
     //############### UPLOAD ###############
-    public JSONObject uploadFile(String url, byte[] data) throws CytomineException {
+    public JSONObject uploadFile(String url, byte[] data, Map<String, String> entityParts) throws CytomineException {
 
         try {
             HttpClient client = null;
             MultipartEntity entity = new MultipartEntity();
 
             entity.addPart("files[]", new ByteArrayBody(data, new Date().getTime() + "file"));
+
+            if(entityParts != null) {
+                for (Map.Entry<String, String> entry : entityParts.entrySet()) {
+                    entity.addPart(entry.getKey(), new StringBody(entry.getValue()));
+                }
+            }
 
             client = new HttpClient(publicKey, privateKey, getHost());
             client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
@@ -189,12 +208,21 @@ public class CytomineConnection {
             throw new CytomineException(e);
         }
     }
-    public JSONObject uploadFile(String url, File file) throws CytomineException {
+    public JSONObject uploadFile(String url, byte[] data) throws CytomineException {
+        return this.uploadFile(url, data, null);
+    }
+    public JSONObject uploadFile(String url, File file, Map<String, String> entityParts) throws CytomineException {
         try {
-            return uploadFile(url, Files.readAllBytes(file.toPath()));
+            if(!entityParts.containsKey("filename")) entityParts.put("filename", file.getName());
+            return uploadFile(url, Files.readAllBytes(file.toPath()), entityParts);
         } catch (IOException e) {
             throw new CytomineException(e);
         }
+    }
+    public JSONObject uploadFile(String url, File file) throws CytomineException {
+        Map<String, String> entity = new HashMap<>();
+        entity.put("filename", file.getName());
+        return this.uploadFile(url, file, entity);
     }
     public JSONObject uploadFile(String url, String file) throws CytomineException {
         return this.uploadFile(url, new File(file));

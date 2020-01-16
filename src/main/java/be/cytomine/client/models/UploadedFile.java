@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,6 @@ import be.cytomine.client.CytomineException;
 import java.io.File;
 import java.util.List;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class UploadedFile extends Model<UploadedFile> {
 
     public enum Status {
@@ -44,10 +39,13 @@ public class UploadedFile extends Model<UploadedFile> {
         Status(int code) {
             this.code = code;
         }
-        public double getCode() { return code; }
+        public int getCode() { return code; }
     }
 
     public UploadedFile(){}
+    public UploadedFile(String originalFilename, String realFilename, File file, Long size, String ext, String contentType, List idProjects, List idStorages, User user, Status status, UploadedFile parent){
+        this(originalFilename, realFilename, file.getAbsolutePath(), size, ext, contentType, idProjects, idStorages, user.getId(), status, parent != null ? parent.getId() : null);
+    }
     public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
@@ -77,6 +75,23 @@ public class UploadedFile extends Model<UploadedFile> {
     public UploadedFile changeStatus(Status status) throws CytomineException {
         this.set("status", status.code);
         return this.update();
+    }
+
+    public static UploadedFile getByAbstractImage(AbstractImage ai) throws CytomineException {
+        return getByAbstractImage(ai.getId());
+    }
+    public static UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
+        UploadedFile uf = new UploadedFile();
+        uf.addFilter("image", idAbstractImage.toString());
+        return uf.fetch(null);
+    }
+
+    @Override
+    public String getJSONResourceURL() {
+        //TODO change when rest url are normalized
+        if(isFilterBy("image")) return "/api/" + getDomainName() + "/image/"+getFilter("image")+".json";
+
+        return super.getJSONResourceURL();
     }
 
 }

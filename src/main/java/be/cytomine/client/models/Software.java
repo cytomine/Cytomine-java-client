@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,39 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
+import be.cytomine.client.CytomineException;
+
 public class Software extends Model<Software> {
     public Software(){}
-    public Software(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand){
+    public Software(String name, String resultType, String executeCommand, String softwareVersion){
+        this.set("name", name);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
+    }
+
+    public Software(String name, String resultType, String executeCommand, String softwareVersion, Long idSoftwareUserRepository, Long idDefaultProcessingServer){
         this.set("name", name);
         this.set("softwareUserRepository", idSoftwareUserRepository);
         this.set("defaultProcessingServer", idDefaultProcessingServer);
         this.set("resultName", resultType);
         this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
     }
+
+    public Software(String name, String resultType, String executeCommand, String softwareVersion, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String pullingCommand){
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
+        this.set("pullingCommand", pullingCommand);
+    }
+
+    public Software deprecate() throws CytomineException {
+        this.set("deprecated", true);
+        return this.update();
+    }
+
 }
