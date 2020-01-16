@@ -571,22 +571,13 @@ public class Cytomine {
         return user.fetch();
     }*/
 
-    public void executeJob(Long idJob) throws CytomineException {
-        Job job = new Job();
-        job.set("id", idJob);
-        job.execute();;
-    }
-
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
         return this.changeStatus(id, status, progress, null);
     }
 
     public Job changeStatus(Long id, int status, int progress, String comment) throws CytomineException {
         Job job = new Job().fetch(id);
-        job.set("progress", progress);
-        job.set("status", status);
-        job.set("statusComment", comment);
-        return job.update();
+        return job.changeStatus(status, progress, comment);
     }
 
     public User addUserJob(Long idSoftware, Long idProject, Long idUserParent) throws CytomineException {
@@ -1196,7 +1187,7 @@ public class Cytomine {
 
     @Deprecated
     public Software addSoftware(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand) throws CytomineException {
-        return new Software(name, idSoftwareUserRepository, idDefaultProcessingServer, resultType, executeCommand).save();
+        return new Software(name, resultType, executeCommand, "", idSoftwareUserRepository, idDefaultProcessingServer).save();
     }
 
     @Deprecated
@@ -1410,6 +1401,10 @@ public class Cytomine {
                 return "be.cytomine.image.ImageInstance";
             case "annotation" :
                 return "be.cytomine.AnnotationDomain";
+            case "software" :
+                return "be.cytomine.processing.Software";
+            case "softwareparameter" :
+                return "be.cytomine.processing.SoftwareParameter";
             default:
                 try {
                     throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
