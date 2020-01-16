@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttachedFileTests {
@@ -48,6 +50,10 @@ public class AttachedFileTests {
 
         af = new AttachedFile().fetch(af.getId());
         assertEquals(Utils.getFile().getName(), af.get("filename"), "fetched filename not the same used for the attached file creation");
+
+        String path = "/tmp/"+Utils.getRandomString()+".txt";
+        af.downloadFile(path);
+        assert new File(path).length() == Utils.getFile().length();
 
         af.delete();
         try {

@@ -63,4 +63,11 @@ public class AttachedFile extends Model<AttachedFile> {
         //this.setAttr((JSONObject) json.get(this.getDomainName()));
         return this;
     }
+
+    public void downloadFile(String dest) throws CytomineException {
+        if(getStr("url") == null) {
+            throw new CytomineException(400, "Download URL not known");
+        }
+        Cytomine.getInstance().getDefaultCytomineConnection().downloadFile(this.get("url").toString(), dest);
+    }
 }
