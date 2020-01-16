@@ -19,12 +19,29 @@ package be.cytomine.client.models;
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class Job extends Model<Job> {
+
+    public enum JobStatus{
+        NOTLAUNCH  (0),
+        INQUEUE  (1),
+        RUNNING  (2),
+        SUCCESS  (3),
+        FAILED (4),
+        INDETERMINATE  (5),
+        WAIT  (6),
+        PREVIEWED  (7),
+        KILLED (8);
+
+        private int valueOfJob;
+
+        JobStatus(int value){this.valueOfJob=value;}
+
+        public int getValue() {
+            return this.valueOfJob;
+        }
+
+    }
+
     public Job(){}
     public Job(Software software, Project project){
         this(software.getId(), project.getId());
@@ -38,6 +55,12 @@ public class Job extends Model<Job> {
         Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/job/"+get("id")+"/execute.json", "");
     }
 
+    public Job changeStatus(JobStatus status, int progress) throws CytomineException {
+        return changeStatus(status.getValue(), progress);
+    }
+    public Job changeStatus(JobStatus status, int progress, String comment) throws CytomineException {
+        return changeStatus(status.getValue(), progress,comment);
+    }
     public Job changeStatus(int status, int progress) throws CytomineException {
         return this.changeStatus(status, progress, null);
     }

@@ -571,6 +571,14 @@ public class Cytomine {
         return user.fetch();
     }*/
 
+    public Job changeStatus(Long id, Job.JobStatus status, int progress) throws CytomineException {
+        return this.changeStatus(id, status.getValue(), progress);
+    }
+
+    public Job changeStatus(Long id, Job.JobStatus status, int progress, String comment) throws CytomineException {
+        return this.changeStatus(id, status.getValue(), progress, comment);
+    }
+
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
         return this.changeStatus(id, status, progress, null);
     }
