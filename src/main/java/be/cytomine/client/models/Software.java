@@ -16,7 +16,11 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
+
+import java.io.File;
 
 public class Software extends Model<Software> {
     public Software(){}
@@ -49,6 +53,25 @@ public class Software extends Model<Software> {
     public Software deprecate() throws CytomineException {
         this.set("deprecated", true);
         return this.update();
+    }
+
+    public void upload(File file) throws CytomineException {
+        upload(Cytomine.getInstance().getDefaultCytomineConnection(), file);
+    }
+    public void upload(CytomineConnection connection, File file) throws CytomineException {
+        String url = "/api/"+ getDomainName()+"/"+this.getId()+"/upload";
+        connection.uploadFile(url, file);
+    }
+
+    public void download(String destPath) throws CytomineException {
+        download(new File(destPath));
+    }
+    public void download(File dest) throws CytomineException {
+        download(Cytomine.getInstance().getDefaultCytomineConnection(), dest);
+    }
+    public void download(CytomineConnection connection, File dest) throws CytomineException {
+        String url = "/api/"+ getDomainName()+"/"+this.getId()+"/download";
+        connection.downloadFile(url, dest.getPath());
     }
 
 }
