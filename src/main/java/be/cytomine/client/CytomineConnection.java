@@ -108,20 +108,6 @@ public class CytomineConnection {
         return currentUser;
     }
 
-    public User getCurrentUser() throws CytomineException {
-        return getCurrentUser(false);
-    }
-
-    public User getCurrentUser(boolean forceRefresh) throws CytomineException {
-        if (forceRefresh || this.currentUser == null) {
-            User user = new User();
-            user.set("current", "current");
-            currentUser = user.fetch(null);
-        }
-
-        return currentUser;
-    }
-
     private void analyzeCode(int code, JSONObject json) throws CytomineException {
 
         //if 200,201,...no exception
