@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,11 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.CytomineException;
-
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class SoftwareParameter extends Model<SoftwareParameter> {
     public SoftwareParameter(){}
     public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue,
                              boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer, boolean serverParameter,
-                             String humanName, String valueKey, String commandLineFlag)
-            throws CytomineException {
+                             String humanName, String valueKey, String commandLineFlag) {
         this.set("name", name);
         this.set("type", type);
         this.set("software", idSoftware);
@@ -39,9 +31,5 @@ public class SoftwareParameter extends Model<SoftwareParameter> {
         this.set("uriPrintAttribut", uriPrintAttribut);
         this.set("uriSortAttribut", uriSortAttribut);
         this.set("setByServer", setByServer);
-        this.set("serverParameter", serverParameter);
-        this.set("humanName", humanName);
-        this.set("valueKey", valueKey);
-        this.set("commandLineFlag", commandLineFlag);
     }
 }
