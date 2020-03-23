@@ -71,7 +71,7 @@ public class Description extends Model<Description> implements ICompositePrimary
     }
     @Override
     public Description fetch(String domainClassName, String domainIdent) throws CytomineException {
-        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),domainIdent, domainClassName);
+        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(),domainClassName, domainIdent);
     }
     @Override
     public Description fetch(CytomineConnection connection, String domainClassName, String domainIdent) throws CytomineException {
