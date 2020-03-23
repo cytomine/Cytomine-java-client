@@ -59,8 +59,8 @@ public class Software extends Model<Software> {
         upload(Cytomine.getInstance().getDefaultCytomineConnection(), file);
     }
     public void upload(CytomineConnection connection, File file) throws CytomineException {
-        String url = "/api/"+ getDomainName()+"/"+this.getId()+"/upload";
-        connection.uploadFile(url, file);
+        String url = "/api/"+ getDomainName()+"/upload";
+        connection.uploadFile(url, file, attr);
     }
 
     public void download(String destPath) throws CytomineException {

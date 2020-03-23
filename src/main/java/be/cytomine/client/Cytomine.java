@@ -1413,6 +1413,10 @@ public class Cytomine {
                 return "be.cytomine.processing.Software";
             case "softwareparameter" :
                 return "be.cytomine.processing.SoftwareParameter";
+            case "software_parameter" :
+                return "be.cytomine.processing.SoftwareParameter";
+            case "storage" :
+                return "be.cytomine.image.server.Storage";
             default:
                 try {
                     throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);

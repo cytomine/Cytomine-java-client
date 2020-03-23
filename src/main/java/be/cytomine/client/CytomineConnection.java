@@ -203,7 +203,9 @@ public class CytomineConnection {
             String response = client.getResponseData();
             log.debug("response=" + response);
             client.disconnect();
-            return createJSONResponse(code, response);
+            JSONObject json = createJSONResponse(code, response);
+            analyzeCode(code, json);
+            return json;
         } catch (IOException e) {
             throw new CytomineException(e);
         }
