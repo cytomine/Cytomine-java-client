@@ -272,8 +272,8 @@ public class Cytomine {
     }
 
 
-    public void uploadImage(String file, String cytomineHost) throws CytomineException {
-        uploadImage(file, null, null, cytomineHost);
+    public void uploadImage(String uploadURL, String file, String cytomineHost) throws CytomineException {
+        uploadImage(uploadURL, file, null, null, cytomineHost);
     }
 
     /**
@@ -286,8 +286,8 @@ public class Cytomine {
      * @return A response with the status, the uploadedFile and the AbstractImage list
      * @throws Exception Error during upload
      */
-    public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost) throws CytomineException {
-        return uploadImage(file, idProject, idStorage, cytomineHost, null, false);
+    public JSONArray uploadImage(String uploadURL, String file, Long idProject, Long idStorage, String cytomineHost) throws CytomineException {
+        return uploadImage(uploadURL, file, idProject, idStorage, cytomineHost, null, false);
     }
 
     /**
@@ -303,9 +303,13 @@ public class Cytomine {
      * @return A response with the status, the uploadedFile and the AbstractImage list (only if synchrone!=true)
      * @throws Exception Error during upload
      */
-    public JSONArray uploadImage(String file, Long idProject, Long idStorage, String cytomineHost, Map<String, String> properties, boolean synchrone) throws CytomineException {
+    public JSONArray uploadImage(String uploadURL, String file, Long idProject, Long idStorage, String cytomineHost, Map<String, String> properties, boolean synchrone) throws CytomineException {
 
-        //TODO creer une connection vers upload !!!
+        CytomineConnection uploadConnection = Cytomine.connection(
+                uploadURL,
+                Cytomine.getInstance().getDefaultCytomineConnection().getPublicKey(),
+                Cytomine.getInstance().getDefaultCytomineConnection().getPrivateKey(),
+                false);
 
         Map<String, String> entityParts = new HashMap<>();
         if (idProject != null) {
@@ -334,8 +338,7 @@ public class Cytomine {
             url = url + "&sync=" + true;
         }
 
-        //NON  !!! connection vers upload !!!
-        return getDefaultCytomineConnection().uploadImage(file, url, entityParts );
+        return uploadConnection.uploadImage(file, url, entityParts );
     }
 
 

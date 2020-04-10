@@ -22,6 +22,9 @@ import org.json.simple.JSONObject;
 
 public class StorageCollection extends Collection<Storage> {
 
+    public StorageCollection() {
+        super(Storage.class);
+    }
     public StorageCollection(int offset, int max) {
         super(Storage.class, max, offset);
     }
