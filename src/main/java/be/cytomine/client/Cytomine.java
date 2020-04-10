@@ -1401,25 +1401,6 @@ public class Cytomine {
         return (AmqpQueueCollection) queues.fetch();
     }
 
-    // TODO : remove this line when rest url of core are normalized
-    public static String convertDomainName(String input){
-        switch (input.toLowerCase()) {
-            case "project" :
-                return "be.cytomine.project.Project";
-            case "imageinstance" :
-                return "be.cytomine.image.ImageInstance";
-            case "annotation" :
-                return "be.cytomine.AnnotationDomain";
-            default:
-                try {
-                    throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
-                } catch (CytomineException e) {
-                    e.printStackTrace();
-                    return "";
-                }
-        }
-    }
-
 	public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
 		DeleteCommandCollection commands = new DeleteCommandCollection(offset, max);
 		commands.addParams("domain","uploadedFile");
