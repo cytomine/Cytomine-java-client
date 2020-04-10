@@ -30,11 +30,11 @@ public class CropExample {
     private static final Logger log = Logger.getLogger(CropExample.class);
 
 
-    public static void indexAnnotation(Cytomine cytomine) throws Exception {
+    /*public static void indexAnnotation(Cytomine cytomine) throws Exception {
 
         cytomine.indexToRetrieval(141221746l, 101903411l, "http://beta.cytomine.be/api/userannotation/141221746/crop.jpg");
 
-    }
+    }*/
 
     public static void downloadAllAnnotations(Cytomine cytomine) throws Exception {
         //1. check if image == null
