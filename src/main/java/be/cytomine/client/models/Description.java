@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2020. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,60 +16,23 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.Cytomine;
-import be.cytomine.client.CytomineConnection;
-import be.cytomine.client.CytomineException;
-import org.json.simple.JSONObject;
+public class Description extends Model<Description>{
 
-import java.util.Map;
-
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
-public class Description extends Model<Description> implements ICompositePrimaryKey<Description> {
-
-    public Description() {
-    }
-
-    public Description(String domainName, Long domainIdent) {
-        this.set("domainIdent", domainIdent);
-        this.set("domainClassName", domainName);
-        this.addFilter(domainName, domainIdent.toString());
-    }
-
+    public Description() {}
     public Description(Model model) {
-        this(model.getDomainName(), model.getId());
+        this(model, null);
+    }
+    public Description(Model model, String description) {
+        this(model.getDomainName(),model.getId(), description);
+    }
+    public Description(String domain, Long idDomain){
+        this(domain, idDomain, null);
     }
 
-    public Description(String domainName, Long domainIdent, String text) {
-        this(domainName, domainIdent);
-        this.set("data", text);
-    }
-
-    public Description(Model model, String text) {
-        this(model.getDomainName(), model.getId(), text);
-    }
-
-
-    @Override
-    public Description fetch(String domainName, String domainIdent) throws CytomineException {
-        return this.fetch(Cytomine.getInstance().getDefaultCytomineConnection(), domainIdent, domainName);
-    }
-
-    @Override
-    public Description fetch(CytomineConnection connection, String domainName, String domainIdent) throws CytomineException {
-        this.set("domainIdent", domainIdent);
-        this.set("domainClassName", domainName);
-        JSONObject json = connection.doGet(this.toURL());
-        this.setAttr(json);
-        return this;
-    }
-
-    @Override
-    public String getJSONResourceURL() {
-        set("id", null);
-        return super.getJSONResourceURL();
+    public Description(String domain, Long idDomain, String description) {
+        set("domainClassName",domain);
+        set("domainIdent",idDomain.toString());
+        this.addFilter(domain, idDomain.toString());
+        set("data", description);
     }
 }

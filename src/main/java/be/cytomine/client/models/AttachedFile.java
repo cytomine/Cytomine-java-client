@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2020. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,50 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 public class AttachedFile extends Model<AttachedFile> {
-    public AttachedFile(){}
+
+    public AttachedFile() {}
     public AttachedFile(Model model){
-        this(model,null);
+        this(model, (String) null);
     }
-    public AttachedFile(Model model, String filename){
-        this.set("domainIdent", model.getId());
-        this.set("domainName", model.getDomainName());
-        this.set("filename", filename);
+    public AttachedFile(Model model, File file) {
+        this(model, file.getAbsolutePath());
+    }
+    public AttachedFile(Model model, String file) {
+        this(model.getDomainName(), model.getId(), file);
+    }
+    public AttachedFile(String domainClassName, Long idDomain, String file) {
+        set("domainIdent", idDomain.toString());
+        set("domainClassName", domainClassName);
+        set("file", file);
+    }
+
+    @Override
+    public AttachedFile save() throws CytomineException {
+        return this.save(Cytomine.getInstance().getDefaultCytomineConnection());
+    }
+    @Override
+    public AttachedFile save(CytomineConnection connection) throws CytomineException {
+        if(getStr("file") == null || getStr("domainIdent") == null || getStr("domainClassName") == null) {
+            throw new CytomineException(400, "domainClassName, domainIdent and file attribute must be set");
+        }
+
+        Map<String, String> entities = new HashMap<>();
+        entities.put("domainIdent",getStr("domainIdent"));
+        entities.put("domainClassName",getStr("domainClassName"));
+        if(getStr("filename")!=null) entities.put("filename",getStr("filename"));
+
+        JSONObject json = connection.uploadFile(this.toURL(), new File(getStr("file")), entities);
+        this.setAttr(json);
+        return this;
     }
 }

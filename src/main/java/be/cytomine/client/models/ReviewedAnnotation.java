@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2020. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,10 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.Cytomine;
 
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class ReviewedAnnotation extends Model<ReviewedAnnotation> {
     public ReviewedAnnotation() {}
     public ReviewedAnnotation(String locationWKT, ImageInstance image, Project project, ArrayList<Term> terms, Long userId, Long reviewUserId, Annotation parent) {

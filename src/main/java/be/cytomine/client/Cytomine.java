@@ -1,7 +1,7 @@
 package be.cytomine.client;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -432,9 +432,7 @@ public class Cytomine {
     }
 
     public User getCurrentUser() throws CytomineException {
-        User user = new User();
-        user.set("current", "current");
-        return user.fetch(null);
+        return defaultCytomineConnection.getCurrentUser();
     }
 
     /*public User getUserByUsername(String username) throws CytomineException {
@@ -509,6 +507,50 @@ public class Cytomine {
         return user.fetch(null);
     }
 
+	public String getImageServersOfAbstractImage(Long abstractImageID) {
+
+		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
+
+		    HttpClient client = null;
+            client = new HttpClient(publicKey, privateKey, getHost());
+
+
+			try {
+	            client.authorize("GET", subUrl, "", "application/json,*/*");
+	            client.connect(getHost() + subUrl);
+	            int code = client.get();
+
+	            String response = client.getResponseData();
+	            client.disconnect();
+	            JSONObject json = createJSONResponse(code, response);
+            	analyzeCode(code, json);
+
+            	JSONArray servers = (JSONArray) json.get("imageServersURLs");
+
+            	return (String) servers.get(0);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CytomineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		return null;
+	}
+
+    public Collection<ImageServer> getAbstractImageServers(AbstractImage abstractImage) throws CytomineException {
+        Collection<ImageServer> imageServers = new Collection<>(ImageServer.class,0,0);
+        imageServers.addFilter("abstractimage", "" + abstractImage.getId());
+        return imageServers.fetch();
+    }
+	public Collection<ImageServer> getImageInstanceServers(ImageInstance image) throws CytomineException {
+		AbstractImage abstractImage = new AbstractImage();
+		abstractImage.set("id", image.get("baseImage"));
+		return getAbstractImageServers(abstractImage);
+	}
+
     public User getKeys(String publicKey) throws CytomineException {
         User user = new User();
         user.addFilter("publicKeyFilter", publicKey);
@@ -528,6 +570,12 @@ public class Cytomine {
         user.addFilter("keys", "keys");
         return user.fetch();
     }*/
+
+    public void executeJob(Long idJob) throws CytomineException {
+        Job job = new Job();
+        job.set("id", idJob);
+        job.execute();;
+    }
 
     public Job changeStatus(Long id, int status, int progress) throws CytomineException {
         return this.changeStatus(id, status, progress, null);
@@ -591,7 +639,7 @@ public class Cytomine {
     public Property getPropertyByDomainAndKey(String domain, Long domainIdent, String key) throws CytomineException {
         Property property = new Property(domain,domainIdent);
         property.set("key", key);
-        return property.fetch(null);
+        return property.fetch(key);
     }
 
     public Property addDomainProperties(String domain, Long domainIdent, String key, String value) throws CytomineException {
@@ -756,12 +804,6 @@ public class Cytomine {
         Annotation annotation = new Annotation();
         annotation.set("wkt", wkt);
         return getDefaultCytomineConnection().doPost("/api/simplify.json?minPoint=" + min + "&maxPoint=" + max, annotation.toJSON()).toString();
-    }
-
-
-    public void indexToRetrieval(Long id, Long container, String url) throws CytomineException {
-        String data = "{id : " + id + ", container : " + container + ", url : '" + url + "'}";
-        defaultCytomineConnection.doPost("/retrieval-web/api/resource.json", data);
     }
 
 
@@ -1245,7 +1287,7 @@ public class Cytomine {
 
     @Deprecated
     public JobData addJobData(String key, Long idJob, String filename) throws CytomineException {
-        return new JobData(key,idJob,filename).save();
+        return new JobData(idJob,key,filename).save();
     }
 
     public void deleteJobData(Long idJobData) throws CytomineException {
@@ -1345,6 +1387,10 @@ public class Cytomine {
         uploadedFile.delete();
     }
 
+    public UploadedFile getUploadedFileByAbstractImage(Long idAbstractImage) throws CytomineException {
+        return UploadedFile.getByAbstractImage(idAbstractImage);
+    }
+
     /**
      * Deprecated. Use Collection.fetch(AmqpQueue.class,offset, max) instead
      * @throws CytomineException
@@ -1354,4 +1400,31 @@ public class Cytomine {
         AmqpQueueCollection queues = new AmqpQueueCollection(offset, max);
         return (AmqpQueueCollection) queues.fetch();
     }
+
+    // TODO : remove this line when rest url of core are normalized
+    public static String convertDomainName(String input){
+        switch (input.toLowerCase()) {
+            case "project" :
+                return "be.cytomine.project.Project";
+            case "imageinstance" :
+                return "be.cytomine.image.ImageInstance";
+            case "annotation" :
+                return "be.cytomine.AnnotationDomain";
+            default:
+                try {
+                    throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
+                } catch (CytomineException e) {
+                    e.printStackTrace();
+                    return "";
+                }
+        }
+    }
+
+	public DeleteCommandCollection getDeleteCommandByDomainAndAfterDate(String domain, Long timestamp) throws CytomineException {
+		DeleteCommandCollection commands = new DeleteCommandCollection(offset, max);
+		commands.addParams("domain","uploadedFile");
+		commands.addParams("after",timestamp.toString());
+		return (DeleteCommandCollection)commands.fetch();
+	}
+
 }

@@ -1,6 +1,6 @@
 package be.cytomine.client.sample;
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ public class CropExample {
     private static final Logger log = Logger.getLogger(CropExample.class);
 
 
-    public static void indexAnnotation(Cytomine cytomine) throws Exception {
+    /*public static void indexAnnotation(Cytomine cytomine) throws Exception {
 
         cytomine.indexToRetrieval(141221746l, 101903411l, "http://beta.cytomine.be/api/userannotation/141221746/crop.jpg");
 
-    }
+    }*/
 
     public static void downloadAllAnnotations(Cytomine cytomine) throws Exception {
         //1. check if image == null

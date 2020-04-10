@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class Collection<T extends Model> {
         for (Map.Entry<String, String> param : params.entrySet()) {
             url += param.getKey() + "=" + param.getValue() + "&";
         }
-        url = url.substring(0, url.length() - 1);
+        if(url.charAt(url.length()-1) != '?') url = url.substring(0, url.length() - 1);
         url += getPaginatorURLParams();
         return url;
     }
@@ -123,6 +123,14 @@ public class Collection<T extends Model> {
             e.printStackTrace();
         }
         return c.fetch(connection,offset,max);
+    }
+    protected <U extends Model> Collection<T> fetchWithFilter(CytomineConnection connection, Class<U> filter, Long idFilter, int offset, int max) throws CytomineException {
+        try {
+            this.addFilter(filter.newInstance().getDomainName(), idFilter.toString());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return this.fetch(connection,offset,max);
     }
 
 

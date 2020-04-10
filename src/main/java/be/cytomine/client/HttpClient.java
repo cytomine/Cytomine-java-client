@@ -1,7 +1,7 @@
 package be.cytomine.client;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public class HttpClient {
         isAuthByPrivateKey = false;
         log.info("Connection to " + url + " with login=" + username + " and pass=" + password);
         URL = new URL(url);
-        targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
         client = HttpClientBuilder.create().build();
         // Create AuthCache instance
         AuthCache authCache = new BasicAuthCache();
@@ -144,7 +144,7 @@ public class HttpClient {
     public int get(String url, String dest) throws IOException {
         log.debug("get:" + url);
         URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
         log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
         log.debug("client:" + client);
@@ -303,7 +303,7 @@ public class HttpClient {
     public BufferedImage readBufferedImageFromURL(String url) throws IOException {
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
         log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -339,7 +339,7 @@ public class HttpClient {
     public static BufferedImage readBufferedImageFromPOST(String url, String post) throws IOException{
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
         log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
 
@@ -372,7 +372,7 @@ public class HttpClient {
     public static BufferedImage readBufferedImageFromRETRIEVAL(String url, String publicKey, String privateKey, String host) throws IOException {
         log.debug("readBufferedImageFromURL:" + url);
         URL URL = new URL(url);
-        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort());
+        HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
         log.debug("targetHost:" + targetHost);
         DefaultHttpClient client = new DefaultHttpClient();
         log.debug("client:" + client);

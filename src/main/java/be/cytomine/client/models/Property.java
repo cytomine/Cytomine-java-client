@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2020. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,30 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import java.util.Map;
-
-/**
- * Created with IntelliJ IDEA.
- * User: pierre
- * Date: 23/04/13
- * Time: 10:09
- * To change this template use File | Settings | File Templates.
- */
 public class Property extends Model<Property> {
 
+    public Property() {}
+    public Property(Model model) {
+        this(model, null, null);
+    }
+    public Property(Model model, String key){
+        this(model,key, null);
+    }
+    public Property(Model model, String key, String value){
+        this(model.getDomainName(), model.getId(), key, value);
+    }
     public Property(String domain, Long idDomain){
         this(domain, idDomain, null);
-    }
-    public Property(Model model){
-        this(model.getDomainName(), model.getId());
     }
 
     public Property(String domain, Long idDomain, String key) {
         this(domain, idDomain, key, null);
     }
-    public Property(Model model, String key){
-        this(model.getDomainName(), model.getId(), key);
-    }
 
     public Property(String domain, Long idDomain, String key, String value) {
         addFilter(domain,idDomain.toString());
         addFilter("key",key);
+        set("key", key);
         set("value", value);
-    }
-    public Property(Model model, String key, String value){
-        this(model.getDomainName(), model.getId(), key, value);
     }
 }

@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2018. Authors: see NOTICE file.
+ * Copyright (c) 2009-2019. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,32 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.models.Ontology;
 import be.cytomine.client.models.Term;
-import org.json.simple.JSONObject;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class TermCollection extends Collection<Term> {
 
     public TermCollection(int offset, int max) {
         super(Term.class, max, offset);
     }
+
+    public static TermCollection fetchByOntology(Ontology ontology) throws CytomineException {
+        return fetchByOntology(Cytomine.getInstance().getDefaultCytomineConnection(), ontology, 0,0);
+    }
+    public static TermCollection fetchByOntology(CytomineConnection connection, Ontology ontology) throws CytomineException {
+        return fetchByOntology(connection, ontology, 0,0);
+    }
+
+    public static TermCollection fetchByOntology(Ontology ontology, int offset, int max) throws CytomineException {
+        return fetchByOntology(Cytomine.getInstance().getDefaultCytomineConnection(), ontology, offset,max);
+    }
+
+    public static TermCollection fetchByOntology(CytomineConnection connection, Ontology ontology, int offset, int max) throws CytomineException {
+        return (TermCollection) new TermCollection(max, offset).fetchWithFilter(connection, Ontology.class, ontology.getId(), offset, max);
+    }
+
+
 }
