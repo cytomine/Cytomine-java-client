@@ -45,9 +45,7 @@ public class UploadExample {
 
             Long idProject = null;
 
-            Cytomine.connection(uploadURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
-            Cytomine.getInstance().uploadImage("./logo.png", idProject, storages.get(0).getId(), coreURL, null, false);
-            Cytomine.connection(coreURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
+            Cytomine.getInstance().uploadImage(uploadURL, "./logo.png", idProject, storages.get(0).getId(), coreURL, null, false);
 
             c = Collection.fetch(UploadedFile.class);
 

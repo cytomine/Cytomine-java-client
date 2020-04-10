@@ -50,7 +50,7 @@ public class ImageExample {
 
     }
 
-    public static void testUpload(Cytomine cytomine) throws Exception {
+    public static void testUpload(Cytomine cytomine, String uploadURL) throws Exception {
 
         try {
             String file = "/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
@@ -60,7 +60,7 @@ public class ImageExample {
             String cytomineHost = "http://beta.cytomine.be";//"http://localhost:8080";
             System.out.println("Connection on " + cytomine.getHost());
             int i = 0;
-            JSONArray json = cytomine.uploadImage(file, idProject, idStorage, cytomineHost, null, true);
+            JSONArray json = cytomine.uploadImage(uploadURL,file, idProject, idStorage, cytomineHost, null, true);
             System.out.println(json.get(0));
             System.out.println(((JSONObject) json.get(0)).get("images"));
         } catch (CytomineException e) {
