@@ -35,6 +35,10 @@ public class User extends Model<User> {
         return user.fetch(null);
     }
 
+    public boolean isHuman() throws CytomineException {
+        return this.get("algo") == null;
+    }
+
     @Override
     public String toURL() {
 
