@@ -82,17 +82,13 @@ public class AnnotationCollection extends Collection<Annotation> {
 
     @Override
     protected String getJSONResourceURL() throws CytomineException {
-        String start = "/api/annotation.json?";
-
-        Map<String, String> filters = getFilters();
-        for (Map.Entry<String, String> filter : filters.entrySet()) {
-            start = start + "&" + filter.getKey() + "=" + filter.getValue();
-        }
-
-        return start;
+        return "/api/annotation.json";
     }
 
-
+    @Override
+    protected Map<String, String> getParams() {
+        return getFilters();
+    }
 
     private final static ArrayList<String> validParameters = new ArrayList<>();
     static {

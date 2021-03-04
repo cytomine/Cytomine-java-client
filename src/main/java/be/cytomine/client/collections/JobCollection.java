@@ -24,6 +24,8 @@ import be.cytomine.client.models.Model;
 import be.cytomine.client.models.Project;
 import be.cytomine.client.models.Software;
 
+import java.util.Map;
+
 
 public class JobCollection extends Collection<Job> {
 
@@ -80,16 +82,11 @@ public class JobCollection extends Collection<Job> {
 
     //TODO remove when rest url are normalized
     protected String getJSONResourceURL() throws CytomineException {
-        final StringBuilder urlB = new StringBuilder("/api");
-        urlB.append("/"+ getDomainName() + ".json?");
-        map.forEach((k, v) -> {
-            urlB.append(k + "=" + v + "&");
-        });
-
-        urlB.deleteCharAt(urlB.length()-1);
-
-        return urlB.toString();
+        return "/api" + "/" + getDomainName() + ".json";
     }
 
-
+    @Override
+    protected Map<String, String> getParams() {
+        return getFilters();
+    }
 }

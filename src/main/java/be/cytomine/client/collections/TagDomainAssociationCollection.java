@@ -57,9 +57,7 @@ public class TagDomainAssociationCollection extends Collection {
         getFilters().forEach((k,v) -> prefix.append(Cytomine.convertDomainName(k.toString())+"/"+v+"/"));
         base += prefix.toString();
         base += "tag_domain_association";//getDomainName();
-        base += ".json?";
-
-        base = base.substring(0, base.length() - 1);
+        base += ".json";
 
         return base;
 
