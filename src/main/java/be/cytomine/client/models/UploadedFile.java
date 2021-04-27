@@ -168,7 +168,7 @@ public class UploadedFile extends Model<UploadedFile> {
     }
     public static UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
         UploadedFile uf = new UploadedFile();
-        uf.addFilter("image", idAbstractImage.toString());
+        //uf.addFilter("image", idAbstractImage.toString());
         return uf.fetch(null);
     }
 
