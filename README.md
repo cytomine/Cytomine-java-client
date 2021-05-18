@@ -20,6 +20,13 @@ Source code: https://github.com/cytomine/cytomine-java-client
 
 See installation instructions here : https://doc.cytomine.org/dev-guide/clients/java/installation
 
+## How to build the Java-client
+On the project root directory, run this command:
+
+    mvn package
+
+This will build the client and produce two jars in the `target` directory.
+
 ## How to use the Java-client
 The java client is available with 2 jars:
 * cytomine-java-client-*-jar-with-dependencies: A jar with all classes (client and dependencies).
