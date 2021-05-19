@@ -17,7 +17,6 @@ package be.cytomine.client;
  */
 
 import be.cytomine.client.models.User;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
@@ -232,10 +231,6 @@ public class CytomineConnection {
     }
 
     public JSONArray uploadImage(String file, String url, Map<String, String> entityParts) throws CytomineException {
-        return this.uploadImage(file, (String)null, url, entityParts);
-    }
-
-    public JSONArray uploadImage(String file, String filename, String url, Map<String, String> entityParts) throws CytomineException {
         try {
             HttpClient client = null;
 
@@ -245,8 +240,7 @@ public class CytomineConnection {
                 entity.addPart(entry.getKey(), new StringBody(entry.getValue()));
             }
 
-            if(filename != null) entity.addPart("files[]", new FileBody(new File(file), ContentType.DEFAULT_BINARY, filename));
-            else entity.addPart("files[]", new FileBody(new File(file)));
+            entity.addPart("files[]", new FileBody(new File(file)));
 
             client = new HttpClient(publicKey, privateKey, getHost());
             client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
