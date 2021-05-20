@@ -17,11 +17,12 @@ package be.cytomine.client.sample;
 
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.models.SoftwareUserRepository;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SoftwareExample {
 
-    private static final Logger log = Logger.getLogger(SoftwareExample.class);
+    private static final Logger log = LogManager.getLogger(SoftwareExample.class);
     public static void addSampleSoftwareUserRepository(Cytomine cytomine) throws Exception {
         SoftwareUserRepository sur = new SoftwareUserRepository("github", "geektortoise", "S_", "cytomineuliege");
         sur.save();

@@ -24,7 +24,8 @@ import be.cytomine.client.models.Job;
 import be.cytomine.client.models.JobParameter;
 import be.cytomine.client.models.Software;
 import be.cytomine.client.models.SoftwareParameter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobParametersTests {
 
-    private static final Logger log = Logger.getLogger(JobParametersTests.class);
+    private static final Logger log = LogManager.getLogger(JobParametersTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {

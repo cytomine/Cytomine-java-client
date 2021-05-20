@@ -24,7 +24,8 @@ import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.AttachedFile;
 import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttachedFileTests {
 
-    private static final Logger log = Logger.getLogger(AttachedFileTests.class);
+    private static final Logger log = LogManager.getLogger(AttachedFileTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {

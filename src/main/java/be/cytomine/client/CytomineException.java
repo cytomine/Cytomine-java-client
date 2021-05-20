@@ -16,7 +16,8 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import java.util.Iterator;
@@ -31,7 +32,7 @@ import java.util.Map;
  */
 public class CytomineException extends Exception {
 
-    private static final Logger log = Logger.getLogger(CytomineException.class);
+    private static final Logger log = LogManager.getLogger(CytomineException.class);
 
     int httpCode;
     String message = "";

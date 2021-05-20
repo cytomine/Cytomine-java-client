@@ -36,7 +36,8 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -56,7 +57,7 @@ import java.util.*;
  */
 public class HttpClient {
 
-    private static final Logger log = Logger.getLogger(HttpClient.class);
+    private static final Logger log = LogManager.getLogger(HttpClient.class);
 
     org.apache.http.client.HttpClient client;
     HttpHost targetHost;

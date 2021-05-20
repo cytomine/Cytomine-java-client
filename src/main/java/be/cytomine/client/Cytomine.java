@@ -21,7 +21,8 @@ import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -34,7 +35,7 @@ import java.util.*;
 
 public class Cytomine {
 
-    private static final Logger log = Logger.getLogger(Cytomine.class);
+    private static final Logger log = LogManager.getLogger(Cytomine.class);
     static Cytomine CYTOMINE;
 
     CytomineConnection defaultCytomineConnection;

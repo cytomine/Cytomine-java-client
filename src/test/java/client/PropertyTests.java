@@ -22,7 +22,8 @@ import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
 import be.cytomine.client.models.Property;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PropertyTests {
 
-    private static final Logger log = Logger.getLogger(PropertyTests.class);
+    private static final Logger log = LogManager.getLogger(PropertyTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {
