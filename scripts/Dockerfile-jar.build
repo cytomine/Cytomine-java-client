@@ -20,14 +20,12 @@ COPY . /app
 ARG VERSION_NUMBER
 ARG GPG_KEYNAME
 ARG GPG_PASSPHRASE
-ARG GPG_KEY
 ARG OSSRH_USER
 ARG OSSRH_PASSWORD
 
 ENV VERSION_NUMBER_ENV=$VERSION_NUMBER
 ENV GPG_KEYNAME=$GPG_KEYNAME
 ENV GPG_PASSPHRASE=$GPG_PASSPHRASE
-ENV GPG_KEY=$GPG_KEY
 ENV OSSRH_USER=$OSSRH_USER
 ENV OSSRH_PASSWORD=$OSSRH_PASSWORD
 
@@ -37,7 +35,6 @@ ENV OSSRH_PASSWORD=$OSSRH_PASSWORD
 RUN sed -i -- 's/<version>0.0.0<\/version>/<version>'$VERSION_NUMBER'<\/version>/g' /app/pom.xml
 RUN sed -i -- 's/$GPG_KEYNAME/'$GPG_KEYNAME'/g' /app/scripts/maven-settings.xml
 RUN sed -i -- 's/$GPG_PASSPHRASE/'$GPG_PASSPHRASE'/g' /app/scripts/maven-settings.xml
-RUN sed -i -- 's/$GPG_KEY/'$GPG_KEY'/g' /app/scripts/maven-settings.xml
 RUN sed -i -- 's/$OSSRH_USER/'$OSSRH_USER'/g' /app/scripts/maven-settings.xml
 RUN sed -i -- 's/$OSSRH_PASSWORD/'$OSSRH_PASSWORD'/g' /app/scripts/maven-settings.xml
 
@@ -45,10 +42,11 @@ RUN cat /app/scripts/maven-settings.xml
 RUN cat /app/pom.xml
 
 
-RUN mvn -f /app/pom.xml -s /app/scripts/maven-settings.xml --batch-mode package
+#RUN mvn -f /app/pom.xml -s /app/scripts/maven-settings.xml --batch-mode package
 
-RUN export GPG_TTY=$(tty)
-#RUN touch private.key && echo "$GPG_KEY" > private.key
-RUN gpg --import --no-tty --batch --yes /app/ci/private.gpg
+RUN cat /app/ci/PRIVATE_KEY.gpg
+RUN gpg --import --armor --no-tty --batch --yes /app/ci/PUBLIC_KEY.gpg
+RUN gpg --import --armor --allow-secret-key-import --no-tty --batch --yes /app/ci/PRIVATE_KEY.gpg
+RUN gpg --list-keys
 
 RUN mvn -f /app/pom.xml -s /app/scripts/maven-settings.xml deploy

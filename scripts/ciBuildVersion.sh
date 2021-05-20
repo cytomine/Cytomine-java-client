@@ -18,8 +18,8 @@ if [[ $gitLongTag =~ [0-9]+.[0-9]+.[0-9]+-0-[0-9a-g]{8,9}$ ]]; then
 
 else
   echo "WARNING: invalid tag for a real release $gitLongTag"
-  # in other branches than master, the versionNumber is the branchName
-  versionNumber=0.0.0-$branchName-$(date "+%Y%m%d%H%M%S")
+
+  versionNumber=0.0.0-$branchName-$(date "+%Y%m%d%H%M%S")-SNAPSHOT
 
 fi
 

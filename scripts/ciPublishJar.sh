@@ -16,7 +16,6 @@ docker build --rm -f scripts/Dockerfile-jar.build -t cytomine/cytomine-java-clie
         --build-arg VERSION_NUMBER=$VERSION_NUMBER  \
         --build-arg GPG_KEYNAME=$GPG_KEYNAME  \
         --build-arg GPG_PASSPHRASE=$GPG_PASSPHRASE  \
-        --build-arg GPG_KEY=$GPG_KEY  \
         --build-arg OSSRH_USER=$OSSRH_USER  \
         --build-arg OSSRH_PASSWORD=$OSSRH_PASSWORD .
 
