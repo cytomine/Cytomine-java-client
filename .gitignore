@@ -20,4 +20,4 @@ ci
 # private local data
 scripts/ciBuildLocal.sh
 
-.idea
+.idea/
