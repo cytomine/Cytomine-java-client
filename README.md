@@ -27,10 +27,31 @@ On the project root directory, run this command:
 
 This will build the client and produce two jars in the `target` directory.
 
+## How to import the Java-client
+
+Version higher than 2.2.13 are available in the Maven central repository. 
+
+### Maven
+    <dependency>
+        <groupId>be.cytomine.client</groupId>
+        <artifactId>cytomine-java-client</artifactId>
+        <version>2.2.13</version>
+    </dependency>
+
+### Gradle
+
+    implementation group: 'be.cytomine.client', name: 'cytomine-java-client', version: '2.2.13'
+
+### Groovy with Grape
+
+    import be.cytomine.client.models.Ontology
+
+    @Grab('be.cytomine.client:cytomine-java-client:2.2.13')
+
+    Ontology ontology = new Ontology();
+    ...
+
 ## How to use the Java-client
-The java client is available with 2 jars:
-* cytomine-java-client-*-jar-with-dependencies: A jar with all classes (client and dependencies).
-* cytomine-java-client-*.jar: The jar only contains client classes without dependencies classes. A maven pom.xml is provided.
 
 You need 3 paramters:
 * CYTOMINE_URL: The full URL of the Cytomine core (“http://...cytomine.be”).
