@@ -28,7 +28,7 @@ node {
             file(credentialsId: 'GPG_PUBLIC_KEY', variable: 'GPG_PUBLIC_KEY_FILE'),
             string(credentialsId: 'GPG_KEYNAME', variable: 'GPG_KEYNAME'),
             string(credentialsId: 'GPG_PASSPHRASE', variable: 'GPG_PASSPHRASE'),
-            usernameColonPassword(credentialsId: 'OSSRH_USER', usernameVariable: 'OSSRH_USER', passwordVariable: 'OSSRH_PASSWORD')
+            usernamePassword(credentialsId: 'OSSRH_USER', usernameVariable: 'OSSRH_USER', passwordVariable: 'OSSRH_PASSWORD')
         ]
         ) {
             sh 'echo $GPG_PRIVATE_KEY_FILE'
@@ -40,5 +40,4 @@ node {
             sh 'echo $OSSRH_PASSWORD'
             sh 'scripts/ciPublish.sh'
         }
-    }
 }
