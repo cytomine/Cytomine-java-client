@@ -19,8 +19,9 @@ package client;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.OntologyCollection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import be.cytomine.client.models.*;
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CollectionTests {
 
-    private static final Logger log = Logger.getLogger(CollectionTests.class);
+    private static final Logger log = LogManager.getLogger(CollectionTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {
