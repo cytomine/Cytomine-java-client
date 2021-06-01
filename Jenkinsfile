@@ -24,7 +24,7 @@ node {
     sh 'docker-compose -f scripts/docker-compose.yml up -d'
 
     stage 'Build and test'
-    catchError {
+    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
         sh 'scripts/ciTest.sh'
     }
 
