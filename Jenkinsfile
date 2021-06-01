@@ -23,18 +23,16 @@ node {
     }
     sh 'docker-compose -f scripts/docker-compose.yml up -d'
 
-    stage 'Build and test'
-    steps {
+    stage 'Build and test' {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             sh 'scripts/ciTest.sh'
         }
-    }
-    post{
-        always {
-          junit testResults: './ci/surefire-reports/*.xml'
+        post{
+            always {
+              junit testResults: './ci/surefire-reports/*.xml'
+            }
         }
     }
-
 
     stage 'Clear cytomine instance'
     catchError {
