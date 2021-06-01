@@ -10,13 +10,10 @@ VERSION_NUMBER=$(<"$file")
 
 echo "Launch tests for $VERSION_NUMBER"
 
-#docker build --rm -f scripts/docker/Dockerfile-test.build -t cytomine/cytomine-java-client-test \
-#        --build-arg VERSION_NUMBER=$VERSION_NUMBER  .
-
 docker build --rm -f scripts/docker/Dockerfile-test.build --build-arg VERSION_NUMBER=$VERSION_NUMBER -t  cytomine/cytomine-java-test .
-
-containerId=$(docker create --network scripts_default --link nginxTest:localhost-core  cytomine/cytomine-java-test)
+mkdir ./ci/surefire-reports
+containerId=$(docker create --network scripts_default --link nginxTest:localhost-core -v "$PWD"/ci/surefire-reports:/app/target/surefire-reports cytomine/cytomine-java-test )
 #docker network connect scripts_default $containerId
 docker start -ai  $containerId
-
+docker cp $containerId:/app/target/surefire-reports ./ci
 docker rm $containerId
