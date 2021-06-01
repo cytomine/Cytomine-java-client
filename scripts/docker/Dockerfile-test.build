@@ -19,4 +19,4 @@ ENV VERSION_NUMBER_ENV=$VERSION_NUMBER
 
 # update version number in pom.xml
 RUN sed -i -- 's/<version>0.0.0<\/version>/<version>'$VERSION_NUMBER'<\/version>/g' /app/pom.xml
-RUN mvn -f /app/pom.xml -s /app/scripts/maven-settings.xml --batch-mode test
+CMD mvn -f /app/pom.xml -s /app/scripts/maven-settings.xml --batch-mode test

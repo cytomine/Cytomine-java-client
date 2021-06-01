@@ -28,9 +28,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ImageInstanceTests {
+public class ImageInstanceTest {
 
-    private static final Logger log = LogManager.getLogger(ImageInstanceTests.class);
+    private static final Logger log = LogManager.getLogger(ImageInstanceTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

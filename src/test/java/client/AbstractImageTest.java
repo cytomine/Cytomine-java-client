@@ -18,7 +18,7 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
-import be.cytomine.client.models.Tag;
+import be.cytomine.client.models.AbstractImage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,9 +26,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TagTests {
+public class AbstractImageTest {
 
-    private static final Logger log = LogManager.getLogger(TagTests.class);
+    private static final Logger log = LogManager.getLogger(AbstractImageTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {
@@ -36,44 +36,47 @@ public class TagTests {
     }
 
     @Test
-    void testCreateTag() throws CytomineException {
-        log.info("test create tag");
+    void testCreateAbstractImage() throws CytomineException {
+        log.info("test create abstract_image");
         String name = Utils.getRandomString();
-        Tag t = new Tag(name).save();
-        assertEquals(name, t.get("name"), "name not the same used for the tag creation");
+        AbstractImage ai = new AbstractImage(name, "image/tiff").save();
+        assertEquals("image/tiff", ai.getStr("mime"), "mime not the same used for the abstract_image creation");
 
-        t = new Tag().fetch(t.getId());
-        assertEquals(name, t.get("name"), "fetched name not the same used for the tag creation");
+        ai = new AbstractImage().fetch(ai.getId());
+        assertEquals("image/tiff", ai.getStr("mime"), "fetched mime not the same used for the abstract_image creation");
 
-        t.set("name", name+"bis");
-        t.update();
-        assertEquals(name+"bis", t.get("name"), "Not the name used for the tag update");
+        /* TODO permissions
+        ai.set("width", 1000);
+        ai.update();
+        assertEquals(1000, (int)ai.getInt("width"), "Not the same width used for the abstract_image update");
 
-        t.delete();
+        ai.delete();
         try {
-            new Tag().fetch(t.getId());
+            new AbstractImage().fetch(ai.getId());
             assert false;
         } catch (CytomineException e) {
             assertEquals(e.getHttpCode(), 404);
-        }
+        }*/
     }
 
     @Test
-    void testCreateTagIncorrect() throws CytomineException {
-        log.info("test create incorrect tag");
+    void testCreateAbstractImageIncorrect() throws CytomineException {
+        log.info("test create incorrect abstract_image");
 
         try {
-            new Tag().save();
+            new AbstractImage().save();
             assert false;
         } catch (CytomineException e) {
             assertEquals(400, e.getHttpCode());
         }
     }
+
     @Test
-    void testListTags() throws CytomineException {
-        log.info("test list tags");
-        Collection<Tag> c = Collection.fetch(Tag.class);
+    void testListAbstractImages() throws CytomineException {
+        log.info("test list abstract_images");
+        Collection<AbstractImage> c = Collection.fetch(AbstractImage.class);
 
         log.info(c.size());
     }
+
 }

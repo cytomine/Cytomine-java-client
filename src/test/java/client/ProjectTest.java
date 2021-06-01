@@ -25,12 +25,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProjectTests {
+public class ProjectTest {
 
-    private static final Logger log = LogManager.getLogger(ProjectTests.class);
+    private static final Logger log = LogManager.getLogger(ProjectTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

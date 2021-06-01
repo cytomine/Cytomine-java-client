@@ -33,9 +33,9 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AttachedFileTests {
+public class AttachedFileTest {
 
-    private static final Logger log = LogManager.getLogger(AttachedFileTests.class);
+    private static final Logger log = LogManager.getLogger(AttachedFileTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

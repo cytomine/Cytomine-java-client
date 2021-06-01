@@ -48,12 +48,9 @@ public class Utils {
     static void connect() throws CytomineException {
         if(cytomine != null) return;
 
-        host = System.getProperty("host");
-        assertNotNull(host, "host, publicKey, privateKey");
-        publicKey = System.getProperty("publicKey");
-        assertNotNull(publicKey, "host, publicKey, privateKey");
-        privateKey = System.getProperty("privateKey");
-        assertNotNull(privateKey, "host, publicKey, privateKey");
+        host="http://localhost-core";
+        publicKey="4c6339f4-289a-4add-82cf-120a6a808b6f";
+        privateKey="563de51e-d78c-4e07-9589-7873bd3341be";
 
         log.info("Connection to cytomine...");
         Cytomine.connection(host,publicKey,privateKey);

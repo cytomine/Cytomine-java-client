@@ -19,7 +19,6 @@ package client;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.JobDataCollection;
-import be.cytomine.client.collections.SoftwareParameterCollection;
 import be.cytomine.client.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,9 +31,9 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JobDataTests {
+public class JobDataTest {
 
-    private static final Logger log = LogManager.getLogger(JobDataTests.class);
+    private static final Logger log = LogManager.getLogger(JobDataTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

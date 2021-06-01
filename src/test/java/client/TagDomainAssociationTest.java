@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TagDomainAssociationTests {
+public class TagDomainAssociationTest {
 
-    private static final Logger log = LogManager.getLogger(TagDomainAssociationTests.class);
+    private static final Logger log = LogManager.getLogger(TagDomainAssociationTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

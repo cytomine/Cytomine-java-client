@@ -29,9 +29,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UploadedFileTests {
+public class UploadedFileTest {
 
-    private static final Logger log = LogManager.getLogger(UploadedFileTests.class);
+    private static final Logger log = LogManager.getLogger(UploadedFileTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

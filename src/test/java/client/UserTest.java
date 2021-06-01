@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserTests {
+public class UserTest {
 
-    private static final Logger log = LogManager.getLogger(UserTests.class);
+    private static final Logger log = LogManager.getLogger(UserTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

@@ -19,11 +19,9 @@ package client;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.JobCollection;
-import be.cytomine.client.collections.SoftwareParameterCollection;
 import be.cytomine.client.models.Job;
 import be.cytomine.client.models.Project;
 import be.cytomine.client.models.Software;
-import be.cytomine.client.models.SoftwareParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,9 +29,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JobTests {
+public class JobTest {
 
-    private static final Logger log = LogManager.getLogger(JobTests.class);
+    private static final Logger log = LogManager.getLogger(JobTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {
