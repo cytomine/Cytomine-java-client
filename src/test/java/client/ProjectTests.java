@@ -68,7 +68,7 @@ public class ProjectTests {
         try{
             new Project().save();
         } catch (CytomineException e){
-            assertEquals(e.getHttpCode(), 404);
+            assertEquals(e.getHttpCode(), 400);
         }
     }
 
