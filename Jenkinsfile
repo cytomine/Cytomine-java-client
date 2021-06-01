@@ -19,9 +19,9 @@ node {
 
     stage 'Run cytomine instance'
     catchError {
-        sh docker-compose -f scripts/docker-compose.yml down
+        sh 'docker-compose -f scripts/docker-compose.yml down'
     }
-    sh docker-compose -f scripts/docker-compose.yml up -d
+    sh 'docker-compose -f scripts/docker-compose.yml up -d'
 
     stage 'Build and test'
     catchError {
@@ -30,7 +30,7 @@ node {
 
     stage 'Clear cytomine instance'
     catchError {
-        sh docker-compose -f scripts/docker-compose.yml down
+        sh 'docker-compose -f scripts/docker-compose.yml down'
     }
 
     stage 'Publish'
@@ -43,13 +43,8 @@ node {
             usernamePassword(credentialsId: 'OSSRH_USER', usernameVariable: 'OSSRH_USER', passwordVariable: 'OSSRH_PASSWORD')
         ]
         ) {
-            sh 'echo $GPG_PRIVATE_KEY_FILE'
             sh 'cp $GPG_PRIVATE_KEY_FILE ./ci'
             sh 'cp $GPG_PUBLIC_KEY_FILE ./ci'
-            sh 'echo $GPG_KEYNAME'
-            sh 'echo $GPG_PASSPHRASE'
-            sh 'echo $OSSRH_USER'
-            sh 'echo $OSSRH_PASSWORD'
             sh 'scripts/ciPublish.sh'
         }
 }
