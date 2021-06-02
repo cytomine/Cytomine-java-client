@@ -17,24 +17,25 @@ node {
     stage 'Download and cache dependencies'
     sh 'scripts/ciDownloadDependencies.sh'
 
-   stage 'Run cytomine instance'
-    catchError {
-        sh 'docker-compose -f scripts/docker-compose.yml down'
-    }
-    sh 'docker-compose -f scripts/docker-compose.yml up -d'
+    lock('cytomine-instance-test') {
+        stage 'Run cytomine instance'
+        catchError {
+            sh 'docker-compose -f scripts/docker-compose.yml down -v'
+        }
+        sh 'docker-compose -f scripts/docker-compose.yml up -d'
 
-    stage 'Build and test'
-    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-        sh 'scripts/ciTest.sh'
-    }
-    stage 'Publish test'
-    step([$class: 'JUnitResultArchiver', testResults: '**/ci/surefire-reports/*.xml'])
+        stage 'Build and test'
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh 'scripts/ciTest.sh'
+        }
+        stage 'Publish test'
+        step([$class: 'JUnitResultArchiver', testResults: '**/ci/surefire-reports/*.xml'])
 
-    stage 'Clear cytomine instance'
-    catchError {
-        sh 'docker-compose -f scripts/docker-compose.yml down'
+        stage 'Clear cytomine instance'
+        catchError {
+            sh 'docker-compose -f scripts/docker-compose.yml down -v'
+        }
     }
-
     stage 'Publish'
     withCredentials(
         [
