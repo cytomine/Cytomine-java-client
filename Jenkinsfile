@@ -27,11 +27,7 @@ node {
     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
         sh 'scripts/ciTest.sh'
     }
-    post{
-        always {
-          junit testResults: './ci/surefire-reports/*.xml'
-        }
-    }
+    junit testResults: './ci/surefire-reports/*.xml'
 
     stage 'Clear cytomine instance'
     catchError {
