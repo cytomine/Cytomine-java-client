@@ -15,4 +15,6 @@ mkdir ./ci/surefire-reports
 containerId=$(docker create --network scripts_default --link nginxTest:localhost-core -v "$PWD"/ci/surefire-reports:/app/target/surefire-reports cytomine/cytomine-java-test )
 #docker network connect scripts_default $containerId
 docker start -ai  $containerId
+echo "$PWD"
+ls -lh "$PWD"/ci/surefire-reports
 docker rm $containerId
