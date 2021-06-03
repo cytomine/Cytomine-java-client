@@ -510,6 +510,24 @@ public class Cytomine {
         return user.fetch(null);
     }
 
+    /**
+     * Forge an authentication token for the user with the related username and for a given validity
+     *
+     * @param username     username of the targeted user
+     * @param validity     Number of minutes for the validity of the token
+     * @return The token key that will allow temporary authentication
+     */
+    public String buildAuthenticationToken(String username, Long validity) throws CytomineException {
+        String data = "{username : " + username + ", validity : " + validity + "}";
+        JSONObject json = defaultCytomineConnection.doPost("/api/token.json", data);
+
+        if(Boolean.parseBoolean(json.get("success").toString())) {
+            JSONObject token = (JSONObject) json.get("token");
+            return token.get("tokenKey").toString();
+        }
+        return null;
+    }
+
 	public String getImageServersOfAbstractImage(Long abstractImageID) {
 
 		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
