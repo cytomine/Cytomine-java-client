@@ -55,6 +55,7 @@ public class Utils {
         log.info("Connection to cytomine...");
         Cytomine.connection(host,publicKey,privateKey);
         cytomine = Cytomine.getInstance();
+        cytomine.waitToAcceptConnection(120);
     }
     static String getPublicKey() {
         return publicKey;
