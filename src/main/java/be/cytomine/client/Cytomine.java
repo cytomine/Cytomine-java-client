@@ -183,7 +183,7 @@ public class Cytomine {
      * @param timeoutInSeconds Timeout until last retry (seconds)
      */
     public void waitToAcceptConnection(int timeoutInSeconds) throws CytomineException {
-        waitToAcceptConnection(120, 1);
+        waitToAcceptConnection(timeoutInSeconds, 1);
     }
 
     /**
