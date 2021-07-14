@@ -16,21 +16,14 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
-import be.cytomine.client.collections.AmqpQueueCollection;
-import be.cytomine.client.models.ImageFilter;
-import be.cytomine.client.models.ProcessingServer;
-import be.cytomine.client.models.SoftwareUserRepository;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Execute {
 
-    private static final Logger log = Logger.getLogger(Execute.class);
+    private static final Logger log = LogManager.getLogger(Execute.class);
 
     public static void main(String[] args) throws Exception {
-        BasicConfigurator.configure();
-        PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
 
         Cytomine.connection(args[0], args[1], args[2]);

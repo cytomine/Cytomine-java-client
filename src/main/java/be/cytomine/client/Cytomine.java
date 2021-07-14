@@ -21,7 +21,8 @@ import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -30,11 +31,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 public class Cytomine {
 
-    private static final Logger log = Logger.getLogger(Cytomine.class);
+    private static final Logger log = LogManager.getLogger(Cytomine.class);
     static Cytomine CYTOMINE;
 
     CytomineConnection defaultCytomineConnection;
@@ -162,6 +165,41 @@ public class Cytomine {
         }
         client.disconnect();
         return code == 200 || code == 201 || code == 304;
+    }
+
+    /**
+     * Check if Cytomine accept connection
+     */
+    public boolean isAlive() throws CytomineException {
+        try {
+            return testHostConnection();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Wait for Cytomine to be ready. Retry every second until timeoutInSeconds
+     * @param timeoutInSeconds Timeout until last retry (seconds)
+     */
+    public void waitToAcceptConnection(int timeoutInSeconds) throws CytomineException {
+        waitToAcceptConnection(timeoutInSeconds, 1);
+    }
+
+    /**
+     * Wait for Cytomine to be ready. Retry every delayBetweenRetryInSeconds until timeoutInSeconds
+     * @param timeoutInSeconds Timeout until last retry (seconds)
+     * @param delayBetweenRetryInSeconds Delay between a retry (seconds)
+     */
+    public void waitToAcceptConnection(int timeoutInSeconds, int delayBetweenRetryInSeconds) throws CytomineException {
+        Instant timeAtStart = Instant.now();
+        while(Duration.between(timeAtStart, Instant.now()).toMillis() < (timeoutInSeconds * 1000L)) {
+            if (isAlive()) {
+                return;
+            }
+            try { Thread.sleep(delayBetweenRetryInSeconds* 1000L);} catch (InterruptedException ignored) {};
+        }
+        throw new CytomineException(0, "Cytomine cannot be reach on " + host);
     }
 
     /**

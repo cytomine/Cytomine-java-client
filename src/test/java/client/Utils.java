@@ -19,9 +19,8 @@ package client;
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.*;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class Utils {
     private static String publicKey;
     private static String privateKey;
     private static Cytomine cytomine;
-    private static final Logger log = Logger.getLogger(Utils.class);
+    private static final Logger log = LogManager.getLogger(Utils.class);
 
     private static User user;
     private static Project project;
@@ -48,19 +47,15 @@ public class Utils {
 
     static void connect() throws CytomineException {
         if(cytomine != null) return;
-        BasicConfigurator.configure();
-        PropertyConfigurator.configure("log4j.properties");
 
-        host = System.getProperty("host");
-        assertNotNull(host, "host, publicKey, privateKey");
-        publicKey = System.getProperty("publicKey");
-        assertNotNull(publicKey, "host, publicKey, privateKey");
-        privateKey = System.getProperty("privateKey");
-        assertNotNull(privateKey, "host, publicKey, privateKey");
+        host="http://localhost-core";
+        publicKey="4c6339f4-289a-4add-82cf-120a6a808b6f";
+        privateKey="563de51e-d78c-4e07-9589-7873bd3341be";
 
         log.info("Connection to cytomine...");
         Cytomine.connection(host,publicKey,privateKey);
         cytomine = Cytomine.getInstance();
+        cytomine.waitToAcceptConnection(120);
     }
     static String getPublicKey() {
         return publicKey;

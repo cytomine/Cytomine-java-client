@@ -21,7 +21,8 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -35,7 +36,7 @@ import java.util.*;
 
 public class CytomineConnection {
 
-    private static final Logger log = Logger.getLogger(Cytomine.class);
+    private static final Logger log = LogManager.getLogger(Cytomine.class);
 
     private String host;
     private String login;

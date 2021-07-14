@@ -16,7 +16,8 @@ package be.cytomine.client.sample;
  */
 
 import be.cytomine.client.Cytomine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class CropExample {
 
-    private static final Logger log = Logger.getLogger(CropExample.class);
+    private static final Logger log = LogManager.getLogger(CropExample.class);
 
 
     public static void downloadAllAnnotations(Cytomine cytomine) throws Exception {
