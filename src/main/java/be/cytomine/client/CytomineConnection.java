@@ -115,6 +115,8 @@ public class CytomineConnection {
         //if 200,201,...no exception
         if (code >= 400 && code < 600) {
             throw new CytomineException(code, json);
+        } else if (code == 301) {
+            throw new CytomineException(code, json);
         } else if (code == 302) {
             throw new CytomineException(code, json);
         }
