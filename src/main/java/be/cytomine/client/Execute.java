@@ -16,10 +16,17 @@ package be.cytomine.client;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.Description;
+import be.cytomine.client.collections.AnnotationCollection;
+import be.cytomine.client.collections.ImageInstanceCollection;
+import be.cytomine.client.collections.TermCollection;
+import be.cytomine.client.models.*;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Execute {
 
@@ -27,12 +34,46 @@ public class Execute {
 
     public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
-        PropertyConfigurator.configure("log4j.properties");
+//        PropertyConfigurator.configure("log4j.properties");
         log.info("Connection to cytomine...");
 
         Cytomine.connection(args[0], args[1], args[2]);
 
-        ping();
+
+        Project project = new Project().fetch(526102245L);
+        Ontology ontology = new Ontology().fetch(project.getLong("ontology"));
+        TermCollection terms = TermCollection.fetchByOntology(ontology);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("project", 526102245L);
+        parameters.put("showMeta", true);
+        parameters.put("showTerm", true);
+        parameters.put("showWKT", true);
+        AnnotationCollection ac = AnnotationCollection.fetchWithParameters(parameters);
+        for (int i = 0; i < ac.size(); i++) {
+            Annotation annot = ac.get(i);
+            System.out.println("Annnotation id " + annot.getStr("id") + " has terms: ");
+            List annotTermsIds = annot.getList("term");
+            for (int j = 0; j < annotTermsIds.size(); j++) {
+                for (int k = 0; k < terms.size(); k++) {
+                    Term currentTerm = terms.get(k);
+                    if (currentTerm.getId().equals((Long) annotTermsIds.get(j))) {
+                        System.out.println(currentTerm.getStr("name"));
+                    }
+                }
+            }
+        }
+
+
+//        ImageInstance img = new ImageInstance().fetch(526163790L);
+//        AnnotationCollection ac = AnnotationCollection.fetchByImageInstance(img);
+////        AnnotationCollection ac = AnnotationCollection.fetchWithParameters(parameters, 0, 1);
+//        System.out.println(ac.size());
+////        Project p = new Project().fetch(39738769L);
+////        ImageInstanceCollection ic = ImageInstanceCollection.fetchByProject(p);
+////        System.out.println(ic.get(0));
+
+//        ping();
     }
 
     public static void ping() throws CytomineException {
