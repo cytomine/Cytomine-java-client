@@ -620,7 +620,7 @@ public class Cytomine {
         User user = new User();
         user.addFilter("id", id + "");
         user.addFilter("keys", "keys");
-        return user.fetch(id);
+        return user.fetch(null);
     }
 
     /*public User getKeysByUsername(String username) throws CytomineException {
@@ -1029,7 +1029,7 @@ public class Cytomine {
 
     @Deprecated
     public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
-        return new AbstractImage(filename,mime).save();
+        return new AbstractImage(0L, filename).save();
     }
 
     @Deprecated
@@ -1253,33 +1253,8 @@ public class Cytomine {
     }
 
     @Deprecated
-    public Software addSoftware(String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand) throws CytomineException {
-        return new Software(name, resultType, executeCommand, "", idSoftwareUserRepository, idDefaultProcessingServer).save();
-    }
-
-    @Deprecated
     public void deleteSoftware(Long idSoftware) throws CytomineException {
         new Software().delete(idSoftware);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
-        return new SoftwareParameter(name,type,idSoftware,defaultValue,required,index,uri,uriSortAttribut,uriPrintAttribut,setByServer).save();
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
     }
 
     @Deprecated
@@ -1307,11 +1282,6 @@ public class Cytomine {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         return (SoftwareCollection) softwares.fetch();
     }
-
-    /*@Deprecated
-    public ProcessingServer addProcessingServer(String url) throws CytomineException {
-        return new ProcessingServer(url).save();
-    }*/
 
     @Deprecated
     public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
@@ -1430,7 +1400,7 @@ public class Cytomine {
         UploadedFile.Status state = Arrays.stream(UploadedFile.Status.values())
                 .filter(c -> c.getCode() == status)
                 .findFirst().get();
-        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
+        return new UploadedFile(0L, originalFilename,realFilename,size,ext,contentType,idProjects,(Long) idStorages.get(0),idUser,state,idParent).save();
     }
 
     @Deprecated
