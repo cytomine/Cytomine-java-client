@@ -1,14 +1,7 @@
 package be.cytomine.client.sample;
 
-import be.cytomine.client.Cytomine;
-import be.cytomine.client.CytomineException;
-import be.cytomine.client.models.*;
-import org.apache.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 /*
- * Copyright (c) 2009-2019. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +15,14 @@ import org.json.simple.JSONObject;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineException;
+import be.cytomine.client.models.*;
+import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public class ImageExample {
 
 
