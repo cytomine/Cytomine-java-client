@@ -22,21 +22,14 @@ import be.cytomine.client.CytomineException;
 public class AbstractImage extends Model<AbstractImage> {
 
     public AbstractImage(){}
-    public AbstractImage(String filename, String mime){
-        this.set("filename",filename);
-        this.set("path",filename);
-        this.set("mime",mime);
+
+    public AbstractImage(UploadedFile uploadedFile, String filename) {
+        this(uploadedFile.getId(), filename);
     }
-    @Override
-    public String toURL() {
-        Long id = getLong("id");
-        if (id != null) {
-            return getJSONResourceURL();
-        } else if (isFilterBy("uploadedFile")) {
-            return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
-        } else {
-            return getJSONResourceURL();
-        }
+
+    public AbstractImage(Long uploadedFileId, String filename){
+        this.set("uploadedFile", uploadedFileId);
+        this.set("originalFilename",filename);
     }
 
     public String clearProperties() throws CytomineException {

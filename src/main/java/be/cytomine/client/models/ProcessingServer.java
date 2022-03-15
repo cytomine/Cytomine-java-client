@@ -18,13 +18,18 @@ package be.cytomine.client.models;
 
 public class ProcessingServer extends Model<ProcessingServer> {
     public ProcessingServer(){}
-    public ProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName){
+    public ProcessingServer(String name,String host,String username,Integer port,String type,String processingMethodName,AmqpQueue amqpQueue,String persistentDirectory, String workingDirectory,Integer index){
+
         this.set("name", name);
         this.set("host", host);
         this.set("username", username);
         this.set("port", port);
         this.set("type", type);
         this.set("processingMethodName", processingMethodName);
+        this.set("amqpQueue", amqpQueue);
+        this.set("persistentDirectory", persistentDirectory);
+        this.set("workingDirectory", workingDirectory);
+        this.set("index", index);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class ImageInstanceTest {
     void testCreateImageInstance() throws CytomineException {
         log.info("test create image_instance");
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(name, "image/tiff").save();
+        AbstractImage ai = new AbstractImage(Utils.getNewUploadedFile(), name).save();
         ImageInstance ii = new ImageInstance(ai, Utils.getProject()).save();
         assertEquals(name, ii.getStr("instanceFilename"), "instanceFilename not the same used for the abstract_image creation");
 
