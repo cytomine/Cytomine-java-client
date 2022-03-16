@@ -50,6 +50,18 @@ public class Software extends Model<Software> {
         this.set("pullingCommand", pullingCommand);
     }
 
+    public Software(Boolean deprecated , String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand){
+
+        this.set("softwareVersion", softwareVersion);
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("pullingCommand", pullingCommand);
+        this.set("deprecated", deprecated);
+    }
+
     public Software deprecate() throws CytomineException {
         this.set("deprecated", true);
         return this.update();
