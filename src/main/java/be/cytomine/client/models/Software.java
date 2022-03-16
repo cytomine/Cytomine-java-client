@@ -16,8 +16,35 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.CytomineException;
+
 public class Software extends Model<Software> {
     public Software(){}
+    public Software(String name, String resultType, String executeCommand, String softwareVersion){
+        this.set("name", name);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
+    }
+
+    public Software(String name, String resultType, String executeCommand, String softwareVersion, Long idSoftwareUserRepository, Long idDefaultProcessingServer){
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
+    }
+
+    public Software(String name, String resultType, String executeCommand, String softwareVersion, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String pullingCommand){
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("softwareVersion", softwareVersion);
+        this.set("pullingCommand", pullingCommand);
+    }
 
     public Software(Boolean deprecated , String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand){
 
@@ -29,5 +56,10 @@ public class Software extends Model<Software> {
         this.set("executeCommand", executeCommand);
         this.set("pullingCommand", pullingCommand);
         this.set("deprecated", deprecated);
+    }
+
+    public Software deprecate() throws CytomineException {
+        this.set("deprecated", true);
+        return this.update();
     }
 }

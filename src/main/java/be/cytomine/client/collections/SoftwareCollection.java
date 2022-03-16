@@ -21,7 +21,6 @@ import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.Software;
 import be.cytomine.client.models.SoftwareUserRepository;
-import org.json.simple.JSONObject;
 
 public class SoftwareCollection extends Collection<Software> {
 
@@ -29,20 +28,27 @@ public class SoftwareCollection extends Collection<Software> {
         super(Software.class, max, offset);
     }
 
-
+    public static SoftwareCollection fetchBySoftwareUserRepository(SoftwareUserRepository sur) throws CytomineException {
+        return fetchBySoftwareUserRepository(sur.getId());
+    }
     public static SoftwareCollection fetchBySoftwareUserRepository(Long idSoftwareUserRepository) throws CytomineException {
-
         return fetchBySoftwareUserRepository((Cytomine.getInstance().getDefaultCytomineConnection()), idSoftwareUserRepository, 0,0);
-
+    }
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, SoftwareUserRepository sur) throws CytomineException {
+        return fetchBySoftwareUserRepository(connection, sur.getId());
     }
     public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, Long idSoftwareUserRepository) throws CytomineException {
         return fetchBySoftwareUserRepository(connection, idSoftwareUserRepository, 0,0);
     }
-
+    public static SoftwareCollection fetchBySoftwareUserRepository(SoftwareUserRepository sur, int offset, int max) throws CytomineException {
+        return fetchBySoftwareUserRepository(sur.getId(), offset, max);
+    }
     public static SoftwareCollection fetchBySoftwareUserRepository(Long idSoftwareUserRepository, int offset, int max) throws CytomineException {
         return fetchBySoftwareUserRepository(Cytomine.getInstance().getDefaultCytomineConnection(), idSoftwareUserRepository, offset,max);
     }
-
+    public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, SoftwareUserRepository sur, int offset, int max) throws CytomineException {
+        return fetchBySoftwareUserRepository(connection, sur.getId(), offset,max);
+    }
     public static SoftwareCollection fetchBySoftwareUserRepository(CytomineConnection connection, Long idSoftwareUserRepository, int offset, int max) throws CytomineException {
         return (SoftwareCollection) new SoftwareCollection(max, offset).fetchWithFilter(connection, SoftwareUserRepository.class, idSoftwareUserRepository, offset, max);
     }

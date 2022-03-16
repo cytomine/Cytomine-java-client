@@ -16,10 +16,6 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.Cytomine;
-import be.cytomine.client.CytomineConnection;
-import be.cytomine.client.CytomineException;
-import be.cytomine.client.models.Model;
 import be.cytomine.client.models.ProcessingServer;
 
 public class ProcessingServerCollection extends Collection<ProcessingServer> {
