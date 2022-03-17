@@ -41,7 +41,7 @@ public class Collection<T extends Model> {
 
     protected int max;
     protected int offset;
-    //private Class<T> type;
+    private Class<T> type;
     private T modelInstance;
 
     protected Collection(Class<T> type) {
@@ -50,7 +50,7 @@ public class Collection<T extends Model> {
     public Collection(Class<T> type, int max, int offset) {
         this.max = max;
         this.offset = offset;
-        //this.type = type;
+        this.type = type;
         try {
             modelInstance = type.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
@@ -189,8 +189,14 @@ public class Collection<T extends Model> {
     // ####################### Getters/Setters #######################
 
     public T get(int i) {
-        modelInstance.setAttr((JSONObject) list.get(i));
-        return modelInstance;
+        try {
+            T modelInstance = type.newInstance();
+            modelInstance.setAttr((JSONObject) list.get(i));
+            return modelInstance;
+        } catch (InstantiationException | IllegalAccessException ignored) {
+            // ignore, would already have failed in constructor
+            return null;
+        }
     }
 
     public List<Long> getListIds() {
