@@ -13,3 +13,11 @@ target
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# directory to store build data during ci
+ci
+
+# private local data
+scripts/ciBuildLocal.sh
+
+.idea/
