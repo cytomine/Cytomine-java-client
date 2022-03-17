@@ -1,5 +1,4 @@
-package be.cytomine.client.models;
-
+package be.cytomine.client.sample;
 /*
  * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
@@ -16,18 +15,17 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.models.SoftwareUserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class SoftwareUserRepository extends Model<SoftwareUserRepository> {
-    public SoftwareUserRepository(){}
-    public SoftwareUserRepository(String provider, String username, String prefix, String dockerUsername){
-        this.set("provider", provider);
-        this.set("username", username);
-        this.set("prefix", prefix);
-        this.set("dockerUsername", dockerUsername);
+public class SoftwareExample {
+
+    private static final Logger log = LogManager.getLogger(SoftwareExample.class);
+    public static void addSampleSoftwareUserRepository(Cytomine cytomine) throws Exception {
+        SoftwareUserRepository sur = new SoftwareUserRepository("github", "geektortoise", "S_", "cytomineuliege");
+        sur.save();
     }
 
-    @Override
-    public String getDomainName() {
-        return "software_user_repository";
-    }
 }

@@ -16,7 +16,8 @@ package be.cytomine.client.sample;
  */
 
 import be.cytomine.client.Cytomine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,14 +28,8 @@ import java.util.List;
 
 public class CropExample {
 
-    private static final Logger log = Logger.getLogger(CropExample.class);
+    private static final Logger log = LogManager.getLogger(CropExample.class);
 
-
-    public static void indexAnnotation(Cytomine cytomine) throws Exception {
-
-        cytomine.indexToRetrieval(141221746l, 101903411l, "http://beta.cytomine.be/api/userannotation/141221746/crop.jpg");
-
-    }
 
     public static void downloadAllAnnotations(Cytomine cytomine) throws Exception {
         //1. check if image == null
@@ -78,7 +73,7 @@ public class CropExample {
             if (!file.exists()) {
                 try {
                     System.out.println("Try downloading...");
-                    cytomine.getDefaultCytomineConnection().downloadPictureWithRedirect("http://beta.cytomine.be/api/annotation/" + id + "/crop." + format + "?maxSize=256", outputFile, format);
+                    //cytomine.getDefaultCytomineConnection().downloadPictureWithRedirect("http://beta.cytomine.be/api/annotation/" + id + "/crop." + format + "?maxSize=256", outputFile, format);
                     testNumber = 0;
                 } catch (Exception e) {
                     testNumber++;

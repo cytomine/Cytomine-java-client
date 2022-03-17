@@ -19,14 +19,15 @@ package be.cytomine.client.sample;
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.models.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class ImageExample {
 
 
-    private static final Logger log = Logger.getLogger(ImageExample.class);
+    private static final Logger log = LogManager.getLogger(ImageExample.class);
 
 
     public static void changeImageName(Cytomine cytomine, Long idImageInstance, String newName) throws Exception {
@@ -51,7 +52,7 @@ public class ImageExample {
 
     }
 
-    public static void testUpload(Cytomine cytomine) throws Exception {
+    public static void testUpload(Cytomine cytomine, String uploadURL) throws Exception {
 
         try {
             String file = "/media/DATA/image/P21-10GH050246-A7_CD3_201404021522.tif";
@@ -61,7 +62,7 @@ public class ImageExample {
             String cytomineHost = "http://beta.cytomine.be";//"http://localhost:8080";
             System.out.println("Connection on " + cytomine.getHost());
             int i = 0;
-            JSONArray json = cytomine.uploadImage(file, idProject, idStorage, cytomineHost, null, true);
+            JSONArray json = cytomine.uploadImage(uploadURL,file, idProject, idStorage, cytomineHost, null, true);
             System.out.println(json.get(0));
             System.out.println(((JSONObject) json.get(0)).get("images"));
         } catch (CytomineException e) {

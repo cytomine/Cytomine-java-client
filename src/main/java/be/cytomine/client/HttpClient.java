@@ -33,8 +33,11 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -54,7 +57,7 @@ import java.util.*;
  */
 public class HttpClient {
 
-    private static final Logger log = Logger.getLogger(HttpClient.class);
+    private static final Logger log = LogManager.getLogger(HttpClient.class);
 
     org.apache.http.client.HttpClient client;
     HttpHost targetHost;
@@ -142,6 +145,10 @@ public class HttpClient {
     }
 
     public int get(String url, String dest) throws IOException {
+        return this.get(url, dest, true);
+    }
+
+    public int get(String url, String dest, boolean redirect) throws IOException {
         log.debug("get:" + url);
         URL URL = new URL(url);
         HttpHost targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
@@ -152,11 +159,18 @@ public class HttpClient {
         BasicHttpContext localcontext = new BasicHttpContext();
         log.debug("localcontext:" + localcontext);
 
+
         headersArray = null;
         authorize("GET", URL.toString(), "", "application/json,*/*");
 
         HttpGet httpGet = new HttpGet(URL.getPath());
         httpGet.setHeaders(headersArray);
+
+        if(!redirect) {
+            HttpParams params = new BasicHttpParams();
+            params.setParameter("http.protocol.handle-redirects",false);
+            httpGet.setParams(params);
+        }
 
         HttpResponse response = client.execute(targetHost, httpGet, localcontext);
         int code = response.getStatusLine().getStatusCode();
@@ -174,6 +188,15 @@ public class HttpClient {
             FileOutputStream fos = new FileOutputStream(dest);
             entity.writeTo(fos);
             fos.close();
+        }
+
+        if(isFound){
+            Header locationHeader = response.getFirstHeader("location");
+            if (locationHeader != null) {
+                String redirectLocation = locationHeader.getValue();
+                System.out.println("location: " + redirectLocation);
+                this.get(redirectLocation,dest);
+            } else code = HttpURLConnection.HTTP_NOT_FOUND;
         }
         return code;
     }

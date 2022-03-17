@@ -21,15 +21,17 @@ import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.UserCollection;
 import be.cytomine.client.models.Project;
 import be.cytomine.client.models.User;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProjectTests {
+public class ProjectTest {
 
-    private static final Logger log = Logger.getLogger(ProjectTests.class);
+    private static final Logger log = LogManager.getLogger(ProjectTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {
@@ -67,7 +69,7 @@ public class ProjectTests {
         try{
             new Project().save();
         } catch (CytomineException e){
-            assertEquals(e.getHttpCode(), 404);
+            assertEquals(e.getHttpCode(), 400);
         }
     }
 

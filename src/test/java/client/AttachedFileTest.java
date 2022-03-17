@@ -24,15 +24,18 @@ import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.AttachedFile;
 import be.cytomine.client.models.ImageInstance;
 import be.cytomine.client.models.Project;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AttachedFileTests {
+public class AttachedFileTest {
 
-    private static final Logger log = Logger.getLogger(AttachedFileTests.class);
+    private static final Logger log = LogManager.getLogger(AttachedFileTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {
@@ -48,6 +51,10 @@ public class AttachedFileTests {
 
         af = new AttachedFile().fetch(af.getId());
         assertEquals(Utils.getFile().getName(), af.get("filename"), "fetched filename not the same used for the attached file creation");
+
+        String path = "/tmp/"+Utils.getRandomString()+".txt";
+        af.downloadFile(path);
+        assert new File(path).length() == Utils.getFile().length();
 
         af.delete();
         try {

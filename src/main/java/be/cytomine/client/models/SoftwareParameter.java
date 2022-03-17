@@ -46,4 +46,9 @@ public class SoftwareParameter extends Model<SoftwareParameter> {
     public SoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer){
         this(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
     }
+
+    @Override
+    public String getDomainName() {
+        return "software_parameter";
+    }
 }

@@ -123,7 +123,12 @@ public abstract class Model<T extends Model> {
     }
     public T save(CytomineConnection connection) throws CytomineException {
         JSONObject json = connection.doPost(this.toURL(),this.toJSON());
-        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        //TODO remove this if when the URL are normalized
+        if(json.get(this.getDomainName()) == null){
+            this.setAttr((JSONObject) json.get(getClass().getSimpleName().toLowerCase()));
+        } else {
+            this.setAttr((JSONObject) json.get(this.getDomainName()));
+        }
         return (T)this;
     }
 
@@ -152,7 +157,12 @@ public abstract class Model<T extends Model> {
     }
     public T update(CytomineConnection connection) throws CytomineException {
         JSONObject json = connection.doPut(this.toURL(),this.toJSON());
-        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        //TODO remove this if when the URL are normalized
+        if(json.get(this.getDomainName()) == null){
+            this.setAttr((JSONObject) json.get(getClass().getSimpleName().toLowerCase()));
+        } else {
+            this.setAttr((JSONObject) json.get(this.getDomainName()));
+        }
         return (T) this;
     }
 

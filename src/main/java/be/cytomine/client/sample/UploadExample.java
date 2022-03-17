@@ -20,12 +20,13 @@ import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.StorageCollection;
 import be.cytomine.client.models.UploadedFile;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class UploadExample {
 
-    private static final Logger log = Logger.getLogger(UploadExample.class);
+    private static final Logger log = LogManager.getLogger(UploadExample.class);
 
 
     // don't forget protocol into upload URL
@@ -45,9 +46,7 @@ public class UploadExample {
 
             Long idProject = null;
 
-            Cytomine.connection(uploadURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
-            Cytomine.getInstance().uploadImage("./logo.png", idProject, storages.get(0).getId(), coreURL, null, false);
-            Cytomine.connection(coreURL, Cytomine.getInstance().getPublicKey(), Cytomine.getInstance().getPrivateKey());
+            Cytomine.getInstance().uploadImage(uploadURL, "./logo.png", idProject, storages.get(0).getId(), coreURL, null, false);
 
             c = Collection.fetch(UploadedFile.class);
 

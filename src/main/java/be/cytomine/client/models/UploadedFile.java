@@ -16,10 +16,19 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
 
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UploadedFile extends Model<UploadedFile> {
 
@@ -80,5 +89,83 @@ public class UploadedFile extends Model<UploadedFile> {
     public UploadedFile changeStatus(Status status) throws CytomineException {
         this.set("status", status.code);
         return this.update();
+    }
+
+    /**
+     * Upload an image on the plateform
+     *
+     * @param uploadURL    The related Cytomine upload URL (distinct to the Core URL)
+     * @param file                 The image file path
+     * @param synchrone            If true, the response will be send from server when the image will be converted, transfered, created,...(May take a long time)
+     *                             Otherwise the server response directly after getting the image and the parameters
+     * @return The created uploadedFile
+     * @throws Exception Error during upload
+     */
+    public UploadedFile upload(String uploadURL,  String file, boolean synchrone) throws CytomineException {
+        return upload(uploadURL, file, (Map)null, synchrone);
+    }
+    public UploadedFile upload(String uploadURL,  String file, Long idStorage, boolean synchrone) throws CytomineException {
+        return upload(uploadURL, file, 0L, idStorage, null, synchrone);
+    }
+    public UploadedFile upload(String uploadURL,  String file, Long idProject, Long idStorage, boolean synchrone) throws CytomineException {
+        return upload(uploadURL, file, idProject, idStorage, null, synchrone);
+    }
+    public UploadedFile upload(String uploadURL,  String file, Map<String, String> properties, boolean synchrone) throws CytomineException {
+        Storage s = Storage.getCurrentUserStorage();
+        return upload(uploadURL, file, 0L, s.getId(), properties, synchrone);
+    }
+    /**
+     * Upload an image on the plateform
+     *
+     * @param uploadURL    The related Cytomine upload URL (distinct to the Core URL)
+     * @param file         The image file absolute path
+     * @param idProject    If not null, add the image in this project
+     * @param idStorage    The storage where the image will be copied
+     * @param properties   These key-value will be add to the generated AbstractImage as Property domain instance
+     * @param synchrone    If true, the response will be send from server when the image will be converted, transfered, created,...(May take a long time)
+     *                             Otherwise the server response directly after getting the image and the parameters
+     * @return The created uploadedFile
+     * @throws Exception Error during upload
+     */
+    public UploadedFile upload(String uploadURL,  String file, Long idProject, Long idStorage, Map<String, String> properties, boolean synchrone) throws CytomineException {
+
+        CytomineConnection uploadConnection = Cytomine.connection(
+                uploadURL,
+                Cytomine.getInstance().getDefaultCytomineConnection().getPublicKey(),
+                Cytomine.getInstance().getDefaultCytomineConnection().getPrivateKey(),
+                false);
+
+        Map<String, String> entityParts = new HashMap<>();
+        if (idProject != null) {
+            entityParts.put("idProject", idProject + "");
+        }
+        if (idStorage != null) {
+            entityParts.put("idStorage", idStorage + "");
+        }
+
+        String projectParam = "";
+        if (idProject != null && idProject != 0l) {
+            projectParam = "&idProject=" + idProject;
+        }
+
+        String cytomineHost = Cytomine.getInstance().getDefaultCytomineConnection().getHost();
+        String url = "/upload?idStorage=" + idStorage + "&cytomine=" + cytomineHost + projectParam;
+        if (properties != null && properties.size() > 0) {
+            List<String> keys = new ArrayList<String>();
+            List<String> values = new ArrayList<String>();
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                keys.add(entry.getKey());
+                values.add(entry.getValue());
+            }
+            url = url + "&keys=" + StringUtils.join(keys, ",") + "&values=" + StringUtils.join(values, ",");
+        }
+        if (synchrone) {
+            url = url + "&sync=" + true;
+        }
+
+        JSONObject uploadResult = (JSONObject) uploadConnection.uploadImage(file, url, entityParts ).get(0);
+        uploadResult = (JSONObject) uploadResult.get("uploadFile");
+        this.setAttr((JSONObject) uploadResult.get("attr"));
+        return this;
     }
 }

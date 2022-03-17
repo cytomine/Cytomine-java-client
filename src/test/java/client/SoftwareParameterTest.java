@@ -21,15 +21,16 @@ import be.cytomine.client.collections.Collection;
 import be.cytomine.client.collections.SoftwareParameterCollection;
 import be.cytomine.client.models.Software;
 import be.cytomine.client.models.SoftwareParameter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SoftwareParametersTests {
+public class SoftwareParameterTest {
 
-    private static final Logger log = Logger.getLogger(SoftwareParametersTests.class);
+    private static final Logger log = LogManager.getLogger(SoftwareParameterTest.class);
 
     @BeforeAll
     static void init() throws CytomineException {

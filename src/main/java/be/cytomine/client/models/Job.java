@@ -16,13 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 
-/**
- * User: lrollus
- * Date: 9/01/13
- * GIGA-ULg
- */
 public class Job extends Model<Job> {
 
     public enum JobStatus{
@@ -39,11 +35,11 @@ public class Job extends Model<Job> {
         private int valueOfJob;
 
         JobStatus(int value){this.valueOfJob=value;}
-    }
 
-    public int getVal(JobStatus js)
-    {
-        return js.valueOfJob;
+        public int getValue() {
+            return this.valueOfJob;
+        }
+
     }
 
     public Job(){}
@@ -55,15 +51,24 @@ public class Job extends Model<Job> {
         set("software", softwareId);
     }
 
-    public Job changeStatus(Long id, int status, int progress) throws CytomineException {
-        return this.changeStatus(id, status, progress, null);
+    public void execute() throws CytomineException {
+        Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/job/"+get("id")+"/execute.json", "");
     }
 
-    public Job changeStatus(Long id, int status, int progress, String comment) throws CytomineException {
-        Job job = new Job().fetch(id);
-        job.set("progress", progress);
-        job.set("status", status);
-        job.set("statusComment", comment);
-        return job.update();
+    public Job changeStatus(JobStatus status, int progress) throws CytomineException {
+        return changeStatus(status.getValue(), progress);
+    }
+    public Job changeStatus(JobStatus status, int progress, String comment) throws CytomineException {
+        return changeStatus(status.getValue(), progress,comment);
+    }
+    public Job changeStatus(int status, int progress) throws CytomineException {
+        return this.changeStatus(status, progress, null);
+    }
+
+    public Job changeStatus(int status, int progress, String comment) throws CytomineException {
+        this.set("progress", progress);
+        this.set("status", status);
+        this.set("statusComment", comment);
+        return this.update();
     }
 }

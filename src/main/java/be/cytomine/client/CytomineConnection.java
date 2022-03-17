@@ -21,7 +21,8 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -35,7 +36,7 @@ import java.util.*;
 
 public class CytomineConnection {
 
-    private static final Logger log = Logger.getLogger(Cytomine.class);
+    private static final Logger log = LogManager.getLogger(Cytomine.class);
 
     private String host;
     private String login;
@@ -112,6 +113,8 @@ public class CytomineConnection {
 
         //if 200,201,...no exception
         if (code >= 400 && code < 600) {
+            throw new CytomineException(code, json);
+        } else if (code == 301) {
             throw new CytomineException(code, json);
         } else if (code == 302) {
             throw new CytomineException(code, json);
@@ -202,7 +205,9 @@ public class CytomineConnection {
             String response = client.getResponseData();
             log.debug("response=" + response);
             client.disconnect();
-            return createJSONResponse(code, response);
+            JSONObject json = createJSONResponse(code, response);
+            analyzeCode(code, json);
+            return json;
         } catch (IOException e) {
             throw new CytomineException(e);
         }

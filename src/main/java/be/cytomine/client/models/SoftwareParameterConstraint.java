@@ -26,4 +26,9 @@ public class SoftwareParameterConstraint extends Model<SoftwareParameterConstrai
         this.set("softwareParameter", softwareParameterId);
         this.set("value", value);
     }
+
+    @Override
+    public String getDomainName() {
+        return "software_parameter_constraint";
+    }
 }

@@ -20,14 +20,15 @@ import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.AnnotationCollection;
 import be.cytomine.client.models.Annotation;
 import be.cytomine.client.models.AnnotationTerm;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class AnnotationExample {
-    private static final Logger log = Logger.getLogger(AnnotationExample.class);
+    private static final Logger log = LogManager.getLogger(AnnotationExample.class);
 
     public static void testAddAnnotation(Cytomine cytomine) throws Exception {
         //http://beta.cytomine.be/api/annotation.json?&project=14389966&term=8965510&users=26999622&

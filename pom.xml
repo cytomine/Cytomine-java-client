@@ -6,7 +6,12 @@
 
     <groupId>be.cytomine.client</groupId>
     <artifactId>cytomine-java-client</artifactId>
-    <version>2.2.2</version>
+    <version>0.0.0</version>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Cytomine-java-client is an opensource Cytomine client.</description>
+    <url>http://www.cytomine.be</url>
+
 
     <developers>
         <developer>
@@ -17,14 +22,34 @@
         <developer>
             <id>geektortoise</id>
             <name>Renaud Hoyoux</name>
-            <email>Renaud.Hoyoux@cytomine.coop</email>
+            <email>Renaud.Hoyoux@cytomine.com</email>
         </developer>
         <developer>
             <id>lrollus</id>
             <name>Loïc ROLLUS</name>
-            <email>loicrollus@gmail.com</email>
+            <email>Loic.Rollus@cytomine.com</email>
+        </developer>
+        <developer>
+            <id>urubens</id>
+            <name>Ulysse Rubens</name>
+            <email>urubens@uliege.be</email>
         </developer>
     </developers>
+
+    <!-- This section is mandatory to publish jar in maven central -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <!-- This section is mandatory to publish jar in maven central -->
+    <scm>
+        <connection>scm:git:git://github.com/cytomine/Cytomine-java-client</connection>
+        <developerConnection>scm:git:ssh://github.com:cytomine/Cytomine-java-client</developerConnection>
+        <url>http://github.com/cytomine/Cytomine-java-client/tree/master</url>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -56,54 +81,56 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.6</version>
+            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient-cache</artifactId>
-            <version>4.3.1</version>
+            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.3</version>
+            <version>4.4.14</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.3.1</version>
+            <version>4.5.13</version>
         </dependency>
 
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.jms</groupId>
-                    <artifactId>jms</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jmx</groupId>
-                    <artifactId>jmxri</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jdmk</groupId>
-                    <artifactId>jmxtools</artifactId>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.16.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <version>2.16.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <version>0.9.12</version>
         </dependency>
 
         <dependency>
@@ -118,6 +145,17 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -126,10 +164,46 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- Attach source jars-->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Attach javadocs jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <additionalOptions>
+                        <additionalOption>-Xdoclint:none</additionalOption>
+                    </additionalOptions>
+                </configuration>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
+                <configuration>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
@@ -143,34 +217,25 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!--<plugin>-->
-            <!--<artifactId>maven-assembly-plugin</artifactId>-->
-            <!--<configuration>-->
-            <!--<archive>-->
-            <!--<manifest>-->
-            <!--<mainClass>fully.qualified.MainClass</mainClass>-->
-            <!--</manifest>-->
-            <!--</archive>-->
-            <!--<descriptorRefs>-->
-            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
-            <!--</descriptorRefs>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>sign</goal>
                         </goals>
+                            <configuration>
+                                <!-- Prevent gpg from using pinentry programs. Fixes: gpg: signing
+                                    failed: Inappropriate ioctl for device -->
+                                <gpgArguments>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </gpgArguments>
+                            </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -197,8 +262,9 @@
                 packagecloud+https://packagecloud.io/cytomine-uliege/Cytomine-java-client
             </url>
         </snapshotRepository>
+<!--        <snapshotRepository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </snapshotRepository>-->
     </distributionManagement>
-
-    <properties>
-    </properties>
 </project>

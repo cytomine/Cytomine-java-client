@@ -18,12 +18,13 @@ package be.cytomine.client.sample;
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.ProjectCollection;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ProjectExample {
 
-    private static final Logger log = Logger.getLogger(ProjectExample.class);
+    private static final Logger log = LogManager.getLogger(ProjectExample.class);
 
 
     public static void listProject(Cytomine cytomine) throws Exception {

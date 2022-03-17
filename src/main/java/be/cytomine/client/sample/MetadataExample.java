@@ -19,11 +19,12 @@ import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.PropertyCollection;
 import be.cytomine.client.models.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MetadataExample {
 
-    private static final Logger log = Logger.getLogger(MetadataExample.class);
+    private static final Logger log = LogManager.getLogger(MetadataExample.class);
 
     public static void testUploadFile(Cytomine cytomine) throws Exception {
         AttachedFile attachedFile = cytomine.uploadAttachedFile("/home/lrollus/Images/test01.jpg", "be.cytomine.project.Project", 21919089L);

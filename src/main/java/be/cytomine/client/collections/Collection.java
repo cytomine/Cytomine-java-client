@@ -207,7 +207,6 @@ public class Collection<T extends Model> {
         return l;
     }
 
-
     public JSONArray getList() {
         return list;
     }
