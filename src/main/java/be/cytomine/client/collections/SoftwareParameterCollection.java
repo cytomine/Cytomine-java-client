@@ -34,6 +34,9 @@ public class SoftwareParameterCollection extends Collection<SoftwareParameter> {
     public static SoftwareParameterCollection fetchBySoftware(Software software) throws CytomineException {
         return fetchBySoftware(Cytomine.getInstance().getDefaultCytomineConnection(), software, 0,0);
     }
+    public static SoftwareParameterCollection fetchBySoftware(Long softwareId) throws CytomineException {
+        return fetchBySoftware(Cytomine.getInstance().getDefaultCytomineConnection(), softwareId, 0,0);
+    }
     public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Software software) throws CytomineException {
         return fetchBySoftware(connection, software, 0,0);
     }
@@ -43,7 +46,10 @@ public class SoftwareParameterCollection extends Collection<SoftwareParameter> {
     }
 
     public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Software software, int offset, int max) throws CytomineException {
-        return (SoftwareParameterCollection) new SoftwareParameterCollection(max, offset).fetchWithFilter(connection, Software.class, software.getId(), offset, max);
+        return fetchBySoftware(Cytomine.getInstance().getDefaultCytomineConnection(), software.getId(), offset,max);
+    }
+    public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Long softwareId, int offset, int max) throws CytomineException {
+        return (SoftwareParameterCollection) new SoftwareParameterCollection(max, offset).fetchWithFilter(connection, Software.class, softwareId, offset, max);
     }
 
     //TODO remove this when rest url normalized

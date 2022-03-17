@@ -16,15 +16,6 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.CytomineException;
-import be.cytomine.client.collections.Collection;
-import be.cytomine.client.collections.ProcessingServerCollection;
-
-/**
- * User: rhoyoux
- * Date: 19/08/15
- * GIGA-ULg
- */
 public class ProcessingServer extends Model<ProcessingServer> {
     public ProcessingServer(){}
     public ProcessingServer(String name,String host,String username,Integer port,String type,String processingMethodName,AmqpQueue amqpQueue,String persistentDirectory, String workingDirectory,Integer index){

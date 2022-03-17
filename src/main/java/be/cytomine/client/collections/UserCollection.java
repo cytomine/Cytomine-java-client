@@ -50,7 +50,7 @@ public class UserCollection extends Collection<User> {
     }
 
     public static UserCollection fetchMembersOfAProject(CytomineConnection connection, Project project, boolean admin, boolean online, int offset, int max) throws CytomineException {
-        UserCollection uc = new UserCollection(max, offset);
+        UserCollection uc = new UserCollection(offset, max);
         if(admin) uc.addFilter("admin","true");
         if(online) uc.addFilter("online","true");
         uc.addFilter("project",project.getId().toString());

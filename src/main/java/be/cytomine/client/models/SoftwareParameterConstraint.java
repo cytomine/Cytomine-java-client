@@ -16,15 +16,14 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.CytomineException;
-
 public class SoftwareParameterConstraint extends Model<SoftwareParameterConstraint> {
-
     public SoftwareParameterConstraint(){}
-
-    public SoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value) throws CytomineException {
-		this.set("parameterConstraint", parameterConstraintId);
-		this.set("softwareParameter", softwareParameterId);
-		this.set("value", value);
-	}
+    public SoftwareParameterConstraint(ParameterConstraint parameterConstraint, SoftwareParameter softwareParameter, String value){
+        this(parameterConstraint.getId(), softwareParameter.getId(), value);
+    }
+    public SoftwareParameterConstraint(Long parameterConstraintId, Long softwareParameterId, String value){
+        this.set("parameterConstraint", parameterConstraintId);
+        this.set("softwareParameter", softwareParameterId);
+        this.set("value", value);
+    }
 }
