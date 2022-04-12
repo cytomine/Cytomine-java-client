@@ -29,8 +29,12 @@ services:
     restart: unless-stopped
 
   mongodb:
-    image: cytomine/mongodb:v1.1.2
+    image: mongo:4.4
     restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=cytomine
 
   rabbitmq:
     image: cytomine/rabbitmq:v1.1.2
