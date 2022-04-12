@@ -1463,19 +1463,19 @@ public class Cytomine {
     public static String convertDomainName(String input){
         switch (input.toLowerCase()) {
             case "project" :
-                return "be.cytomine.project.Project";
+                return "be.cytomine.domain.project.Project";
             case "imageinstance" :
-                return "be.cytomine.image.ImageInstance";
+                return "be.cytomine.domain.image.ImageInstance";
             case "annotation" :
-                return "be.cytomine.AnnotationDomain";
+                return "be.cytomine.domain.AnnotationDomain";
             case "software" :
-                return "be.cytomine.processing.Software";
+                return "be.cytomine.domain.processing.Software";
             case "softwareparameter" :
-                return "be.cytomine.processing.SoftwareParameter";
+                return "be.cytomine.domain.processing.SoftwareParameter";
             case "software_parameter" :
-                return "be.cytomine.processing.SoftwareParameter";
+                return "be.cytomine.domain.processing.SoftwareParameter";
             case "storage" :
-                return "be.cytomine.image.server.Storage";
+                return "be.cytomine.domain.image.server.Storage";
             default:
                 try {
                     throw new CytomineException(400,"Client doesn't support other domain for now. Domain was "+input);
