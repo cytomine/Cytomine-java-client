@@ -45,9 +45,9 @@ public class Utils {
     private static Tag tag;
 
 
-    static void connect() throws CytomineException {
+    static void connect() throws CytomineException, InterruptedException {
         if(cytomine != null) return;
-
+        Thread.sleep(60000);
         host="http://localhost-core";
         publicKey="4c6339f4-289a-4add-82cf-120a6a808b6f";
         privateKey="563de51e-d78c-4e07-9589-7873bd3341be";
