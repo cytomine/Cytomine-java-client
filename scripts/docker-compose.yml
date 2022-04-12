@@ -13,7 +13,7 @@ services:
       - "core:core"
 
   core:
-    image: cytomine/core:v3.0.4
+    image: cytomine/core:v4.0.0-beta.8
     restart: unless-stopped
     ports: [ "8090:8080" ]
     volumes:
