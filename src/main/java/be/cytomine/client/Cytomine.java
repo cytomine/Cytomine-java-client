@@ -156,7 +156,7 @@ public class Cytomine {
      */
     boolean testHostConnection() throws Exception {
         HttpClient client = new HttpClient();
-        client.connect(getHost() + "/server/ping", login, pass);
+        client.connect(getHost() + "/server/ping.json", login, pass);
         int code = 0;
         try {
             code = client.get();
