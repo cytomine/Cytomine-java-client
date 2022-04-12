@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     ports: [ "8090:8080" ]
     volumes:
-      - "./scripts/config/cytomineconfig.groovy:/usr/share/tomcat7/.grails/cytomineconfig.groovy"
+      - "./scripts/config/application.yml:/app/application.yml"
       - "./scripts/config/addHosts.sh:/tmp/addHosts.sh"
     links:
       - "postgresql:postgresql"
