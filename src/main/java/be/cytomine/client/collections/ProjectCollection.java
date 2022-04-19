@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ import be.cytomine.client.models.Project;
 import org.json.simple.JSONObject;
 
 public class ProjectCollection extends Collection<Project> {
+
+    public ProjectCollection() {
+        super(Project.class);
+    }
 
     public ProjectCollection(int offset, int max) {
         super(Project.class, max, offset);

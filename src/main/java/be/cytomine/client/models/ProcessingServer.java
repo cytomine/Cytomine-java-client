@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,18 @@ package be.cytomine.client.models;
 
 public class ProcessingServer extends Model<ProcessingServer> {
     public ProcessingServer(){}
-    public ProcessingServer(String name, String host, String username, Integer port, String type, String processingMethodName){
+    public ProcessingServer(String name,String host,String username,Integer port,String type,String processingMethodName,AmqpQueue amqpQueue,String persistentDirectory, String workingDirectory,Integer index){
+
         this.set("name", name);
         this.set("host", host);
         this.set("username", username);
         this.set("port", port);
         this.set("type", type);
         this.set("processingMethodName", processingMethodName);
+        this.set("amqpQueue", amqpQueue);
+        this.set("persistentDirectory", persistentDirectory);
+        this.set("workingDirectory", workingDirectory);
+        this.set("index", index);
     }
 
     @Override

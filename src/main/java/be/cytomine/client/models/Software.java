@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,18 @@ public class Software extends Model<Software> {
         this.set("executeCommand", executeCommand);
         this.set("softwareVersion", softwareVersion);
         this.set("pullingCommand", pullingCommand);
+    }
+
+    public Software(Boolean deprecated , String softwareVersion, String name, Long idSoftwareUserRepository, Long idDefaultProcessingServer, String resultType, String executeCommand, String pullingCommand){
+
+        this.set("softwareVersion", softwareVersion);
+        this.set("name", name);
+        this.set("softwareUserRepository", idSoftwareUserRepository);
+        this.set("defaultProcessingServer", idDefaultProcessingServer);
+        this.set("resultName", resultType);
+        this.set("executeCommand", executeCommand);
+        this.set("pullingCommand", pullingCommand);
+        this.set("deprecated", deprecated);
     }
 
     public Software deprecate() throws CytomineException {

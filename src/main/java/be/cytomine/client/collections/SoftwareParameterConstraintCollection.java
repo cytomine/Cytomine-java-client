@@ -16,11 +16,14 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.DeleteCommand;
+import be.cytomine.client.models.SoftwareParameterConstraint;
 
-public class DeleteCommandCollection extends Collection  {
+public class SoftwareParameterConstraintCollection extends Collection<SoftwareParameterConstraint> {
 
-    public DeleteCommandCollection(int max, int offset) {
-        super(DeleteCommand.class, max, offset);
+    public SoftwareParameterConstraintCollection() {
+        this(0,0);
+    }
+    public SoftwareParameterConstraintCollection(int offset, int max) {
+        super(SoftwareParameterConstraint.class, max, offset);
     }
 }

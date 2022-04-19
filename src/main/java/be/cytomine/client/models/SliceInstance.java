@@ -1,4 +1,4 @@
-package be.cytomine.client.collections;
+package be.cytomine.client.models;
 
 /*
  * Copyright (c) 2009-2022. Authors: see NOTICE file.
@@ -16,11 +16,18 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.DeleteCommand;
+public class SliceInstance extends Model<SliceInstance> {
 
-public class DeleteCommandCollection extends Collection  {
+    public SliceInstance() {}
 
-    public DeleteCommandCollection(int max, int offset) {
-        super(DeleteCommand.class, max, offset);
+    public SliceInstance(Project project, ImageInstance image, AbstractSlice baseSlice) {
+        this(project.getId(), image.getId(), baseSlice.getId());
+    }
+
+    public SliceInstance(Long projectId, Long imageId, Long baseSliceId) {
+        this.set("project", projectId);
+        this.set("image", imageId);
+        this.set("baseSlice", baseSliceId);
     }
 }
+

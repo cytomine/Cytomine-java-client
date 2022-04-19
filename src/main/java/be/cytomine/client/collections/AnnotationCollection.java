@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,17 +83,13 @@ public class AnnotationCollection extends Collection<Annotation> {
 
     @Override
     protected String getJSONResourceURL() throws CytomineException {
-        String start = "/api/annotation.json?";
-
-        Map<String, String> filters = getFilters();
-        for (Map.Entry<String, String> filter : filters.entrySet()) {
-            start = start + "&" + filter.getKey() + "=" + filter.getValue();
-        }
-
-        return start;
+        return "/api/annotation.json";
     }
 
-
+    @Override
+    protected Map<String, String> getParams() {
+        return getFilters();
+    }
 
     private final static ArrayList<String> validParameters = new ArrayList<>();
     static {

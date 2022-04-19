@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,21 +22,14 @@ import be.cytomine.client.CytomineException;
 public class AbstractImage extends Model<AbstractImage> {
 
     public AbstractImage(){}
-    public AbstractImage(String filename, String mime){
-        this.set("filename",filename);
-        this.set("path",filename);
-        this.set("mime",mime);
+
+    public AbstractImage(UploadedFile uploadedFile, String filename) {
+        this(uploadedFile.getId(), filename);
     }
-    @Override
-    public String toURL() {
-        Long id = getLong("id");
-        if (id != null) {
-            return getJSONResourceURL();
-        } else if (isFilterBy("uploadedFile")) {
-            return "/api/uploadedfile/" + getFilter("uploadedFile") + "/image.json";
-        } else {
-            return getJSONResourceURL();
-        }
+
+    public AbstractImage(Long uploadedFileId, String filename){
+        this.set("uploadedFile", uploadedFileId);
+        this.set("originalFilename",filename);
     }
 
     public String clearProperties() throws CytomineException {

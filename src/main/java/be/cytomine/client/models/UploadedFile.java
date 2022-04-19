@@ -1,7 +1,7 @@
 package be.cytomine.client.models;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,31 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-import be.cytomine.client.Cytomine;
-import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
-import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
+import be.cytomine.client.collections.Collection;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UploadedFile extends Model<UploadedFile> {
 
     public enum Status {
-
         UPLOADED (0),
-        CONVERTED (1),
-        DEPLOYED (2),
-        ERROR_FORMAT (3),
-        ERROR_CONVERSION (4),
-        UNCOMPRESSED (5),
-        TO_DEPLOY (6),
-        TO_CONVERT (7),
-        ERROR_DEPLOYMENT (8);
+
+        DETECTING_FORMAT (10),
+        ERROR_FORMAT (11), // 3
+
+        EXTRACTING_DATA (20),
+        ERROR_EXTRACTION (21),
+
+        CONVERTING (30),
+        ERROR_CONVERSION (31), // 4
+
+        DEPLOYING (40),
+        ERROR_DEPLOYMENT (41), // 8
+
+        DEPLOYED (100),
+        EXTRACTED (102),
+        CONVERTED (104);
 
         private final int code;
         Status(int code) {
@@ -50,24 +50,26 @@ public class UploadedFile extends Model<UploadedFile> {
     }
 
     public UploadedFile(){}
-    public UploadedFile(String originalFilename, String realFilename, File file, Long size, String ext, String contentType, List idProjects, List idStorages, User user, Status status, UploadedFile parent){
-        this(originalFilename, realFilename, file.getAbsolutePath(), size, ext, contentType, idProjects, idStorages, user.getId(), status, parent != null ? parent.getId() : null);
+    public UploadedFile(ImageServer server, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, Collection<Project> projects, Storage storage, User user, Status status,
+                        UploadedFile parent){
+        this(server.getId(), originalFilename, realFilename, size, ext, contentType, projects.getListIds(), storage.getId(),
+                user.getId(), status, parent != null ? parent.getId() : null);
     }
-    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
+    public UploadedFile(Long idImageServer, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, List idProjects, Long idStorage, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
-
-        this.set("path", path);
         this.set("size", size);
 
         this.set("ext", ext);
         this.set("contentType", contentType);
-        this.set("path", path);
 
         this.set("projects", idProjects);
-        this.set("storages", idStorages);
+        this.set("storage", idStorage);
 
         this.set("user", idUser);
+        this.set("imageServer", idImageServer);
 
         this.set("parent", idParent);
         if (status != null) {
@@ -79,6 +81,7 @@ public class UploadedFile extends Model<UploadedFile> {
         this.set("status", status.code);
         return this.update();
     }
+
 
     /**
      * Upload an image on the plateform
@@ -159,7 +162,7 @@ public class UploadedFile extends Model<UploadedFile> {
     }
 
 
-    public String getAbsolutePath() {
+    /*public String getAbsolutePath() {
         return this.get("path") + File.separator + this.get("filename");
     }
 
@@ -178,6 +181,6 @@ public class UploadedFile extends Model<UploadedFile> {
         if(isFilterBy("image")) return "/api/" + getDomainName() + "/image/"+getFilter("image")+".json";
 
         return super.getJSONResourceURL();
-    }
+    }*/
 
 }

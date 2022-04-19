@@ -1,7 +1,7 @@
 package client;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package client;
 
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
+import be.cytomine.client.collections.Collection;
+import be.cytomine.client.collections.ProjectCollection;
+import be.cytomine.client.collections.StorageCollection;
 import be.cytomine.client.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +45,9 @@ public class Utils {
     private static Ontology ontology;
     private static Term term;
     private static Annotation annotation;
+    private static ImageServer imageServer;
+    private static UploadedFile uploadedFile;
+    private static AbstractImage abstractImage;
     private static Tag tag;
 
 
@@ -114,12 +120,7 @@ public class Utils {
         return imageInstance;
     }
     static ImageInstance getNewImageInstance() throws CytomineException {
-        String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(name, "image/tiff");
-        ai.set("width",3000);
-        ai.set("height",3000);
-        ai.save();
-        return new ImageInstance(ai, Utils.getProject()).save();
+        return new ImageInstance(Utils.getNewAbstractImage(), Utils.getProject()).save();
     }
 
     static Term getTerm() throws CytomineException {
@@ -138,6 +139,40 @@ public class Utils {
     static Annotation getNewAnnotation() throws CytomineException {
         ImageInstance image = Utils.getImageInstance();
         return new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
+    }
+
+    static ImageServer getImageServer() throws CytomineException {
+        if (imageServer == null) imageServer = getNewImageServer();
+        return imageServer;
+    }
+    static ImageServer getNewImageServer() throws CytomineException {
+        Collection<ImageServer> c = Collection.fetch(ImageServer.class);
+        return c.get(0);
+    }
+
+    static UploadedFile getUploadedFile() throws CytomineException {
+        if (uploadedFile == null) uploadedFile = getNewUploadedFile();
+        return uploadedFile;
+    }
+    static UploadedFile getNewUploadedFile() throws CytomineException {
+        String originalFilename = Utils.getRandomString();
+        String filename = Utils.getRandomString();
+        return new UploadedFile(Utils.getImageServer(), originalFilename, filename, 0L, "ext", "contentType",
+                new ProjectCollection(), new StorageCollection().fetch().get(0), Utils.getUser(),
+                UploadedFile.Status.DEPLOYED, null).save();
+    }
+
+    static AbstractImage getAbstractImage() throws CytomineException {
+        if (abstractImage == null) abstractImage = getNewAbstractImage();
+        return abstractImage;
+    }
+    static AbstractImage getNewAbstractImage() throws CytomineException {
+        String name = Utils.getRandomString();
+        AbstractImage ai = new AbstractImage(Utils.getUploadedFile(), name);
+        ai.set("width",3000);
+        ai.set("height",3000);
+        ai.save();
+        return ai;
     }
 
     static Tag getTag() throws CytomineException {

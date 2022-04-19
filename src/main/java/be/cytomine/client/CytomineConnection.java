@@ -1,7 +1,7 @@
 package be.cytomine.client;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class CytomineConnection {
 
     private enum Method {GET, PUT, POST, DELETE}
 
-    CytomineConnection(String host, String publicKey, String privateKey) {
+    public CytomineConnection(String host, String publicKey, String privateKey) {
         this.host = host;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
@@ -104,7 +104,7 @@ public class CytomineConnection {
         if (forceRefresh || this.currentUser == null) {
             User user = new User();
             user.set("current", "current");
-            currentUser = user.fetch(null);
+            currentUser = user.fetch(this, null);
         }
 
         return currentUser;

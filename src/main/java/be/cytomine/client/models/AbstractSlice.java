@@ -16,13 +16,21 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class SoftwareProject extends Model<SoftwareProject> {
-    public SoftwareProject(){}
-    public SoftwareProject(Software software, Project project){
-        this(software.getId(), project.getId());
+public class AbstractSlice extends Model<AbstractSlice> {
+
+    public AbstractSlice() {}
+
+    public AbstractSlice(AbstractImage image, UploadedFile uploadedFile, String mime, Integer channel, Integer zStack, Integer time) {
+        this(image.getId(), uploadedFile.getId(), mime, channel, zStack, time);
     }
-    public SoftwareProject(Long idSoftware, Long idProject){
-        this.set("software", idSoftware);
-        this.set("project", idProject);
+
+    public AbstractSlice(Long imageId, Long uploadedFileId, String mime, Integer channel, Integer zStack, Integer time) {
+        this.set("image", imageId);
+        this.set("uploadedFile", uploadedFileId);
+        this.set("mime", mime);
+
+        this.set("channel", channel);
+        this.set("zStack", zStack);
+        this.set("time", time);
     }
 }

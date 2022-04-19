@@ -16,11 +16,13 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.DeleteCommand;
+import be.cytomine.client.models.SoftwareUserRepository;
 
-public class DeleteCommandCollection extends Collection  {
-
-    public DeleteCommandCollection(int max, int offset) {
-        super(DeleteCommand.class, max, offset);
+public class SoftwareUserRepositoryCollection extends Collection<SoftwareUserRepository> {
+    public SoftwareUserRepositoryCollection() {
+        this(0,0);
+    }
+    public SoftwareUserRepositoryCollection(int offset, int max) {
+        super(SoftwareUserRepository.class, max, offset);
     }
 }

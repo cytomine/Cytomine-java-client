@@ -1,7 +1,7 @@
 package be.cytomine.client.collections;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,9 +57,7 @@ public class TagDomainAssociationCollection extends Collection {
         getFilters().forEach((k,v) -> prefix.append(Cytomine.convertDomainName(k.toString())+"/"+v+"/"));
         base += prefix.toString();
         base += "tag_domain_association";//getDomainName();
-        base += ".json?";
-
-        base = base.substring(0, base.length() - 1);
+        base += ".json";
 
         return base;
 

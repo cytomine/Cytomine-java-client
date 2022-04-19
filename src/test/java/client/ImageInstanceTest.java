@@ -1,7 +1,7 @@
 package client;
 
 /*
- * Copyright (c) 2009-2020. Authors: see NOTICE file.
+ * Copyright (c) 2009-2022. Authors: see NOTICE file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class ImageInstanceTest {
     void testCreateImageInstance() throws CytomineException {
         log.info("test create image_instance");
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(name, "image/tiff").save();
+        AbstractImage ai = new AbstractImage(Utils.getNewUploadedFile(), name).save();
         ImageInstance ii = new ImageInstance(ai, Utils.getProject()).save();
         assertEquals(name, ii.getStr("instanceFilename"), "instanceFilename not the same used for the abstract_image creation");
 
