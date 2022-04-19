@@ -16,10 +16,17 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
+import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UploadedFile extends Model<UploadedFile> {
 
@@ -119,7 +126,7 @@ public class UploadedFile extends Model<UploadedFile> {
      * @return The created uploadedFile
      * @throws Exception Error during upload
      */
-    public UploadedFile upload(String uploadURL,  String file, Long idProject, Long idStorage, Map<String, String> properties, boolean synchrone) throws CytomineException {
+    public UploadedFile upload(String uploadURL, String file, Long idProject, Long idStorage, Map<String, String> properties, boolean synchrone) throws CytomineException {
 
         CytomineConnection uploadConnection = Cytomine.connection(
                 uploadURL,

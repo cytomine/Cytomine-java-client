@@ -23,7 +23,9 @@ import be.cytomine.client.models.Model;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -205,6 +207,14 @@ public class Collection<T extends Model> {
         this.list = list;
     }
 
+
+    public List<Long> getListIds() {
+        List<Long> l = new ArrayList<>();
+        for (int i = 0; i < this.size(); i++) {
+            l.add(this.get(i).getId());
+        }
+        return l;
+    }
 
     public int size() {
         return list.size();

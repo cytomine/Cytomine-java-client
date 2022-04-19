@@ -1415,10 +1415,6 @@ public class Cytomine {
         uploadedFile.delete();
     }
 
-    public UploadedFile getUploadedFileByAbstractImage(Long idAbstractImage) throws CytomineException {
-        return UploadedFile.getByAbstractImage(idAbstractImage);
-    }
-
     /**
      * Deprecated. Use Collection.fetch(AmqpQueue.class,offset, max) instead
      * @throws CytomineException
