@@ -59,17 +59,6 @@ public class AbstractImageTest {
         }*/
     }
 
-    @Test
-    void testCreateAbstractImageIncorrect() throws CytomineException {
-        log.info("test create incorrect abstract_image");
-
-        try {
-            new AbstractImage().save();
-            assert false;
-        } catch (CytomineException e) {
-            assertEquals(400, e.getHttpCode());
-        }
-    }
 
     @Test
     void testListAbstractImages() throws CytomineException {

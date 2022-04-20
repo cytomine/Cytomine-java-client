@@ -23,6 +23,7 @@ import be.cytomine.client.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class JobDataTest {
 
@@ -40,6 +42,7 @@ public class JobDataTest {
         Utils.connect();
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJobData() throws CytomineException {
         log.info("test create job_data");
@@ -64,6 +67,7 @@ public class JobDataTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJobDataIncorrect() throws CytomineException {
         log.info("test create incorrect job_data");
@@ -86,6 +90,7 @@ public class JobDataTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testUploadJobData() throws CytomineException, IOException {
         log.info("test upload job_data");
@@ -106,6 +111,7 @@ public class JobDataTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobData() throws CytomineException {
         log.info("test list job_data");
@@ -114,6 +120,7 @@ public class JobDataTest {
         log.info(c.size());
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobDataOfJob() throws CytomineException {
         log.info("test list job_data by job");

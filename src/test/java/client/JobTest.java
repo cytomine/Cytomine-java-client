@@ -25,6 +25,7 @@ import be.cytomine.client.models.Software;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,7 @@ public class JobTest {
         Utils.connect();
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJob() throws CytomineException {
         log.info("test create software_parameter");
@@ -58,6 +60,7 @@ public class JobTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJobIncorrect() throws CytomineException {
         log.info("test create incorrect job");
@@ -79,6 +82,7 @@ public class JobTest {
             assertEquals(400, e.getHttpCode());
         }
     }
+    @Disabled("wait software package migration")
     @Test
     void testListJobs() throws CytomineException {
         log.info("test list jobs");
@@ -87,6 +91,7 @@ public class JobTest {
         log.info(c.size());
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobsOfSoftware() throws CytomineException {
         log.info("test list jobs of a software");
@@ -103,6 +108,7 @@ public class JobTest {
         log.info(jc.size());
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobsOfProject() throws CytomineException {
         log.info("test list jobs of a project");
@@ -119,6 +125,7 @@ public class JobTest {
         log.info(jc.size());
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobsOfProjectAndSoftware() throws CytomineException {
         log.info("test list jobs of a project and a software");

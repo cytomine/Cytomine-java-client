@@ -22,6 +22,7 @@ import be.cytomine.client.models.ParameterConstraint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +36,7 @@ public class ParameterConstraintTest {
         Utils.connect();
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListSoftwareParameters() throws CytomineException {
         log.info("test list parameter contraints");

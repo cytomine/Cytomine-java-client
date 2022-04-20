@@ -69,8 +69,7 @@ public class DescriptionTest {
         try{
             new Description().save();
         } catch (CytomineException e){
-            //TODO must be 404
-            assertEquals(e.getHttpCode(), 500);
+            assertEquals(e.getHttpCode(), 400);
         }
     }
 

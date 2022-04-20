@@ -24,6 +24,7 @@ import be.cytomine.client.models.SoftwareParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,7 @@ public class SoftwareParameterTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testCreateSoftwareParameter() throws CytomineException {
         log.info("test create software_parameter");
         String name = Utils.getRandomString();
@@ -62,6 +64,7 @@ public class SoftwareParameterTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testCreateSoftwareParameterIncorrect() throws CytomineException {
         log.info("test create incorrect software_parameter");
 
@@ -83,6 +86,7 @@ public class SoftwareParameterTest {
         }
     }
     @Test
+    @Disabled("wait for software package")
     void testListSoftwareParameters() throws CytomineException {
         log.info("test list software_parameters");
         Collection<SoftwareParameter> c = Collection.fetch(SoftwareParameter.class);
@@ -91,6 +95,7 @@ public class SoftwareParameterTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testListSoftwareParametersOfSoftware() throws CytomineException {
         log.info("test list software_parameters of a software");
         Software software = Utils.getSoftware();

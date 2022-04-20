@@ -53,14 +53,14 @@ public class Utils {
 
     static void connect() throws CytomineException {
         if(cytomine != null) return;
-        try {
-            Thread.sleep(60000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        host="http://localhost-core";
-        publicKey="4c6339f4-289a-4add-82cf-120a6a808b6f";
-        privateKey="563de51e-d78c-4e07-9589-7873bd3341be";
+//        try {
+//            Thread.sleep(60000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+        host="http://localhost:8080";
+        publicKey="superAdminPublicKey";
+        privateKey="superAdminPrivateKey";
 
         log.info("Connection to cytomine...");
         Cytomine.connection(host,publicKey,privateKey);
@@ -116,7 +116,20 @@ public class Utils {
     }
 
     static ImageInstance getImageInstance() throws CytomineException {
-        if(imageInstance == null) imageInstance = getNewImageInstance();
+        if(imageInstance == null) {
+            imageInstance = getNewImageInstance();
+            AbstractSlice abstractSlice = new AbstractSlice(
+                    new AbstractImage().fetch(imageInstance.getLong("baseImage")),
+                    Utils.getUploadedFile(),
+                    "image/pyrtiff",
+                    0,
+                    0,
+                    0
+            );
+            abstractSlice.save();
+            SliceInstance slice = new SliceInstance(imageInstance.getLong("project"), imageInstance.getId(), abstractSlice.getId());
+            slice.save();
+        }
         return imageInstance;
     }
     static ImageInstance getNewImageInstance() throws CytomineException {

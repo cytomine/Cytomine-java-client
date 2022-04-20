@@ -47,6 +47,7 @@ public class AnnotationTest {
     void testCreateAnnotation() throws CytomineException {
         log.info("test create annotation");
         ImageInstance image = Utils.getImageInstance();
+
         Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
         assertEquals(image.getId(), a.get("image"), "image not the same used for the annotation creation");
 

@@ -100,6 +100,10 @@ public abstract class Model<T extends Model> {
         return getClass().getSimpleName().toLowerCase();
     }
 
+    public String getCytomineClassName(){
+        return (String)get("class");
+    }
+
     protected String getFilterPrefix() {
         final StringBuilder prefix = new StringBuilder("");
         filters.forEach((k,v) -> prefix.append(k+"/"+v+"/"));

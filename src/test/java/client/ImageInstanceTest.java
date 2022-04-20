@@ -80,7 +80,7 @@ public class ImageInstanceTest {
             Collection<ImageInstance> c = Collection.fetch(ImageInstance.class);
             assert false;
         } catch (CytomineException e) {
-            assertEquals(404, e.getHttpCode());
+            assertEquals(405, e.getHttpCode());
         }
     }
 

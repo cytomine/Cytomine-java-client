@@ -30,7 +30,7 @@ public class Property extends Model<Property> {
         this(model, null, null);
     }
     public Property(Model model, String key, String value) {
-        this(model.getClass().getSimpleName().toLowerCase(),model.getId(), key, value);
+        this((String)model.get("class"),model.getId(), key, value);
     }
     public Property(String domain, Long idDomain){
         this(domain, idDomain, null);
@@ -68,7 +68,7 @@ public class Property extends Model<Property> {
     @Override
     public String getJSONResourceURL() {
         Long id = getId();
-        String base = "/api/";
+        String base = "/api/domain/";
         //base += "domain/";
 
         //hack to fit url until refactoring of urls

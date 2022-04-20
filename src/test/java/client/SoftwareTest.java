@@ -24,6 +24,7 @@ import be.cytomine.client.models.SoftwareProject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,7 @@ public class SoftwareTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testCreateSoftware() throws CytomineException {
         log.info("test create software");
         String name = Utils.getRandomString();
@@ -61,6 +63,7 @@ public class SoftwareTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testCreateSoftwareIncorrect() throws CytomineException {
         log.info("test create incorrect software");
 
@@ -72,6 +75,7 @@ public class SoftwareTest {
         }
     }
     @Test
+    @Disabled("wait for software package")
     void testListSoftwares() throws CytomineException {
         log.info("test list softwares");
         Collection<Software> c = Collection.fetch(Software.class);
@@ -80,6 +84,7 @@ public class SoftwareTest {
     }
 
     @Test
+    @Disabled("wait for software package")
     void testSoftwareProject() throws CytomineException {
         log.info("test software project");
         Project project = Utils.getProject();

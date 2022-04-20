@@ -26,6 +26,7 @@ import be.cytomine.client.models.SoftwareParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +40,7 @@ public class JobParametersTest {
         Utils.connect();
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJobParameter() throws CytomineException {
         log.info("test create job_parameter");
@@ -66,6 +68,7 @@ public class JobParametersTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testCreateJobParameterIncorrect() throws CytomineException {
         log.info("test create incorrect job_parameter");
@@ -88,6 +91,7 @@ public class JobParametersTest {
         }
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobParameters() throws CytomineException {
         log.info("test list job_parameters");
@@ -96,6 +100,7 @@ public class JobParametersTest {
         log.info(c.size());
     }
 
+    @Disabled("wait software package migration")
     @Test
     void testListJobParametersOfJob() throws CytomineException {
         log.info("test list job_parameters of a job");

@@ -72,12 +72,12 @@ public class PropertyTest {
         try{
             new Property().save();
         } catch (CytomineException e){
-            assertEquals(400, e.getHttpCode());
+            assertEquals(404, e.getHttpCode());
         }
         try{
             new Property(project).save();
         } catch (CytomineException e){
-            assertEquals(400, e.getHttpCode());
+            assertEquals(404, e.getHttpCode());
         }
     }
 
@@ -89,7 +89,7 @@ public class PropertyTest {
             pc.fetch();
             assert false;
         } catch(CytomineException e){
-            assertEquals(e.getHttpCode(), 404);
+            assertEquals(e.getHttpCode(), 405);
         }
     }
 
