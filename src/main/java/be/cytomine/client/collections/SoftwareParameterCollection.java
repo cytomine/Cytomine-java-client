@@ -51,10 +51,4 @@ public class SoftwareParameterCollection extends Collection<SoftwareParameter> {
     public static SoftwareParameterCollection fetchBySoftware(CytomineConnection connection, Long softwareId, int offset, int max) throws CytomineException {
         return (SoftwareParameterCollection) new SoftwareParameterCollection(max, offset).fetchWithFilter(connection, Software.class, softwareId, offset, max);
     }
-
-    //TODO remove this when rest url normalized
-    public String getDomainName() throws CytomineException {
-        if(isFilterBy("software")) return "parameter";
-        return "softwareparameter";
-    }
 }

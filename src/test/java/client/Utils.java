@@ -103,7 +103,6 @@ public class Utils {
     }
     static Software getSoftware() throws CytomineException {
         String name = Utils.getRandomString();
-        SoftwareParameter sp = new SoftwareParameter("", "", 0L, "", true, 0, "", "","", true, true, "", "","");
         return new Software(name, "", "", "").save();
     }
     static Job getJob() throws CytomineException {

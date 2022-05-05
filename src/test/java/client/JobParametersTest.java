@@ -45,9 +45,7 @@ public class JobParametersTest {
         String name = Utils.getRandomString();
         Job job = Utils.getJob();
         Software software = Utils.getSoftware();
-        //TODO: clean that! update software test with new software architecture!
-
-        SoftwareParameter sp = new SoftwareParameter("", "", new Long(0), "", true, 0, "", "","", true, true, "", "","").save();
+        SoftwareParameter sp = new SoftwareParameter(name, "", software.getId(), "", true, 0).save();
         String value = "value";
         JobParameter jp = new JobParameter(job, sp ,value).save();
         assertEquals(value, jp.get("value"), "value not the same used for the job_parameter creation");
