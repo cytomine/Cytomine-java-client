@@ -566,6 +566,28 @@ public class Cytomine {
         return null;
     }
 
+    @Deprecated
+	public String getImageServersOfAbstractImage(Long abstractImageID) throws CytomineException {
+        JSONObject response = defaultCytomineConnection.doGet(
+                "/api/abstractimage/"+abstractImageID+"/imageservers.json"
+        );
+        JSONArray servers = (JSONArray) response.get("imageServersURLs");
+        return (String) servers.get(0);
+	}
+
+    @Deprecated
+    public Collection<ImageServer> getAbstractImageServers(AbstractImage abstractImage) throws CytomineException {
+        Collection<ImageServer> imageServers = new Collection<>(ImageServer.class,0,0);
+        imageServers.addFilter("abstractimage", "" + abstractImage.getId());
+        return imageServers.fetch();
+    }
+
+    @Deprecated
+	public Collection<ImageServer> getImageInstanceServers(ImageInstance image) throws CytomineException {
+		AbstractImage abstractImage = new AbstractImage();
+		abstractImage.set("id", image.get("baseImage"));
+		return getAbstractImageServers(abstractImage);
+	}
 
     public User getKeys(String publicKey) throws CytomineException {
         User user = new User();
