@@ -16,17 +16,21 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class ParameterConstraint extends Model<ParameterConstraint> {
+public class AbstractSlice extends Model<AbstractSlice> {
 
-    public ParameterConstraint(){}
-    public ParameterConstraint(String name, String expression, String dataType){
-        this.set("name",name);
-        this.set("expression",expression);
-        this.set("dataType",dataType);
+    public AbstractSlice() {}
+
+    public AbstractSlice(AbstractImage image, UploadedFile uploadedFile, String mime, Integer channel, Integer zStack, Integer time) {
+        this(image.getId(), uploadedFile.getId(), mime, channel, zStack, time);
     }
 
-    @Override
-    public String getDomainName() {
-        return "parameter_constraint";
+    public AbstractSlice(Long imageId, Long uploadedFileId, String mime, Integer channel, Integer zStack, Integer time) {
+        this.set("image", imageId);
+        this.set("uploadedFile", uploadedFileId);
+        this.set("mime", mime);
+
+        this.set("channel", channel);
+        this.set("zStack", zStack);
+        this.set("time", time);
     }
 }

@@ -18,17 +18,16 @@ package client;
 
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
-import be.cytomine.client.models.AbstractImage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import be.cytomine.client.models.AbstractSlice;
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AbstractImageTest {
+public class AbstractSliceTests {
 
-    private static final Logger log = LogManager.getLogger(AbstractImageTest.class);
+    private static final Logger log = Logger.getLogger(AbstractSliceTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {
@@ -36,14 +35,14 @@ public class AbstractImageTest {
     }
 
     @Test
-    void testCreateAbstractImage() throws CytomineException {
+    void testCreateAbstractSlice() throws CytomineException {
         log.info("test create abstract_image");
         String name = Utils.getRandomString();
-        AbstractImage ai = new AbstractImage(Utils.getNewUploadedFile(), name).save();
-        assertEquals(name, ai.getStr("originalFilename"), "originalFilename not the same used for the abstract_image creation");
+        AbstractSlice as = new AbstractSlice(Utils.getNewAbstractImage(), Utils.getNewUploadedFile(), "image/pyrtiff", 0, 0, 0).save();
+        assertEquals("image/pyrtiff", as.getStr("mime"), "mime not the same used for the abstract_slice creation");
 
-        ai = new AbstractImage().fetch(ai.getId());
-        assertEquals(name, ai.getStr("originalFilename"), "fetched originalFilename not the same used for the abstract_image creation");
+        as = new AbstractSlice().fetch(as.getId());
+        assertEquals("image/pyrtiff", as.getStr("mime"), "fetched mime not the same used for the abstract_slice creation");
 
         /* TODO permissions
         ai.set("width", 1000);
@@ -52,7 +51,7 @@ public class AbstractImageTest {
 
         ai.delete();
         try {
-            new AbstractImage().fetch(ai.getId());
+            new AbstractSlice().fetch(ai.getId());
             assert false;
         } catch (CytomineException e) {
             assertEquals(e.getHttpCode(), 404);
@@ -60,11 +59,11 @@ public class AbstractImageTest {
     }
 
     @Test
-    void testCreateAbstractImageIncorrect() throws CytomineException {
-        log.info("test create incorrect abstract_image");
+    void testCreateAbstractSliceIncorrect() throws CytomineException {
+        log.info("test create incorrect abstract_slice");
 
         try {
-            new AbstractImage().save();
+            new AbstractSlice().save();
             assert false;
         } catch (CytomineException e) {
             assertEquals(400, e.getHttpCode());
@@ -72,9 +71,11 @@ public class AbstractImageTest {
     }
 
     @Test
-    void testListAbstractImages() throws CytomineException {
-        log.info("test list abstract_images");
-        Collection<AbstractImage> c = Collection.fetch(AbstractImage.class);
+    void testListAbstractSlices() throws CytomineException {
+        log.info("test list abstract_slices");
+        Collection<AbstractSlice> c = new Collection<>(AbstractSlice.class, 0, 0);
+        c.addFilter("abstractimage", Utils.getAbstractImage().getId().toString());
+        c.fetch();
 
         log.info(c.size());
     }

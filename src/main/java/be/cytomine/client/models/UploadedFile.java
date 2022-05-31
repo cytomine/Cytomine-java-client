@@ -19,8 +19,10 @@ package be.cytomine.client.models;
 import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineConnection;
 import be.cytomine.client.CytomineException;
+import be.cytomine.client.collections.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,16 +33,23 @@ import java.util.Map;
 public class UploadedFile extends Model<UploadedFile> {
 
     public enum Status {
-
         UPLOADED (0),
-        CONVERTED (1),
-        DEPLOYED (2),
-        ERROR_FORMAT (3),
-        ERROR_CONVERSION (4),
-        UNCOMPRESSED (5),
-        TO_DEPLOY (6),
-        TO_CONVERT (7),
-        ERROR_DEPLOYMENT (8);
+
+        DETECTING_FORMAT (10),
+        ERROR_FORMAT (11), // 3
+
+        EXTRACTING_DATA (20),
+        ERROR_EXTRACTION (21),
+
+        CONVERTING (30),
+        ERROR_CONVERSION (31), // 4
+
+        DEPLOYING (40),
+        ERROR_DEPLOYMENT (41), // 8
+
+        DEPLOYED (100),
+        EXTRACTED (102),
+        CONVERTED (104);
 
         private final int code;
         Status(int code) {
@@ -50,24 +59,26 @@ public class UploadedFile extends Model<UploadedFile> {
     }
 
     public UploadedFile(){}
-    public UploadedFile(String originalFilename, String realFilename, File file, Long size, String ext, String contentType, List idProjects, List idStorages, User user, Status status, UploadedFile parent){
-        this(originalFilename, realFilename, file.getAbsolutePath(), size, ext, contentType, idProjects, idStorages, user.getId(), status, parent != null ? parent.getId() : null);
+    public UploadedFile(ImageServer server, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, Collection<Project> projects, Storage storage, User user, Status status,
+                        UploadedFile parent){
+        this(server.getId(), originalFilename, realFilename, size, ext, contentType, projects.getListIds(), storage.getId(),
+                user.getId(), status, parent != null ? parent.getId() : null);
     }
-    public UploadedFile(String originalFilename, String realFilename, String path, Long size, String ext, String contentType, List idProjects, List idStorages, Long idUser, Status status, Long idParent){
+    public UploadedFile(Long idImageServer, String originalFilename, String realFilename, Long size, String ext,
+                        String contentType, List idProjects, Long idStorage, Long idUser, Status status, Long idParent){
         this.set("originalFilename", originalFilename);
         this.set("filename", realFilename);
-
-        this.set("path", path);
         this.set("size", size);
 
         this.set("ext", ext);
         this.set("contentType", contentType);
-        this.set("path", path);
 
         this.set("projects", idProjects);
-        this.set("storages", idStorages);
+        this.set("storage", idStorage);
 
         this.set("user", idUser);
+        this.set("imageServer", idImageServer);
 
         this.set("parent", idParent);
         if (status != null) {
@@ -157,27 +168,4 @@ public class UploadedFile extends Model<UploadedFile> {
         this.setAttr((JSONObject) uploadResult.get("attr"));
         return this;
     }
-
-
-    public String getAbsolutePath() {
-        return this.get("path") + File.separator + this.get("filename");
-    }
-
-    public static UploadedFile getByAbstractImage(AbstractImage ai) throws CytomineException {
-        return getByAbstractImage(ai.getId());
-    }
-    public static UploadedFile getByAbstractImage(Long idAbstractImage) throws CytomineException {
-        UploadedFile uf = new UploadedFile();
-        uf.addFilter("image", idAbstractImage.toString());
-        return uf.fetch(null);
-    }
-
-    @Override
-    public String getJSONResourceURL() {
-        //TODO change when rest url are normalized
-        if(isFilterBy("image")) return "/api/" + getDomainName() + "/image/"+getFilter("image")+".json";
-
-        return super.getJSONResourceURL();
-    }
-
 }

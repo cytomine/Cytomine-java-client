@@ -566,44 +566,23 @@ public class Cytomine {
         return null;
     }
 
-	public String getImageServersOfAbstractImage(Long abstractImageID) {
-
-		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
-
-		    HttpClient client = null;
-            client = new HttpClient(publicKey, privateKey, getHost());
-
-
-			try {
-	            client.authorize("GET", subUrl, "", "application/json,*/*");
-	            client.connect(getHost() + subUrl);
-	            int code = client.get();
-
-	            String response = client.getResponseData();
-	            client.disconnect();
-	            JSONObject json = createJSONResponse(code, response);
-            	analyzeCode(code, json);
-
-            	JSONArray servers = (JSONArray) json.get("imageServersURLs");
-
-            	return (String) servers.get(0);
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (CytomineException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		return null;
+    @Deprecated
+	public String getImageServersOfAbstractImage(Long abstractImageID) throws CytomineException {
+        JSONObject response = defaultCytomineConnection.doGet(
+                "/api/abstractimage/"+abstractImageID+"/imageservers.json"
+        );
+        JSONArray servers = (JSONArray) response.get("imageServersURLs");
+        return (String) servers.get(0);
 	}
 
+    @Deprecated
     public Collection<ImageServer> getAbstractImageServers(AbstractImage abstractImage) throws CytomineException {
         Collection<ImageServer> imageServers = new Collection<>(ImageServer.class,0,0);
         imageServers.addFilter("abstractimage", "" + abstractImage.getId());
         return imageServers.fetch();
     }
+
+    @Deprecated
 	public Collection<ImageServer> getImageInstanceServers(ImageInstance image) throws CytomineException {
 		AbstractImage abstractImage = new AbstractImage();
 		abstractImage.set("id", image.get("baseImage"));
@@ -620,7 +599,7 @@ public class Cytomine {
         User user = new User();
         user.addFilter("id", id + "");
         user.addFilter("keys", "keys");
-        return user.fetch(id);
+        return user.fetch(null);
     }
 
     /*public User getKeysByUsername(String username) throws CytomineException {
@@ -1029,7 +1008,7 @@ public class Cytomine {
 
     @Deprecated
     public AbstractImage addAbstractImage(String filename, String mime) throws CytomineException {
-        return new AbstractImage(filename,mime).save();
+        return new AbstractImage(0L, filename).save();
     }
 
     @Deprecated
@@ -1263,26 +1242,6 @@ public class Cytomine {
     }
 
     @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut, boolean setByServer) throws CytomineException {
-        return new SoftwareParameter(name,type,idSoftware,defaultValue,required,index,uri,uriSortAttribut,uriPrintAttribut,setByServer).save();
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, String uri, String uriSortAttribut, String uriPrintAttribut) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, uri, uriSortAttribut, uriPrintAttribut, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, false);
-    }
-
-    @Deprecated
-    public SoftwareParameter addSoftwareParameter(String name, String type, Long idSoftware, String defaultValue, boolean required, int index, boolean setByServer) throws CytomineException {
-        return addSoftwareParameter(name, type, idSoftware, defaultValue, required, index, null, null, null, setByServer);
-    }
-
-    @Deprecated
     public SoftwareProject addSoftwareProject(Long idSoftware, Long idProject) throws CytomineException {
         return new SoftwareProject(idSoftware,idProject).save();
     }
@@ -1307,11 +1266,6 @@ public class Cytomine {
         SoftwareCollection softwares = new SoftwareCollection(offset, max);
         return (SoftwareCollection) softwares.fetch();
     }
-
-    /*@Deprecated
-    public ProcessingServer addProcessingServer(String url) throws CytomineException {
-        return new ProcessingServer(url).save();
-    }*/
 
     @Deprecated
     public ImageFilter addImageFilter(String name, String baseUrl, String processingServer) throws CytomineException {
@@ -1430,7 +1384,7 @@ public class Cytomine {
         UploadedFile.Status state = Arrays.stream(UploadedFile.Status.values())
                 .filter(c -> c.getCode() == status)
                 .findFirst().get();
-        return new UploadedFile(originalFilename,realFilename,path,size,ext,contentType,idProjects,idStorages,idUser,state,idParent).save();
+        return new UploadedFile(0L, originalFilename,realFilename,size,ext,contentType,idProjects,(Long) idStorages.get(0),idUser,state,idParent).save();
     }
 
     @Deprecated
@@ -1443,10 +1397,6 @@ public class Cytomine {
         UploadedFile uploadedFile = new UploadedFile();
         uploadedFile.set("id", idUploadedFile);
         uploadedFile.delete();
-    }
-
-    public UploadedFile getUploadedFileByAbstractImage(Long idAbstractImage) throws CytomineException {
-        return UploadedFile.getByAbstractImage(idAbstractImage);
     }
 
     /**

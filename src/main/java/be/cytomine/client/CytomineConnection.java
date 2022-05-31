@@ -54,7 +54,7 @@ public class CytomineConnection {
 
     private enum Method {GET, PUT, POST, DELETE}
 
-    CytomineConnection(String host, String publicKey, String privateKey) {
+    public CytomineConnection(String host, String publicKey, String privateKey) {
         this.host = host;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
@@ -95,7 +95,6 @@ public class CytomineConnection {
      */
     public String getPrivateKey() { return this.privateKey; }
 
-
     public User getCurrentUser() throws CytomineException {
         return getCurrentUser(false);
     }
@@ -104,7 +103,7 @@ public class CytomineConnection {
         if (forceRefresh || this.currentUser == null) {
             User user = new User();
             user.set("current", "current");
-            currentUser = user.fetch(null);
+            currentUser = user.fetch(this, null);
         }
 
         return currentUser;

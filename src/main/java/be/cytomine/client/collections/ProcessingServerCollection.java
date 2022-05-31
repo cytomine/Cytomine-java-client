@@ -16,16 +16,11 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.Project;
-import org.json.simple.JSONObject;
+import be.cytomine.client.models.ProcessingServer;
 
-public class ProjectCollection extends Collection<Project> {
+public class ProcessingServerCollection extends Collection<ProcessingServer> {
 
-    public ProjectCollection() {
-        super(Project.class);
-    }
-
-    public ProjectCollection(int offset, int max) {
-        super(Project.class, max, offset);
+    public ProcessingServerCollection(int offset, int max) {
+        super(ProcessingServer.class, max, offset);
     }
 }

@@ -16,16 +16,14 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.Project;
-import org.json.simple.JSONObject;
+import be.cytomine.client.models.SoftwareParameterConstraint;
 
-public class ProjectCollection extends Collection<Project> {
+public class SoftwareParameterConstraintCollection extends Collection<SoftwareParameterConstraint> {
 
-    public ProjectCollection() {
-        super(Project.class);
+    public SoftwareParameterConstraintCollection() {
+        this(0,0);
     }
-
-    public ProjectCollection(int offset, int max) {
-        super(Project.class, max, offset);
+    public SoftwareParameterConstraintCollection(int offset, int max) {
+        super(SoftwareParameterConstraint.class, max, offset);
     }
 }

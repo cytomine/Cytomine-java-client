@@ -1,4 +1,4 @@
-package be.cytomine.client.collections;
+package be.cytomine.client.models;
 
 /*
  * Copyright (c) 2009-2022. Authors: see NOTICE file.
@@ -16,16 +16,18 @@ package be.cytomine.client.collections;
  * limitations under the License.
  */
 
-import be.cytomine.client.models.Project;
-import org.json.simple.JSONObject;
+public class SliceInstance extends Model<SliceInstance> {
 
-public class ProjectCollection extends Collection<Project> {
+    public SliceInstance() {}
 
-    public ProjectCollection() {
-        super(Project.class);
+    public SliceInstance(Project project, ImageInstance image, AbstractSlice baseSlice) {
+        this(project.getId(), image.getId(), baseSlice.getId());
     }
 
-    public ProjectCollection(int offset, int max) {
-        super(Project.class, max, offset);
+    public SliceInstance(Long projectId, Long imageId, Long baseSliceId) {
+        this.set("project", projectId);
+        this.set("image", imageId);
+        this.set("baseSlice", baseSliceId);
     }
 }
+

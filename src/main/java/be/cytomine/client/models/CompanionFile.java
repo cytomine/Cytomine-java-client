@@ -16,17 +16,18 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
-public class ParameterConstraint extends Model<ParameterConstraint> {
+public class CompanionFile extends Model<CompanionFile> {
+    public CompanionFile(){}
 
-    public ParameterConstraint(){}
-    public ParameterConstraint(String name, String expression, String dataType){
-        this.set("name",name);
-        this.set("expression",expression);
-        this.set("dataType",dataType);
+    public CompanionFile(UploadedFile uploadedFile, AbstractImage image, String originalFilename, String filename, String type) {
+        this(uploadedFile.getId(), image.getId(), originalFilename, filename, type);
     }
 
-    @Override
-    public String getDomainName() {
-        return "parameter_constraint";
+    public CompanionFile(Long uploadedFileId, Long imageId, String originalFilename, String filename, String type){
+        this.set("uploadedFile", uploadedFileId);
+        this.set("image", imageId);
+        this.set("originalFilename",originalFilename);
+        this.set("filename", filename);
+        this.set("type", type);
     }
 }

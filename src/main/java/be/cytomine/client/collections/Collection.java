@@ -23,7 +23,9 @@ import be.cytomine.client.models.Model;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,14 +61,22 @@ public class Collection<T extends Model> {
     // ####################### URL #######################
 
     public String toURL() throws CytomineException {
-        String url = getJSONResourceURL()+"?";
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            url += param.getKey() + "=" + param.getValue() + "&";
+        StringBuilder url = new StringBuilder(getJSONResourceURL());
+
+        if (getAllURLParams().size() > 0) {
+            url.append("?");
         }
-        if(url.charAt(url.length()-1) == '&') url = url.substring(0, url.length() - 1);
-        if(url.contains("?") && url.charAt(url.length()-1) == '?') url = url.substring(0, url.length() - 1);
-        url += getPaginatorURLParams();
-        return url;
+
+        for (Map.Entry<String, String> param : getAllURLParams().entrySet()) {
+            url.append(param.getKey()).append("=").append(param.getValue()).append("&");
+        }
+
+        String builtUrl = url.toString();
+        if (builtUrl.charAt(url.length() - 1) == '&') {
+            builtUrl = builtUrl.substring(0, url.length() - 1);
+        }
+
+        return builtUrl;
     }
 
     protected String getJSONResourceURL() throws CytomineException {
@@ -82,8 +92,22 @@ public class Collection<T extends Model> {
         return urlB.toString();
     }
 
-    private String getPaginatorURLParams() {
-        return "&max=" + this.max + "&offset=" + this.offset;
+    protected Map<String, String> getParams() {
+        return params;
+    }
+
+    protected Map<String, String> getAllURLParams() {
+        HashMap<String, String> allParams = new HashMap<>();
+        allParams.putAll(getParams());
+        allParams.putAll(getPaginatorURLParams());
+        return allParams;
+    }
+
+    private Map<String, String> getPaginatorURLParams() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("max", String.valueOf(this.max));
+        params.put("offset", String.valueOf(this.offset));
+        return params;
     }
 
     public String getDomainName() throws CytomineException {
@@ -173,6 +197,14 @@ public class Collection<T extends Model> {
             // ignore, would already have failed in constructor
             return null;
         }
+    }
+
+    public List<Long> getListIds() {
+        List<Long> l = new ArrayList<>();
+        for (int i = 0; i < this.size(); i++) {
+            l.add(this.get(i).getId());
+        }
+        return l;
     }
 
     public JSONArray getList() {

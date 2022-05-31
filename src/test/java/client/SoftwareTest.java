@@ -41,7 +41,7 @@ public class SoftwareTest {
     void testCreateSoftware() throws CytomineException {
         log.info("test create software");
         String name = Utils.getRandomString();
-        Software s = new Software(name, "createRabbitJobWithArgsService", name, name).save();
+        Software s = new Software(name , "", "", "").save();
         assertEquals(name, s.get("name"), "name not the same used for the software creation");
 
         s = new Software().fetch(s.getId());
