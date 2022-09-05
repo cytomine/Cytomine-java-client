@@ -40,8 +40,8 @@ public class Annotation extends Model<Annotation> {
         if(image != null) this.set("image", image);
     }
 
-    public Annotation(String locationWKT, Long image, List<Long> terms) {
-        this(locationWKT, null, image);
+    public Annotation(String locationWKT, Long slice, Long image, List<Long> terms) {
+        this(locationWKT, slice, image);
         this.set("term", terms);
     }
 

@@ -46,12 +46,12 @@ public class AnnotationTest {
     @Test
     void testCreateAnnotation() throws CytomineException {
         log.info("test create annotation");
-        ImageInstance image = Utils.getImageInstance();
-        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
-        assertEquals(image.getId(), a.get("image"), "image not the same used for the annotation creation");
+        SliceInstance slice = Utils.getSliceInstance();
+        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", slice).save();
+        assertEquals(slice.getId(), a.get("slice"), "image not the same used for the annotation creation");
 
         a = new Annotation().fetch(a.getId());
-        assertEquals(image.getId(), a.get("image"), "fetched image not the same used for the annotation creation");
+        assertEquals(slice.getId(), a.get("slice"), "fetched image not the same used for the annotation creation");
 
         String locationBis = "POLYGON ((1983 2169, 2107 2160, 2047 2074, 1983 2169))";
         assertNotEquals(locationBis, a.get("location"), "Not the location used for the annotation update");
@@ -71,13 +71,14 @@ public class AnnotationTest {
     @Test
     void testCreateAnnotationWithTerms() throws CytomineException {
         log.info("test create annotation with terms");
+        SliceInstance slice = Utils.getSliceInstance();
         ImageInstance image = Utils.getImageInstance();
         Term term1 = Utils.getTerm();
         Term term2 = Utils.getNewTerm();
         List<Long> idTerms = new ArrayList<>();
         idTerms.add(term1.getId());
         idTerms.add(term2.getId());
-        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image.getId(), idTerms).save();
+        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", slice.getId(), image.getId(), idTerms).save();
         assertEquals(idTerms.toString().replace(" ",""), a.getStr("term"), "terms not the same used for the annotation creation");
     }
 
@@ -223,10 +224,11 @@ public class AnnotationTest {
         log.info(ac.size());
 
         ImageInstance image = Utils.getImageInstance();
+        SliceInstance slice = Utils.getSliceInstance();
         Term term = Utils.getTerm();
         List<Long> idTerms = new ArrayList<>();
         idTerms.add(term.getId());
-        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image.getId(), idTerms).save();
+        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", slice.getId(), image.getId(), idTerms).save();
 
         ac.fetch();
 
@@ -254,7 +256,8 @@ public class AnnotationTest {
         Term term = Utils.getTerm();
         List<Long> idTerms = new ArrayList<>();
         idTerms.add(term.getId());
-        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image.getId(), idTerms).save();
+        SliceInstance slice = Utils.getSliceInstance();
+        Annotation a = new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", slice.getId(), image.getId(), idTerms).save();
 
         ac.fetch();
 
