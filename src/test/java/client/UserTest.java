@@ -73,4 +73,24 @@ public class UserTest {
         log.info(uc.size());
         assert uc.size() > 0;
     }
+
+    @Test
+    void testLockUser() throws CytomineException {
+        log.info("test lock users");
+        UserCollection uc = new UserCollection();
+        uc.fetch();
+        assert uc.size() > 0;
+
+        User u = uc.get(0);
+        log.info(u);
+        assert u.get("enabled").equals("true");
+
+        u.lock();
+        u = new User().fetch(u.getId());
+        assert u.get("enabled").equals("false");
+
+        u.unlock();
+        u = new User().fetch(u.getId());
+        assert u.get("enabled").equals("true");
+    }
 }

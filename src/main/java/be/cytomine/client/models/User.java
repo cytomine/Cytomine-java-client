@@ -16,7 +16,9 @@ package be.cytomine.client.models;
  * limitations under the License.
  */
 
+import be.cytomine.client.Cytomine;
 import be.cytomine.client.CytomineException;
+import org.json.simple.JSONObject;
 
 public class User extends Model<User> {
 
@@ -37,6 +39,18 @@ public class User extends Model<User> {
 
     public boolean isHuman() throws CytomineException {
         return this.get("algo") == null;
+    }
+
+    public User lock() throws CytomineException {
+        JSONObject json = Cytomine.getInstance().getDefaultCytomineConnection().doPost("/api/user/"+getLong("id")+"/lock", "");
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return this;
+    }
+
+    public User unlock() throws CytomineException {
+        JSONObject json = Cytomine.getInstance().getDefaultCytomineConnection().doDelete("/api/user/"+getLong("id")+"/lock");
+        this.setAttr((JSONObject) json.get(this.getDomainName()));
+        return this;
     }
 
     @Override
