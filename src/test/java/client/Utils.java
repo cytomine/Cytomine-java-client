@@ -42,12 +42,14 @@ public class Utils {
     private static User user;
     private static Project project;
     private static ImageInstance imageInstance;
+    private static SliceInstance sliceInstance;
     private static Ontology ontology;
     private static Term term;
     private static Annotation annotation;
     private static ImageServer imageServer;
     private static UploadedFile uploadedFile;
     private static AbstractImage abstractImage;
+    private static AbstractSlice abstractSlice;
     private static Tag tag;
 
 
@@ -119,6 +121,14 @@ public class Utils {
         return new ImageInstance(Utils.getNewAbstractImage(), Utils.getProject()).save();
     }
 
+    static SliceInstance getSliceInstance() throws CytomineException {
+        if(sliceInstance == null) sliceInstance = getNewSliceInstance();
+        return sliceInstance;
+    }
+    static SliceInstance  getNewSliceInstance() throws CytomineException {
+        return new SliceInstance(Utils.getProject(), Utils.getImageInstance(), Utils.getAbstractSlice()).save();
+    }
+
     static Term getTerm() throws CytomineException {
         if(term == null) term = getNewTerm();
         return term;
@@ -133,8 +143,8 @@ public class Utils {
         return annotation;
     }
     static Annotation getNewAnnotation() throws CytomineException {
-        ImageInstance image = Utils.getImageInstance();
-        return new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", image).save();
+        SliceInstance slice = Utils.getSliceInstance();
+        return new Annotation("POLYGON ((1983 2168, 2107 2160, 2047 2074, 1983 2168))", slice).save();
     }
 
     static ImageServer getImageServer() throws CytomineException {
@@ -169,6 +179,14 @@ public class Utils {
         ai.set("height",3000);
         ai.save();
         return ai;
+    }
+
+    static AbstractSlice getAbstractSlice() throws CytomineException {
+        if (abstractSlice == null) abstractSlice = getNewAbstractSlice();
+        return abstractSlice;
+    }
+    static AbstractSlice getNewAbstractSlice() throws CytomineException {
+        return new AbstractSlice(Utils.getAbstractImage(), Utils.getUploadedFile(), "mime",0,0,0).save();
     }
 
     static Tag getTag() throws CytomineException {

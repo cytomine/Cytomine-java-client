@@ -1125,21 +1125,6 @@ public class Cytomine {
     }
 
     @Deprecated
-    public Annotation addAnnotation(String locationWKT, Long image) throws CytomineException {
-        return new Annotation(locationWKT,image).save();
-    }
-
-    @Deprecated
-    public Annotation addAnnotationWithTerms(String locationWKT, Long image, List<Long> terms) throws CytomineException {
-        return new Annotation(locationWKT,image,terms).save();
-    }
-
-    @Deprecated
-    public Annotation addAnnotation(String locationWKT, Long image, Long project) throws CytomineException {
-        return new Annotation(locationWKT,image,project).save();
-    }
-
-    @Deprecated
     public void deleteAnnotation(Long idAnnotation) throws CytomineException {
         new Annotation().delete(idAnnotation);
     }

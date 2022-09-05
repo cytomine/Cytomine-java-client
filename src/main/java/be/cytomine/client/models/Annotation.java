@@ -25,26 +25,28 @@ public class Annotation extends Model<Annotation> {
     public Annotation() {
     }
 
-    public Annotation(String locationWKT, ImageInstance image) {
-        this(locationWKT, image.getId());
-    }
-
-    public Annotation(String locationWKT, ImageInstance image, Project project) {
-        this(locationWKT, image.getId(), project.getId());
-    }
-
-    public Annotation(String locationWKT, Long image) {
+    public Annotation(String locationWKT, SliceInstance slice) {
         this.set("location", locationWKT);
-        this.set("image", image);
+        this.set("slice", slice.getId());
+    }
+
+    public Annotation(String locationWKT, SliceInstance slice, ImageInstance image, Project project) {
+        this(locationWKT, slice.getId(), image.getId(), project.getId());
+    }
+
+    public Annotation(String locationWKT, Long slice, Long image) {
+        this.set("location", locationWKT);
+        if(slice != null) this.set("slice", slice);
+        if(image != null) this.set("image", image);
     }
 
     public Annotation(String locationWKT, Long image, List<Long> terms) {
-        this(locationWKT, image);
+        this(locationWKT, null, image);
         this.set("term", terms);
     }
 
-    public Annotation(String locationWKT, Long image, Long project) {
-        this(locationWKT, image);
+    public Annotation(String locationWKT, Long slice, Long image, Long project) {
+        this(locationWKT, slice, image);
         this.set("project", project);
     }
 
