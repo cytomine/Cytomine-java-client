@@ -186,7 +186,7 @@ public class Utils {
         return abstractSlice;
     }
     static AbstractSlice getNewAbstractSlice() throws CytomineException {
-        return new AbstractSlice(Utils.getAbstractImage(), Utils.getUploadedFile(), "mime",0,0,0).save();
+        return new AbstractSlice(Utils.getAbstractImage(), Utils.getUploadedFile(), "image/pyrtiff",0,0,0).save();
     }
 
     static Tag getTag() throws CytomineException {

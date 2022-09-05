@@ -83,14 +83,14 @@ public class UserTest {
 
         User u = uc.get(0);
         log.info(u);
-        assert u.get("enabled").equals("true");
+        assert (Boolean) u.get("enabled");
 
         u.lock();
         u = new User().fetch(u.getId());
-        assert u.get("enabled").equals("false");
+        assert !((Boolean) u.get("enabled"));
 
         u.unlock();
         u = new User().fetch(u.getId());
-        assert u.get("enabled").equals("true");
+        assert (Boolean) u.get("enabled");
     }
 }
