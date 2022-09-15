@@ -25,6 +25,7 @@ import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
@@ -36,6 +37,7 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,14 +74,26 @@ public class HttpClient {
     String privateKey;
     String host;
 
-    public HttpClient() {
+    String forceTlsVersion;
+
+    public HttpClient(String forceTlsVersion) {
+        this.forceTlsVersion = forceTlsVersion;
     }
 
 
-    public HttpClient(String publicKey, String privateKey, String host) {
+    public HttpClient(String publicKey, String privateKey, String host, String forceTlsVersion) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.host = host;
+        this.forceTlsVersion = forceTlsVersion;
+    }
+
+    private SSLConnectionSocketFactory createSSLConnectionSocketFactory() {
+        return new SSLConnectionSocketFactory(
+                SSLContexts.createDefault(),
+                new String[] { this.forceTlsVersion },
+                null,
+                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
     }
 
     public void addHeader(String name, String value) {
@@ -103,7 +117,13 @@ public class HttpClient {
         log.info("Connection to " + url + " with login=" + username + " and pass=" + password);
         URL = new URL(url);
         targetHost = new HttpHost(URL.getHost(), URL.getPort(), URL.getProtocol());
-        client = HttpClientBuilder.create().build();
+
+        if(this.forceTlsVersion!=null) {
+            client = HttpClientBuilder.create().setSSLSocketFactory(createSSLConnectionSocketFactory()).build();
+        } else {
+            client = HttpClientBuilder.create().build();
+        }
+
         // Create AuthCache instance
         AuthCache authCache = new BasicAuthCache();
         // Generate BASIC scheme object and add it to the local
@@ -132,7 +152,11 @@ public class HttpClient {
         } else {
             targetHost = new HttpHost(URL.getHost(), URL.getPort());
         }
-        client = HttpClientBuilder.create().build();
+        if(this.forceTlsVersion!=null) {
+            client = HttpClientBuilder.create().setSSLSocketFactory(createSSLConnectionSocketFactory()).build();
+        } else {
+            client = HttpClientBuilder.create().build();
+        }
         localcontext = HttpClientContext.create();
 
     }

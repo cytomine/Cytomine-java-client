@@ -44,6 +44,8 @@ public class CytomineConnection {
     private String publicKey;
     private String privateKey;
 
+    private String forceTlsVersion;
+
     private User currentUser;
     //private String charEncoding = "UTF-8";
 
@@ -54,12 +56,13 @@ public class CytomineConnection {
 
     private enum Method {GET, PUT, POST, DELETE}
 
-    CytomineConnection(String host, String publicKey, String privateKey) {
+    CytomineConnection(String host, String publicKey, String privateKey, String forceTlsVersion) {
         this.host = host;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.login = publicKey;
         this.pass = privateKey;
+        this.forceTlsVersion = forceTlsVersion;
     }
 
     public String getHost() {
@@ -141,7 +144,7 @@ public class CytomineConnection {
     }*/
 
     public JSONObject doRequest(Method method, String URL, String data) throws CytomineException {
-        HttpClient client = new HttpClient(publicKey, privateKey, getHost());
+        HttpClient client = new HttpClient(publicKey, privateKey, getHost(), forceTlsVersion);
         try {
             client.authorize(method.toString(), URL, "", "application/json,*/*");
             client.connect(getHost() + URL);
@@ -198,7 +201,7 @@ public class CytomineConnection {
                 }
             }
 
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(), forceTlsVersion);
             client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
             client.connect(getHost() + url);
 
@@ -245,7 +248,7 @@ public class CytomineConnection {
 
             entity.addPart("files[]", new FileBody(new File(file)));
 
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(),forceTlsVersion);
             client.authorize("POST", url, entity.getContentType().getValue(), "application/json,*/*");
             client.connect(getHost() + url);
             int code = client.post(entity);
@@ -267,7 +270,7 @@ public class CytomineConnection {
     public void downloadPicture(String url, String dest, String format) throws CytomineException {
         HttpClient client = null;
         try {
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(),forceTlsVersion);
             BufferedImage img = client.readBufferedImageFromURL(url);
             ImageIO.write(img, format, new File(dest));
 
@@ -279,7 +282,7 @@ public class CytomineConnection {
     public void downloadPictureWithRedirect(String url, String dest, String format) throws CytomineException {
         HttpClient client = null;
         try {
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(),forceTlsVersion);
             BufferedImage img = client.readBufferedImageFromRETRIEVAL(url, login, pass, getHost());
             ImageIO.write(img, format, new File(dest));
         } catch (Exception e) {
@@ -290,7 +293,7 @@ public class CytomineConnection {
     public BufferedImage getPictureAsBufferedImage(String url, String format) throws CytomineException {
         HttpClient client = null;
         try {
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(),forceTlsVersion);
             return client.readBufferedImageFromURL(url);
 
         } catch (Exception e) {
@@ -301,7 +304,7 @@ public class CytomineConnection {
     public void downloadFile(String url, String dest) throws CytomineException {
 
         try {
-            HttpClient client = new HttpClient(publicKey, privateKey, getHost());
+            HttpClient client = new HttpClient(publicKey, privateKey, getHost(),forceTlsVersion);
             int code = client.get(getHost() + url, dest);
             analyzeCode(code, (JSONObject) JSONValue.parse("{}"));
         } catch (Exception e) {

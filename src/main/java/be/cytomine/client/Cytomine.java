@@ -48,6 +48,8 @@ public class Cytomine {
     private String privateKey;
     private String charEncoding = "UTF-8";
 
+    private String forceTlsVersion = null;
+
     private int max = 0;
     private int offset = 0;
 
@@ -65,15 +67,19 @@ public class Cytomine {
     public static synchronized CytomineConnection connection(String host, String publicKey, String privateKey) {
         return connection(host, publicKey, privateKey, true);
     }
-
     public static synchronized CytomineConnection connection(String host, String publicKey, String privateKey, boolean setAsDefault) {
+        return connection(host, publicKey, privateKey, setAsDefault, null);
+    }
+
+    public static synchronized CytomineConnection connection(String host, String publicKey, String privateKey, boolean setAsDefault, String forceTlsVersion ) {
         if (CYTOMINE == null) CYTOMINE = new Cytomine(host, publicKey, privateKey);
         else {
             CYTOMINE.host = host;
             CYTOMINE.publicKey = publicKey;
             CYTOMINE.privateKey = privateKey;
+            CYTOMINE.forceTlsVersion = forceTlsVersion;
         }
-        CytomineConnection connection = new CytomineConnection(host, publicKey, privateKey);
+        CytomineConnection connection = new CytomineConnection(host, publicKey, privateKey, forceTlsVersion);
         if (setAsDefault) {
             CYTOMINE.defaultCytomineConnection = connection;
         }
@@ -155,7 +161,7 @@ public class Cytomine {
      * @throws Exception if the host is not available
      */
     boolean testHostConnection() throws Exception {
-        HttpClient client = new HttpClient();
+        HttpClient client = new HttpClient(forceTlsVersion);
         client.connect(getHost() + "/server/ping", login, pass);
         int code = 0;
         try {
@@ -417,7 +423,7 @@ public class Cytomine {
                     + idTerm + "/clearBefore.json";
 
             HttpClient client = null;
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(), forceTlsVersion);
             client.authorize("POST", clearBeforeURL, "", "application/json,*/*");
             client.connect(getHost() + clearBeforeURL);
             int code = client.post(model.toJSON());
@@ -553,7 +559,7 @@ public class Cytomine {
 		String subUrl = "/api/abstractimage/"+abstractImageID+"/imageservers.json";
 
 		    HttpClient client = null;
-            client = new HttpClient(publicKey, privateKey, getHost());
+            client = new HttpClient(publicKey, privateKey, getHost(), forceTlsVersion);
 
 
 			try {

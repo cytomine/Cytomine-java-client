@@ -26,7 +26,7 @@ public class Execute {
     public static void main(String[] args) throws Exception {
         log.info("Connection to cytomine...");
 
-        Cytomine.connection(args[0], args[1], args[2]);
+        Cytomine.connection(args[0], args[1], args[2], true, "TLSv1.2");
 
         ping(Cytomine.getInstance());
 
