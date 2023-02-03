@@ -19,7 +19,8 @@ package client;
 import be.cytomine.client.CytomineException;
 import be.cytomine.client.collections.Collection;
 import be.cytomine.client.models.AbstractSlice;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AbstractSliceTests {
 
-    private static final Logger log = Logger.getLogger(AbstractSliceTests.class);
+    private static final Logger log = LogManager.getLogger(AbstractSliceTests.class);
 
     @BeforeAll
     static void init() throws CytomineException {
