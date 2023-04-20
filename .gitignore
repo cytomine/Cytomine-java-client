@@ -21,3 +21,5 @@ ci
 scripts/ciBuildLocal.sh
 
 .idea/
+*.iml
+.vscode
